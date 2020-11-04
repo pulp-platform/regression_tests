@@ -10,7 +10,7 @@ Call the `./update-regression-tests` script in the pulp directory. This will pop
 
 To run the tests as they are the instructions are the following, from the pulp repo:
 ### To build Pulp
-`
+```
 source setup/vsim.sh
 
 ./update-ips
@@ -21,9 +21,9 @@ cd sim
 
 make all
 
-`
+```
 ### To run the tests
-`
+```
 cd ..
 
 source pulp-runtime/configs/pulp.sh
@@ -31,7 +31,7 @@ source pulp-runtime/configs/pulp.sh
 export PULP_RISCV_GCC_TOOLCHAIN= *path to riscv gcc toolchain*
 
 make test-local-regressions
-`
+```
 
 ## Adding your own tests
 You can add your own tests by putting them in a repository and adding them to
