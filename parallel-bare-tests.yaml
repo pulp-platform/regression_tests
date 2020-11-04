@@ -3,9 +3,6 @@ parallel_bare_tests:
   parMatrixMul8:
     path: ./parallel_bare_tests/parMatrixMul8 #ok
     command: make clean all run
-  Sparse:
-    path: ./parallel_bare_tests/Sparse #ok
-    command: make clean all run
   conv16:
     path: ./parallel_bare_tests/conv16 #ok
     command: make clean all run
