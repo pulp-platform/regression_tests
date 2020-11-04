@@ -1,0 +1,6 @@
+[test:parMatrixMul]
+configs=bitcode=0_omp=0_ovx=0
+command.all=make -f Makefile.sdk systemConfig=%(config)s clean all run
+timeout=5
+probe[totalCycles].metric=cycles
+probe[totalCycles].regexp=execution time: (\d+)

@@ -1,0 +1,269 @@
+# source /scratch/lvalente/project/open_pulp/pulp/sim/tcl_files/config/run_and_exit.tcl
+# source /scratch/lvalente/project/open_pulp/pulp/sim/tcl_files/run.tcl
+# vsim -c -quiet vopt_tb -L models_lib -L vip_lib -t ps "+nowarnTRAN" "+nowarnTSCALE" "+nowarnTFMPC" "+TB_PATH=/scratch/lvalente/project/open_pulp/pulp/rtl/tb" "+UVM_NO_RELNOTES" "+ENTRY_POINT=0x1c008080" -dpicpppath /usr/bin/g++ -permit_unmatched_virtual_intf "+VSIM_PATH=/scratch/lvalente/project/open_pulp/pulp/sim" -gUSE_SDVT_SPI=0 -gUSE_SDVT_CPI=0 -gBAUDRATE=115200 -gENABLE_DEV_DPI=0 -gLOAD_L2=JTAG -gUSE_SDVT_I2S=0 
+# Start time: 17:31:55 on Nov 03,2020
+# //  Questa Sim-64
+# //  Version 10.7b_1 linux_x86_64 Jul 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# ** Error: (vsim-191) Questa has encountered an unexpected internal error: ../../src/vsim/vsimfunc.c(1989). 
+# Please contact Questa support at http://supportnet.mentor.com
+# ** Error: (vsim-191) Questa has encountered an unexpected internal error: ../../src/vsim/vsimfunc.c(1989). 
+# Please contact Questa support at http://supportnet.mentor.com
+# ** Error: (vsim-191) Questa has encountered an unexpected internal error: ../../src/vsim/vsimfunc.c(1989). 
+# Please contact Questa support at http://supportnet.mentor.com
+# ** Error: (vsim-191) Questa has encountered an unexpected internal error: ../../src/vsim/vsimfunc.c(1989). 
+# Please contact Questa support at http://supportnet.mentor.com
+# ** Warning: (vsim-3015) [PCDPC] - Port size (43) does not match connection size (32) for port 'gpio_in'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/soc_peripherals.sv(76).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/soc_peripherals_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/pulp_soc.sv Line: 561
+# ** Warning: (vsim-3015) [PCDPC] - Port size (43) does not match connection size (32) for port 'gpio_out'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/soc_peripherals.sv(77).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/soc_peripherals_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/pulp_soc.sv Line: 561
+# ** Warning: (vsim-3015) [PCDPC] - Port size (43) does not match connection size (32) for port 'gpio_dir'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/soc_peripherals.sv(78).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/soc_peripherals_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/pulp_soc.sv Line: 561
+# ** Warning: (vsim-3015) [PCDPC] - Port size (172) does not match connection size (192) for port 'gpio_padcfg'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/soc_peripherals.sv(79).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/soc_peripherals_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/pulp_soc.sv Line: 561
+# ** Warning: (vsim-3015) [PCDPC] - Port size (256) does not match connection size (384) for port 'pad_cfg_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/soc_peripherals.sv(82).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/soc_peripherals_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/pulp_soc.sv Line: 561
+# ** Warning: (vsim-3015) [PCDPC] - Port size (43) does not match connection size (32) for port 'gpio_in_sync'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/apb/apb_gpio/./rtl/apb_gpio.sv(60).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/soc_peripherals_i/apb_gpio_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/soc_peripherals.sv Line: 355
+# ** Warning: (vsim-3015) [PCDPC] - Port size (384) does not match connection size (256) for port 'pad_cfg'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/components/apb_soc_ctrl.sv(85).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/soc_peripherals_i/apb_soc_ctrl_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/pulp_soc/soc_peripherals.sv Line: 487
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (6) for port 'data_slave_aw_id_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/cluster_domain.sv(141).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/pulp.sv Line: 1061
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (6) for port 'data_slave_ar_id_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/cluster_domain.sv(156).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/pulp.sv Line: 1061
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (6) for port 'data_slave_r_id_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/cluster_domain.sv(173).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/pulp.sv Line: 1061
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (6) for port 'data_slave_b_id_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/cluster_domain.sv(180).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/pulp/pulp.sv Line: 1061
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (2) for port 'ctrl_targ_req_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(48).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (2) for port 'ctrl_targ_type_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(49).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (8) for port 'ctrl_targ_be_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(50).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (128) does not match connection size (64) for port 'ctrl_targ_add_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(51).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (128) does not match connection size (64) for port 'ctrl_targ_data_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(52).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (36) does not match connection size (18) for port 'ctrl_targ_id_i'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(53).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (2) for port 'ctrl_targ_gnt_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(54).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (2) for port 'ctrl_targ_r_valid_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(56).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (128) does not match connection size (64) for port 'ctrl_targ_r_data_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(57).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (2) for port 'ctrl_targ_r_opc_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(58).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (36) does not match connection size (18) for port 'ctrl_targ_r_id_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(59).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (2) for port 'term_evt_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(132).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (2) for port 'term_int_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/mchan/./rtl/top/mchan.sv(133).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/dmac_wrap_i/mchan_i File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_cluster/rtl/dmac_wrap.sv Line: 159
+# ** Warning: (vsim-3015) [PCDPC] - Port size (4) does not match connection size (16) for port 'evt_o'. The port definition is at: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/hwpe-mac-engine/rtl/mac_ctrl.sv(34).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/cluster_domain_i/cluster_i/hwpe_gen/hwpe_subsystem_i/mac_top_wrap_i/i_mac_top/i_ctrl File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/hwpe-mac-engine/rtl/mac_top.sv Line: 99
+# ** Warning: (vsim-3770) Failed to find user specified function 'jtag_tick' in DPI C/C++ source files.
+#    Time: 0 ps  Iteration: 0  Region: /SimJTAG_sv_unit File: /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/SimJTAG.sv
+# ** Warning: (vsim-8683) Uninitialized out port /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/i_clk_rst_gen/i_fll_soc/i_FLL_digital/TQ has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/i_clk_rst_gen/i_fll_soc/i_FLL_digital/JTQ has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/i_clk_rst_gen/i_fll_per/i_FLL_digital/TQ has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/i_clk_rst_gen/i_fll_per/i_FLL_digital/JTQ has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/i_clk_rst_gen/i_fll_cluster/i_FLL_digital/TQ has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/i_clk_rst_gen/i_fll_cluster/i_FLL_digital/JTQ has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-3040) Command line generic/parameter "USE_SDVT_I2S" not found in design.
+# ** Warning: (vsim-3040) Command line generic/parameter "USE_SDVT_SPI" not found in design.
+#  run_and_exit
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/uart" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/vip/uart_tb_rx.sv(44)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/genblk4/i_rx_mod
+# ** Warning: (vsim-PLI-3407) Too many data words read on line 2049 of file "./boot/boot_code.cde". (Current address [2048], address range [0:2047])    : /scratch/lvalente/project/open_pulp/pulp/sim/../ips/tech_cells_generic/src/deprecated/generic_rom.sv(31)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/boot_rom_i/rom_mem_i
+# [CORE] Core settings: PULP_SECURE =           1, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# ** Warning: (vsim-8315) No condition is true in the unique/priority if/case statement.
+#    Time: 0 ps  Iteration: 0  Process: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/fc_subsystem_i/FC_CORE/lFC_CORE/RISCY_PMP/pmp_unit_i/<anonymous> File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/riscv/./rtl/riscv_pmp.sv Line: 677
+# START_ADDR[0] = 0x1a100000; END_ADDR[0] = 0X1a400000
+# START_ADDR[1] = 0x10000000; END_ADDR[1] = 0X10400000
+# ** Warning: (vsim-8315) No condition is true in the unique/priority if/case statement.
+#    Time: 0 ps  Iteration: 0  Process: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/jtag_lint_arbiter_i/<anonymous> File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/components/tcdm_arbiter_2x1.sv Line: 49
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [CORE] Core settings: PULP_SECURE =           0, N_PMP_ENTRIES =          16, N_PMP_CFG           4
+# [TB]       0ns - Entry point is set to 0x1c008080
+# [TB]       0ns - Asserting hard reset
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_0" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_1" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_2" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_3" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_4" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_5" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_6" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe0_7" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_0.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_1.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_2.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_3.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_4.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_5.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_6.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_0_7.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_CLUSTER
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_0" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_1" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_2" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_3" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_4" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_5" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_6" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "stdout/stdout_fake_pe31_7" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/STDOUT_PRINTF_FC
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "fs/file_31_0.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_fs_handler.sv(269)
+#    Time: 0 ps  Iteration: 0  Instance: /tb_pulp/i_fs_handler/FS_PRINTF_FC
+# ** Warning: (vsim-8315) No condition is true in the unique/priority if/case statement.
+#    Time: 0 ps  Iteration: 1  Process: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/fc_subsystem_i/FC_CORE/lFC_CORE/RISCY_PMP/pmp_unit_i/<anonymous> File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/riscv/./rtl/riscv_pmp.sv Line: 677
+# ** Warning: (vsim-8315) No condition is true in the unique/priority if/case statement.
+#    Time: 0 ps  Iteration: 1  Process: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/jtag_lint_arbiter_i/<anonymous> File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/components/tcdm_arbiter_2x1.sv Line: 49
+# ** Warning: (vsim-8315) No condition is true in the unique/priority if/case statement.
+#    Time: 0 ps  Iteration: 2  Process: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/fc_subsystem_i/FC_CORE/lFC_CORE/RISCY_PMP/pmp_unit_i/<anonymous> File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/riscv/./rtl/riscv_pmp.sv Line: 677
+# ** Warning: (vsim-8315) No condition is true in the unique/priority if/case statement.
+#    Time: 0 ps  Iteration: 12  Process: /tb_pulp/i_dut/soc_domain_i/pulp_soc_i/jtag_lint_arbiter_i/<anonymous> File: /scratch/lvalente/project/open_pulp/pulp/sim/../ips/pulp_soc/rtl/components/tcdm_arbiter_2x1.sv Line: 49
+# [TB]       1ns - Using FLL
+# [TB]       1ns - Not using CAM SDVT
+# Loading default stimuli
+# [JTAG] SoftReset Done(    701ns)
+# [JTAG] Bypass Test Passed (  33301ns)
+# [JTAG] Tap ID: 249511c3 (  43701ns)
+# [JTAG] Tap ID Test PASSED (  43701ns)
+# [test_mode_if]   50301ns - Init
+# [TB]   50301ns - Enabling clock out via jtag
+# [test_mode_if]   51801ns - Setting confreg to value 003.
+# [TB]   51801ns - jtag_conf_reg set to 003
+# [TB]   51801ns - Releasing hard reset
+# [TB]   53401ns - Init PULP TAP
+# [pulp_tap_if] WRITE32 burst @1c008080 for           4 bytes.
+# [TB]   67501ns - Write32 PULP TAP
+# [JTAG] R/W test of L2 succeeded
+# [TB]  177701ns - Halting the Core
+# [TB]  236501ns - Writing the boot address into dpc
+# [TB]  280601ns - Loading L2
+# [JTAG] Loading L2 with pulp tap jtag interface
+# [pulp_tap_if] WRITE32 burst @10000000 for         224 bytes.
+# [pulp_tap_if] WRITE32 burst @1c000000 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c000400 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c000800 for         272 bytes.
+# [pulp_tap_if] WRITE32 burst @1c008000 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c008400 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c008800 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c008c00 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c009000 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c009400 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c009800 for        1024 bytes.
+# [pulp_tap_if] WRITE32 burst @1c009c00 for         680 bytes.
+# [TB] 8728201ns - Resuming the CORE
+# [TB] 8772301ns retrying debug reg access
+# [TB] 8801601ns retrying debug reg access
+# [TB] 8830901ns retrying debug reg access
+# [TB] 8860201ns retrying debug reg access
+# [TB] 8889501ns retrying debug reg access
+# [TB] 8918801ns retrying debug reg access
+# [TB] 8948101ns retrying debug reg access
+# [TB] 8977401ns retrying debug reg access
+# [TB] 9006701ns retrying debug reg access
+# [TB] 9036001ns retrying debug reg access
+# [TB] 9065301ns retrying debug reg access
+# [TB] 9094601ns retrying debug reg access
+# [TB] 9123901ns retrying debug reg access
+# [TB] 9153201ns retrying debug reg access
+# [TB] 9182501ns retrying debug reg access
+# [TB] 9211801ns retrying debug reg access
+# [TB] 9241101ns retrying debug reg access
+# [TB] 9270401ns retrying debug reg access
+# [TB] 9299701ns retrying debug reg access
+# [TB] 9329001ns retrying debug reg access
+# [TB] 9358301ns retrying debug reg access
+# [TB] 9387601ns retrying debug reg access
+# [TB] 9416901ns retrying debug reg access
+# [TB] 9446201ns retrying debug reg access
+# [TB] 9475501ns retrying debug reg access
+# [TB] 9504801ns retrying debug reg access
+# [TB] 10078201ns - Waiting for end of computation
+# [STDOUT-CL31_PE0] Start stencil
+# [STDOUT-CL31_PE0] Loop 0 cycles: 5853
+# [STDOUT-CL31_PE0] Loop 1 cycles: 5849
+# [STDOUT-CL31_PE0] ==== SUMMARY: SUCCESS
+# [TB] 11031001ns - Received status core: 0x00000000
+# ** Note: $stop    : /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_pulp.sv(806)
+#    Time: 11031001 ns  Iteration: 0  Instance: /tb_pulp
+# Break at /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_pulp.sv line 806
+# Stopped at /scratch/lvalente/project/open_pulp/pulp/sim/../rtl/tb/tb_pulp.sv line 806
+# End time: 17:32:20 on Nov 03,2020, Elapsed time: 0:00:25
+# Errors: 4, Warnings: 67
