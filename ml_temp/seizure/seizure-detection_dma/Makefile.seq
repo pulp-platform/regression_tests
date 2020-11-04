@@ -1,0 +1,10 @@
+PULP_APP = main
+PULP_APP_SRCS = main.c libSVM_load_model.c libSVM_predict.c pca_.c wavelet_.c
+
+PULP_CFLAGS = -O3 -g  -DSEQ
+PULP_LDFLAGS = -lm 
+l2Size=362144 #256k
+l1Size=300000 
+stackSize = 20000 #12288 #12k 
+include $(PULP_SDK_HOME)/install/rules/pulp.mk
+
