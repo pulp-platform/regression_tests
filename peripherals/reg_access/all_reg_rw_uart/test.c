@@ -36,9 +36,6 @@ int main()
       address = ARCHI_UDMA_ADDR + UDMA_PERIPH_OFFSET(ARCHI_UDMA_UART_ID(u)) + wr_reg_offsets[i]; 
       pulp_write32(address, val_wr); 
       printf("write %x @ %x\n", val_wr, address);
-      val_rd = 0;
-      val_rd = pulp_read32(address); 
-      printf("read %x @ %x\n", val_rd, address);
     }
     cg_val = plp_udma_cg_get();
     cg_val &= ~(1<<u);
