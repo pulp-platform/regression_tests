@@ -36,7 +36,7 @@ for (int u = 0; u < 2; ++u)
 {
   plp_udma_cg_set(plp_udma_cg_get() | (1<<ARCHI_UDMA_I2C_ID(u)));
   printf("I2C # %d\n", u);
-  for (int i = 0; i < 10; ++i)
+  for (int i = 0; i < 8; ++i)
   {
     address = ARCHI_UDMA_ADDR + UDMA_PERIPH_OFFSET(ARCHI_UDMA_I2C_ID(u)) + wr_reg_offsets[i]; 
     pulp_write32(address, val_wr); 

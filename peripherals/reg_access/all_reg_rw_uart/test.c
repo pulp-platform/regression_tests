@@ -47,11 +47,11 @@ int main()
   int cg_val;
   static inline int val_rd = 0;
 
-  for (int u = 0; u < 2; ++u)
+  for (int u = 0; u < 1; ++u)
   {
     plp_udma_cg_set(plp_udma_cg_get() | (1<<u));
     printf("UART # %d\n", u);
-    for (int i = 0; i < 14; ++i)
+    for (int i = 0; i < 8; ++i)
     {
       address = ARCHI_UDMA_ADDR + UDMA_PERIPH_OFFSET(ARCHI_UDMA_UART_ID(u)) + wr_reg_offsets[i]; 
       pulp_write32(address, val_wr); 

@@ -32,15 +32,15 @@ int main()
   int cg_val;
   static inline int val_rd = 0xdeadbeef;
 
-for (int u = 0; u < 4; ++u)
+for (int u = 0; u < 1; ++u)
 {
   plp_udma_cg_set(plp_udma_cg_get() | (1<<ARCHI_UDMA_SPIM_ID(u)));
   printf("QSPI # %d\n", u);
-  for (int i = 0; i < 13; ++i)
+  for (int i = 0; i < 6; ++i)
   {
     address = ARCHI_UDMA_ADDR + UDMA_PERIPH_OFFSET(ARCHI_UDMA_SPIM_ID(u)) + wr_reg_offsets[i]; 
     pulp_write32(address, val_wr); 
-    printf("write %x @ %x\n", val_wr, address);
+    printf("write %x @ %x, ", val_wr, address);
   }
   cg_val = plp_udma_cg_get();
   cg_val &= ~(1<<ARCHI_UDMA_SPIM_ID(u));
