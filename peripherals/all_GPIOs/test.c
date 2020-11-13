@@ -70,13 +70,13 @@ uint32_t lfsr(uint32_t input)
 }
 
 uint32_t configure_gpio(uint32_t number, uint32_t direction){
-  uint32_t which_reg_fun = number / 16; //select the correct register 
-  uint32_t address = ARCHI_APB_SOC_CTRL_ADDR + pad_fun_offset[which_reg_fun];
+  //uint32_t which_reg_fun = number / 16; //select the correct register 
+  uint32_t address ; // = ARCHI_APB_SOC_CTRL_ADDR + pad_fun_offset[which_reg_fun];
 
   //--- set alternate 1 on GPIO
-  uint32_t value_wr = pulp_read32(address);
-  value_wr |= (1 << ((number - which_reg_fun*16)*2));
-  pulp_write32(address, value_wr);
+  uint32_t value_wr ; // = pulp_read32(address);
+  // value_wr |= (1 << ((number - which_reg_fun*16)*2));
+  // pulp_write32(address, value_wr);
 
   //--- set GPIO
   if(number < 32)
@@ -182,65 +182,46 @@ int main()
   uint32_t val_rd = 0;
   uint32_t gpio_out;
   uint32_t gpio_in;
-
+  uint32_t val_rd1;
   uint32_t gpio_val;
 
   printf("[%d, %d] Start test\n",  get_cluster_id(), get_core_id());
 
-  printf("Set all GPIOs as output\n");
-  address = ARCHI_GPIO_ADDR + GPIO_PADDIR_OFFSET;
-  val_wr = 0x00000000;
-  pulp_write32(address, val_wr);
-
-  //--- set GPIOs 32 to 64 direction (only 48 are actually connected)
-  address = ARCHI_GPIO_ADDR + GPIO_PADDIR_32_63_OFFSET;
-  val_wr = 0x00000000;
-  pulp_write32(address, val_wr);
+  printf("GPIO[i+16] driven by GPIO[i] in Hardware \n");
 
   printf("[PRE-TEST] errors = %0d\n",error);
-  for (uint32_t i = 0; i < 128; ++i)
-  {
-
-    //printf("Set all GPIOs as output\n");
-    address = ARCHI_GPIO_ADDR + GPIO_PADDIR_OFFSET;
-    val_wr = 0x00000000;
-    pulp_write32(address, val_wr);
-    address = ARCHI_GPIO_ADDR + GPIO_PADDIR_32_63_OFFSET;
-    val_wr = 0x00000000;
-    pulp_write32(address, val_wr);
-
-    //--- set a random GPIO as output
-    gpio_out = i % 48;//lfsr(i);
-    configure_gpio(gpio_out,OUT);
-    printf("TEST GPIO out: %d\n", gpio_out);
-    set_gpio(gpio_out,1);
-
-
-    //--- set the related input GPIO
-    gpio_in  = (gpio_out + 4) % 48;
-    configure_gpio(gpio_in,IN);
-    printf("TEST GPIO in: %d\n", gpio_in);
+  
+  printf("Set GPIOs[31:16] as input, the remaining as output\n");
+  address = ARCHI_GPIO_ADDR + GPIO_PADDIR_OFFSET;
+  val_wr = 0x0000FFFF;
+  pulp_write32(address, val_wr);
+  while(pulp_read32(address) != val_wr);
     
-    gpio_val = get_gpio(gpio_in);
+    
 
+  printf("Setting first 16 GPIOS outputs=1\n");
+  address = ARCHI_GPIO_ADDR + GPIO_PADOUT_OFFSET;
+  val_wr = pulp_read32(address);
+  val_wr = 0x0000FFFF;
+  pulp_write32(address, val_wr);
+  while(pulp_read32(address) != val_wr);
 
-    if((gpio_val & (1 << (gpio_in % 32))) == 0)
-    {
-      if((gpio_in == 8) | (gpio_in == 9) | (gpio_out == 8) | (gpio_out == 9))
-      {
-        printf("Warning: trying to program a reserved GPIO, GPIO%0d-->GPIO%0d\n", gpio_out,gpio_in);
-        printf("gpio_in  reg value = %08x\n", gpio_val);
-        printf("gpio_out reg value = %08x\n", (1 << (gpio_in % 32)));
-      }else{
-        error++;
-        printf("Error: Issue when connecting GPIO%0d-->GPIO%0d\n", gpio_out,gpio_in);
-        printf("gpio_in  reg value = %08x\n", gpio_val);
-        printf("gpio_out reg value = %08x\n", (1 << (gpio_in % 32)));
-      }
-    }
-    set_gpio(gpio_out,0);
+  printf("Enable clock to allow sampling for GPIOs[31:16]\n");
+  address = ARCHI_GPIO_ADDR + GPIO_GPIOEN_OFFSET;
+  val_wr = 0xFFFF0000;
+  pulp_write32(address, val_wr);
+  while(pulp_read32(address) != val_wr);
 
-  }
+  printf("Reading Input and Output register\n");
+  address = ARCHI_GPIO_ADDR + GPIO_PADIN_OFFSET;
+  val_rd = pulp_read32(address);
+  printf("gpio_in  reg value = %08x\n", val_rd); // gpio_val);
+  address = ARCHI_GPIO_ADDR + GPIO_PADOUT_OFFSET;
+  val_rd1 = pulp_read32(address);
+  printf("gpio_out reg value = %08x\n", val_rd1);
+  printf("expected gpio_in values = %08x\n", (val_rd1 << 16));
+  error = val_rd ^ (val_rd1 << 16);
+  
   printf("[POST-TEST] errors = %0d\n",error);
 
   return error;
