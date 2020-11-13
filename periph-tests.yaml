@@ -1,0 +1,17 @@
+ml_tests:
+  L2_check:
+    path: ./peripherals/L2_check #ok
+    command: make clean all run
+  all_GPIOs:
+    path: ./peripherals/all_GPIOs #ok
+    command: make clean all run
+  i2c:
+    path: ./peripherals/i2c #ok
+    command: make clean all run
+  spim_flash:
+    path: ./peripherals/spim_flash #ok
+    command: make clean all run
+  uart:
+    path: ./peripherals/uart #ok
+    command: make clean all run
+  
