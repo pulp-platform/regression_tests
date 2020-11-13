@@ -66,6 +66,7 @@ int main()
 
     
     
+  for (u=0;u<1;u++) {
 
     //WRITE
 
@@ -129,8 +130,8 @@ int main()
     
       
     
-    
-    if(error!=0) pass=0;
+  }
+  if(error!=0) pass=0;
 
 
   return !pass;
