@@ -1,4 +1,4 @@
-ml_tests:
+peripherals:
   L2_check:
     path: ./peripherals/L2_check #ok
     command: make clean all run
