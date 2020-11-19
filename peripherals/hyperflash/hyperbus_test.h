@@ -20,7 +20,7 @@
 
 
 #include <pulp.h>
-#define UDMA_HYPERBUS_OFFSET (ARCHI_UDMA_ADDR + 128*8)
+#define UDMA_HYPERBUS_OFFSET (ARCHI_UDMA_ADDR + 128*9)
 #define HYPERBUS_DEVICE_NUM 8
 #define CONFIG_REG_OFFSET 0x80
 
@@ -189,8 +189,8 @@ static inline void udma_spi16_setup(){
 
 static inline void udma_hyper_flash_setup(){
    
-  pulp_write32(ARCHI_UDMA_ADDR, 1 << HYPERBUS_DEVICE_NUM; // clock for the hyper bus module is activated
-  while(pulp_read32(ARCHI_UDMA_ADDR)!= (1 << HYPERBUS_DEVICE_NUM));
+  pulp_write32(ARCHI_UDMA_ADDR, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
+  //while(pulp_read32(ARCHI_UDMA_ADDR)!= (1 << HYPERBUS_DEVICE_NUM));
   set_en_latency_add(0);
   set_t_cs_max(0xffffffff);
   set_memsel_hyper(1);

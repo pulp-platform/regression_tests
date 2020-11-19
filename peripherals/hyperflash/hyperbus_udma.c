@@ -22,7 +22,7 @@
 //#include <rt/rt_api.h>
 //#include <rt/rt_freq.h>
 #include <stdint.h>
-#include "./hyperbus_test.h"
+#include "hyperbus_test.h"
 //#include </home/vivid/pulpissimo/pulp-sdk/runtime/hal/include/hal/eu/eu_v3.h>
 
 
