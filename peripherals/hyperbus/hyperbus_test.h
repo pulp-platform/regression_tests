@@ -19,10 +19,41 @@
  */
 
 
-
-#define UDMA_HYPERBUS_OFFSET 0x1a102000+128*9
+#include <pulp.h>
+#define UDMA_HYPERBUS_OFFSET (ARCHI_UDMA_ADDR + 128*8)
 #define HYPERBUS_DEVICE_NUM 8
 #define CONFIG_REG_OFFSET 0x80
+
+static inline void wait_cycles(const unsigned cycles)
+{
+  /**
+   * Each iteration of the loop below will take four cycles on RI5CY (one for
+   * `addi` and three for the taken `bnez`; if the instructions hit in the
+   * I$).  Thus, we let `i` count the number of remaining loop iterations and
+   * initialize it to a fourth of the number of clock cyles.  With this
+   * initialization, we must not enter the loop if the number of clock cycles
+   * is less than four, because this will cause an underflow on the first
+   * subtraction.
+   */
+  register unsigned threshold;
+  asm volatile("li %[threshold], 4" : [threshold] "=r" (threshold));
+  asm volatile goto("ble %[cycles], %[threshold], %l2"
+          : /* no output */
+          : [cycles] "r" (cycles), [threshold] "r" (threshold)
+          : /* no clobbers */
+          : __wait_cycles_end);
+  register unsigned i = cycles >> 2;
+__wait_cycles_start:
+  // Decrement `i` and loop if it is not yet zero.
+  asm volatile("addi %0, %0, -1" : "+r" (i));
+  asm volatile goto("bnez %0, %l1"
+          : /* no output */
+          : "r" (i)
+          : /* no clobbers */
+          : __wait_cycles_start);
+__wait_cycles_end:
+  return;
+}
 
 static inline void set_memsel_hyper(unsigned int mem_sel){
   pulp_write32(UDMA_HYPERBUS_OFFSET + CONFIG_REG_OFFSET*8 + 0x20, mem_sel); // hyperram 0, hyperflash 1, psram(x8) 2, psram(x16)3
@@ -116,7 +147,7 @@ static inline void kick_read_hyper(unsigned int tran_id){
 
 
 static inline void udma_hyper_setup(){
-  pulp_write32(0x1a102000, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
+  pulp_write32(ARCHI_UDMA_ADDR, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
   set_en_latency_add(1);
   set_t_cs_max(0xffffffff);
   set_memsel_hyper(0);
@@ -125,7 +156,7 @@ static inline void udma_hyper_setup(){
 
 
 static inline void udma_spi8_setup(){
-  pulp_write32(0x1a102000, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
+  pulp_write32(ARCHI_UDMA_ADDR, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
   set_t_cs_max(0xffffffff);
   set_memsel_hyper(2);
   set_t_latency_access(6);
@@ -138,7 +169,7 @@ static inline void udma_spi8_setup(){
 }
 
 static inline void udma_spi16_setup(){
-  pulp_write32(0x1a102000, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
+  pulp_write32(ARCHI_UDMA_ADDR, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
   set_t_cs_max(0xffffffff);
   set_memsel_hyper(2);
   set_t_latency_access(5);
@@ -157,9 +188,9 @@ static inline void udma_spi16_setup(){
 
 
 static inline void udma_hyper_flash_setup(){
-  int i=0;
-  pulp_write32(0x1a102000, 1 << HYPERBUS_DEVICE_NUM); // clock for the hyper bus module is activated
-
+   
+  pulp_write32(ARCHI_UDMA_ADDR, 1 << HYPERBUS_DEVICE_NUM; // clock for the hyper bus module is activated
+  while(pulp_read32(ARCHI_UDMA_ADDR)!= (1 << HYPERBUS_DEVICE_NUM));
   set_en_latency_add(0);
   set_t_cs_max(0xffffffff);
   set_memsel_hyper(1);
@@ -168,8 +199,8 @@ static inline void udma_hyper_flash_setup(){
 
 static inline void udma_hyper_sleep(){
   int a;
-  a = pulp_read32(0x1a102000);
-  pulp_write32(0x1a102000, (1 << HYPERBUS_DEVICE_NUM)^a ); // Clock gating is activated
+  a = pulp_read32(ARCHI_UDMA_ADDR);
+  pulp_write32(ARCHI_UDMA_ADDR, (1 << HYPERBUS_DEVICE_NUM)^a ); // Clock gating is activated
 }
 
 
@@ -215,6 +246,16 @@ static inline void udma_hyperflash_wwrite(unsigned int ext_addr, short int data,
   kick_flash_write_hyper(tran_id);
 }
 
+static inline void udma_hyperflash_wpwrite(unsigned int ext_addr, short int data, unsigned int tran_id){
+    udma_hyperflash_wwrite(0x555, 0x00aa, tran_id);
+    udma_hyperflash_wwrite(0x2aa, 0x0055, tran_id);
+    udma_hyperflash_wwrite(0x555, 0x00a0, tran_id);
+    udma_hyperflash_wwrite(ext_addr, data, tran_id);
+    wait_cycles(125000);
+}
+
+
+
 static inline int udma_hyper_nb_tran(unsigned int tran_id){
   return pulp_read32(UDMA_HYPERBUS_OFFSET + tran_id*CONFIG_REG_OFFSET + 0x24) >> 1;
 }
@@ -232,8 +273,7 @@ static inline void udma_hyperflash_bwrite(unsigned int nb_word, unsigned int hyp
        udma_hyperflash_wwrite(hyper_waddr+i, *((short int *) l2_addr+i), tran_id);
     }
     udma_hyperflash_wwrite(hyper_waddr, 0x0029, tran_id);
-    //rt_time_wait_us(1000);
-    for( volatile int i=0; i<100000; i++){}
+    wait_cycles(125000);
 }
 
 static inline void udma_hyperflash_erase(unsigned int sector_addr, unsigned int tran_id){
@@ -243,8 +283,7 @@ static inline void udma_hyperflash_erase(unsigned int sector_addr, unsigned int 
     udma_hyperflash_wwrite(0x555, 0x00aa, tran_id);
     udma_hyperflash_wwrite(0x2aa, 0x0055, tran_id);
     udma_hyperflash_wwrite(sector_addr, 0x0030, tran_id);
-    //rt_time_wait_us(1000); 
-    for( volatile int i=0; i<100000; i++){}
+    wait_cycles(125000);
 }
 
 // Linear read is conducted. len <- burst length in bytes, ext_addr <- start address of the external memory, l2_addr <- start_address of the L2 memory, page_bound <- page boundary in the external memory
