@@ -1,0 +1,5 @@
+psram:
+  psram_test:
+    path: ./peripherals/psram #ok
+    command: make clean all run
+
