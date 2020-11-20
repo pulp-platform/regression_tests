@@ -15,7 +15,12 @@ peripherals:
   uart:
     path: ./peripherals/uart #ok
     command: make clean all run
-  
+  hyperbus:
+    path: ./peripherals/hyperbus #ok
+    command: make clean all run
+  hyperflash:
+    path: ./peripherals/hyperflash #ok
+    command: make clean all run
 
 sequential_bare_test:
   dct:
