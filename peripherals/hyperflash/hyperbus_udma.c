@@ -36,7 +36,8 @@ int main() {
     int *p;
     int hyper_addr, hyper_waddr;
     udma_hyper_flash_setup();
-  
+    int error = 0;
+    int pass = 0;
     //udma_hyperflash_wpwrite(1, 0x1234, 0);
     //udma_hyper_dread(2, 2, (unsigned int)rx_buffer, 0,0);
  
@@ -51,13 +52,16 @@ int main() {
     udma_hyper_dread((BUFFER_SIZE*4), hyper_addr, (unsigned int)rx_buffer, 0,0);
     udma_hyper_wait(0); 
 
-for (int i=0; i< BUFFER_SIZE; i++)
-  {      
-   //if(rx_buffer[i]!=tx_buffer[i]){
-      printf("rx_buffer[%d] = %x \n", i, rx_buffer[i]);
-   //}
-}
- 
-return 0;
+    for (int i=0; i< BUFFER_SIZE; i++)
+     {      
+       printf("rx_buffer[%d] = %x, expected: %x \n", i, rx_buffer[i], tx_buffer[i]); 
+       error += rx_buffer[i] ^ tx_buffer[i];
+      }
+   if (error!=0) { 
+       pass=1;
+       printf("errors\n");
+       }
+  
+   return pass;
     
 }

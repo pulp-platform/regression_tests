@@ -34,7 +34,7 @@ int main() {
     int hyper_addr;
     int error =0;
     int id1, id2;
-
+    int pass = 0;
     int periph_id = 8;
     int channel = UDMA_EVENT_ID(periph_id);
 
@@ -51,33 +51,36 @@ int main() {
     } 
     hyper_addr = 1;
     printf("hyper_addr: %d \n", hyper_addr);
-    //id1=udma_hyper_id_alloc();
+    
     udma_hyper_dwrite((BUFFER_SIZE*4),(unsigned int) hyper_addr, (unsigned int)tx_buffer, 128, 0);
-    hal_itc_wait_for_event_noirq(1<<26);
-
-    //printf("BUSY: %d ID:%d \n", udma_hyper_busy(id1), id1);
-    //udma_hyper_wait(0);
-    //printf("BUSY: %d \n", udma_hyper_busy(0));
-    //id2=udma_hyper_id_alloc();
+    printf("started writing\n");
+    
+    printf("BUSY: %d ID:%d \n", udma_hyper_busy(id1), id1);
+    udma_hyper_wait(0);
+    printf("BUSY: %d \n", udma_hyper_busy(0));
+    
     udma_hyper_dread((BUFFER_SIZE*4),(unsigned int) hyper_addr, (unsigned int)rx_buffer, 128, 0);
-    hal_itc_wait_for_event_noirq(1<<26);
+    
+    udma_hyper_wait(0); 
+    
+    printf("start reading\n");
+    for (int i=0; i< BUFFER_SIZE; i++)
+      {      
+      
+      printf("rx_buffer[%d] = %x, expected: %x \n", i, rx_buffer[i], tx_buffer[i]);
+      error += rx_buffer[i] ^ tx_buffer[i];
+      
+      }
 
-    //printf("BUSY: %d, ID:%d \n", udma_hyper_busy(id2),id2);
-    //udma_hyper_wait(id2);
+      if(error!=0) { 
+          printf("error \n");
+          pass=1;
+          }
+      else printf("ok\n");
 
-for (int i=0; i< BUFFER_SIZE; i++)
-  {      
-   if(rx_buffer[i]!=tx_buffer[i]){
-      printf("rx_buffer[%d] = %x \n", i, rx_buffer[i]);
-      error++;
-   }
-}
+      printf("Fin. \n");
 
-if(error!=0) printf("error \n");
-else printf("ok\n");
-
-printf("Fin. \n");
-return 0;
+      return pass;
   
     
 }
