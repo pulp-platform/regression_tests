@@ -3,7 +3,12 @@ This test could be a simple "hello world!" or a test to check whether we are abl
 
 ## Boot test
 
-To perform the boot test follow the procedure here above from the pulp directory. First, you have to change the parameters LOAD_L2 and STIM_FROM respectively to "STANDALONE" and "HYPER_FLASH" (or "SPI_FLASH"), in the tb_pulp.sv file. This will change the values in the register that the boot code uses to decide the source of the instructions. Also, you will need the Verification IPs (VIPs). The READMEs in their folders (rtl/vip/*) contain the instructions to do it. Then, follow the instructions here above: 
+To perform the boot test follow the procedure here from the pulp directory. First, in the rtl/tb/tb_pulp.sv file you have to:
+
+ 1. change the parameters LOAD_L2 and STIM_FROM respectively to "STANDALONE" and "HYPER_FLASH" (or "SPI_FLASH"),
+ 2. change UserPreload(0) to 1 for the SPI flash
+
+This will change the values in the register that the boot code uses to decide the source of the instructions and allow the correct preload of the SPI Flash. Also, you will need the Verification IPs (VIPs). The READMEs in their folders (rtl/vip/*) contain the instructions to do it. Then, follow the instructions here above: 
 
 ### Compile the boot-code & build RTL
 
