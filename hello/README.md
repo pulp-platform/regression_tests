@@ -1,4 +1,5 @@
 # Hello World!
+
 This test could be a simple "hello world!" or a test to check whether we are able to boot Pulp loading the instructions to the L2 not from Jtag but from the flash memories (SPI and HYPER). 
 
 ## Boot test
@@ -8,12 +9,14 @@ To perform the boot test follow the procedure here from the pulp directory. Firs
  1. change the parameters LOAD_L2 and STIM_FROM respectively to "STANDALONE" and "HYPER_FLASH" (or "SPI_FLASH"),
  2. change UserPreload(0) to 1 for the SPI flash
 
-This will change the values in the register that the boot code uses to decide the source of the instructions and allow the correct preload of the SPI Flash. Also, you will need the Verification IPs (VIPs). The READMEs in their folders (rtl/vip/*) contain the instructions to do it. Then, follow the instructions here above: 
+Step number 1 will change the values in the register that Pulp reads to decide where to read the application instructions from. Step number 2 will allow the correct preload of the SPI Flash. As it is possible to see from tb_pulp.sv, SPI Flash and Hyper Flash can be loaded with desired values at compilation time by Questasim, by instantiating the desired files where needed.
+
+Also, you will need the Verification IPs (VIPs). The READMEs in their folders (rtl/vip/*) contain the instructions to do it. Then, follow the instructions here above: 
 
 ### Compile the boot-code & build RTL
 
 ```
-git clone git@github.com:regression_tests.git
+git clone git@github.com:regression_tests.git 
 
 cd boot_code
 
@@ -52,4 +55,6 @@ export PULP_RISCV_GCC_TOOLCHAIN=*path to riscv gcc toolchain*/pulp-sdk-release/p
 make clean all run gui=1
 
 ```
+
+
 At this point you will be able to see that the selected memory contains the boot_code which is loaded in the L2 memory, where the instructions are stored.
