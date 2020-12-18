@@ -1,0 +1,3 @@
+**/build/
+/riscv_tests_soc
+/simplified-runtime.xml
