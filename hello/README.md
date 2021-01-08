@@ -46,6 +46,17 @@ Now we have our Pulp with the right boot_code loaded in the ROM. We can compile 
 ```
 git clone git@github.com:pulp-platform/pulp-runtime.git -b boot_code_update
 
+```
+
+That branch of pulp-runtime has 2 key modifications to the rules/pulpos/default_rules.mk file: 
+
+1. it does not overwrite the LOAD_L2 and STIM_FROM parameters 
+2. when we execute the option 'run' in the test folder, pulp-runtime creates the .slm files to preload the flash.
+
+Last operations to be done:
+
+```
+
 source pulp-runtime/configs/pulp.sh
 
 cd regression_tests/hello/
