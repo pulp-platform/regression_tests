@@ -68,4 +68,4 @@ make clean all run gui=1
 ```
 
 
-At this point you will be able to see that the selected memory contains the boot_code which is loaded in the L2 memory, where the instructions are stored.
+At this point you will be able to see the flash containing the application code at time 0, the, it will be loaded on the L2 during the boot-procedure. Finally, the application will run as usual.
