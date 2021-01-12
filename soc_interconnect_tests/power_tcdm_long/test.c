@@ -21,7 +21,7 @@
 #include "stdio.h"
 
 #define ADDR1   0x1c01AAAA
-#define ADDR2   0x1c085555
+#define ADDR2   0x1c080000 
 #define DATA1   0x55555555
 #define DATA2   0xAAAAAAAA
 #define VCDADDR 0x10000000
@@ -35,20 +35,21 @@ int main()
 
   uint32_t read ;
   uint32_t idx = 0;
-
-
+  uint32_t error=0;
+  uint32_t i;
   *(int*)(REG_CORESTATUS) = 0xABBAABBA;
 
-   for(uint32_t i=addr[0]; i<addr[1]; i+=128) {
+   for( i=addr[0]; i<addr[1]; i+=1024) {
 
       pulp_write32(i,data[idx]);
       read=pulp_read32(i);
+      if(read!=data[idx]) {error=1; break;}
       idx=1-idx;
   }
-
+  
   *(int*)(REG_CORESTATUS) = 0xDEADCACA;
   
 
-  return 0;
+  return error;
   
 }
