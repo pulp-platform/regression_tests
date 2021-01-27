@@ -10,7 +10,7 @@ Call the `./update-regression-tests` script in the pulp directory. This will pop
 You have two options to run these tests, the first one is to test without the peripheral tests and the second one is to use them. The main difference is just the time the simulation will need: withouth the peripheral tests, there is no need to instantiate the Verification IPs, which are heavy and with tiny time steps (1ps). 
 
 ### Option 1
-If you chose the first option, please do the following, from the pulp repo:
+If you chose the first option, please do the following, from the pulp folder:
 
 #### To build Pulp
 ```
@@ -25,9 +25,25 @@ cd sim
 make all
 
 ```
-#### To run the tests
+#### To run the "Hello world!"
 ```
 cd ..
+
+git clone https://github.com/pulp-platform/pulp-runtime.git
+
+source pulp-runtime/configs/pulp.sh
+
+export PULP_RISCV_GCC_TOOLCHAIN= *path to riscv gcc toolchain*
+
+cd regression_tests/hello
+
+mae clean all run gui=1
+```
+#### To run all the tests
+```
+cd ..
+
+git clone https://github.com/pulp-platform/pulp-runtime.git
 
 source pulp-runtime/configs/pulp.sh
 

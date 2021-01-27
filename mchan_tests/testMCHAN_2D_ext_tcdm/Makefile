@@ -1,0 +1,20 @@
+PULP_APP = test
+TEST_SRCS ?= testMCHAN_2D_ext_tcdm.c
+PULP_APP_SRCS = $(TEST_SRCS)
+PULP_APP_FC_SRCS = $(TEST_FC_SRCS)
+ifdef TEST_FC_SRCS
+pulpFc=1
+endif
+
+
+
+#BUILD_DIR = $(subst $(space),_,$(CURDIR)/build/$(TEST_SRCS))
+
+ifdef VERBOSE
+PULP_CFLAGS += -DVERBOSE
+endif
+
+PULP_CFLAGS += -O3
+stackSize = 4096
+
+include $(PULP_SDK_HOME)/install/rules/pulp.mk
