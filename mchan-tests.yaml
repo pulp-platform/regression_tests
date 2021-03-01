@@ -29,6 +29,8 @@ mchan_tests:
   testMCHAN_unaligned:
     path: ./mchan_tests/testMCHAN_unaligned
     command: make clean all run
-                       
+  testMCHAN_basic_8cores:
+    path: ./mchan_tests/testMCHAN_basic_8cores
+    command: make clean all run
         
 
