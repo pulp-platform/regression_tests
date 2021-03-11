@@ -3,3 +3,4 @@
 /**/gmon.out
 /**/*.S
 !boot_code/crt0.S
+/simplified-runtime.xml

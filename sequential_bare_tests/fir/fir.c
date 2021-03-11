@@ -47,8 +47,8 @@ void fir8(const int8_t *arr, const int8_t *coeff, int16_t *output,
 }
 
 #if DOTP==1
-#define SumDotp16(a, b, c) __builtin_pulp_sdotsp2(a, b, c)
-#define Dotp16(a, b)       __builtin_pulp_dotsp2(a, b)
+#define SumDotp16(a, b, c) __SUMDOTP2(a, b, c)
+#define Dotp16(a, b)       __DOTP2(a, b)
 
 typedef signed short FiltsV __attribute__((vector_size (4)));
 
@@ -69,8 +69,8 @@ void fir16_dotp(const int16_t *arr, const int16_t *coeff, int16_t *output,
   }
 }
 
-#define SumDotp8(a, b, c) __builtin_pulp_sdotsp4(a, b, c)
-#define Dotp8(a, b)       __builtin_pulp_dotsp4(a, b)
+#define SumDotp8(a, b, c) __SUMDOTP4(a, b, c)
+#define Dotp8(a, b)       __DOTP4(a, b)
 
 typedef signed char FiltcV __attribute__((vector_size (4)));
 
