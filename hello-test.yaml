@@ -1,9 +1,9 @@
 hellospi:
   hellospi:
-    path: ./hello #ok
+    path: ./hellospi #ok
     command: make clean all spiboot=1 run
 hellohyper:
   hellohyper:
-    path: ./hello #ok
+    path: ./hellohyper #ok
     command: make clean all hyperboot=1 run
 
