@@ -2,5 +2,6 @@
 /**/__pycache__/
 /**/gmon.out
 /**/*.S
+/**/*~
 !boot_code/crt0.S
 /simplified-runtime.xml
