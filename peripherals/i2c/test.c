@@ -66,7 +66,7 @@ int main()
 
     
     
-  for (u=0;u<1;u++) {
+  for (u=0;u<11;u++) {
 
     //WRITE
 
@@ -85,7 +85,7 @@ int main()
 
     
     // WAIT WRITE TO BE DONE BY THE MEMORY
-    for (volatile int i = 0; i < 50000; ++i)
+    for (volatile int i = 0; i < 100000; ++i)
     {
       i++;
     }
@@ -99,7 +99,7 @@ int main()
     {
       rx_buffer[j] = 0;
     }
-    expected_rx_buffer[1]=u;
+    //expected_rx_buffer[1]=u;
 
     printf("[%d, %d] Start test i2c read %d\n",  get_cluster_id(), get_core_id(),u);
 
@@ -114,7 +114,7 @@ int main()
 
     plp_udma_enqueue(UDMA_I2C_DATA_ADDR(u) ,  (int)rx_buffer     , 4               , UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
     plp_udma_enqueue(UDMA_I2C_CMD_ADDR(u) ,  (int)cmd_buffer_rd  , BUFFER_SIZE_READ, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
-    for (volatile int i = 0; i < 25000; ++i)
+    for (volatile int i = 0; i < 50000; ++i)
     {
       i++;
     }

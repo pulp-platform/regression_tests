@@ -222,45 +222,47 @@ int tx_buffer_cmd_read_WIP[BUFFER_SIZE] = {SPI_CMD_CFG(1,0,0),
                                            SPI_CMD_RX_DATA(1,1,8,0,0),
                                            SPI_CMD_EOT(0,0)};
 
-int u = 3; //--- select spi3
+int u = 0;
 
+  for (u=0;u<8;u++) {
 
-printf("[%d, %d] Start test flash page programming over qspi %d\n",  get_cluster_id(), get_core_id(),u);
+    printf("[%d, %d] Start test flash page programming over qspi %d\n",  get_cluster_id(), get_core_id(),u);
 
-configure_gpio(28,OUT,1); //--- using this GPIO as CS for the flash
-set_gpio(28,1);
+    //configure_gpio(28,OUT,1); //--- using this GPIO as CS for the flash
+    //set_gpio(28,1);
 
-//--- enable all the udma channels
-plp_udma_cg_set(plp_udma_cg_get() | (0xffffffff));
+    //--- enable all the udma channels
+    plp_udma_cg_set(plp_udma_cg_get() | (0xffffffff));
 
-//--- get the base address of the SPIMx udma channels
-unsigned int udma_spim_channel_base = hal_udma_channel_base(UDMA_CHANNEL_ID(ARCHI_UDMA_SPIM_ID(u)));
-set_gpio(28,0);
-printf("uDMA spim%d base channel address %8x\n", u,udma_spim_channel_base);
-set_gpio(28,1);
+    //--- get the base address of the SPIMx udma channels
+    unsigned int udma_spim_channel_base = hal_udma_channel_base(UDMA_CHANNEL_ID(ARCHI_UDMA_SPIM_ID(u)));
+    //set_gpio(28,0);
+    printf("uDMA spim%d base channel address %8x\n", u,udma_spim_channel_base);
+    //set_gpio(28,1);
 
-//--- write the flash page
-plp_udma_enqueue(UDMA_SPIM_TX_ADDR(u) ,  (int)page          ,TEST_PAGE_SIZE*4 + 4*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
-plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u),  (int)tx_buffer_cmd_program , 68, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+    //--- write the flash page
+    plp_udma_enqueue(UDMA_SPIM_TX_ADDR(u) ,  (int)page          ,TEST_PAGE_SIZE*4 + 4*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+    plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u),  (int)tx_buffer_cmd_program , 68, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
 
-//--- wait until the page is written (we could use the WIP bit instead of waiting)
-wait_cycles(50000);
+    //--- wait until the page is written (we could use the WIP bit instead of waiting)
+    wait_cycles(100000);
 
-//--- try to read back data
-plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) ,  (int)rx_page     , TEST_PAGE_SIZE*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
-plp_udma_enqueue(UDMA_SPIM_TX_ADDR(u) ,  (int)addr_buffer    , 4*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
-plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u),  (int)tx_buffer_cmd_read , 26, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+    //--- try to read back data
+    plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) ,  (int)rx_page     , TEST_PAGE_SIZE*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+    plp_udma_enqueue(UDMA_SPIM_TX_ADDR(u) ,  (int)addr_buffer    , 4*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+    plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u),  (int)tx_buffer_cmd_read , 26, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
 
-wait_cycles(50000);
+    wait_cycles(100000);
 
-for (int i = 0; i < TEST_PAGE_SIZE; ++i)
-{
-  printf("read %8x, expected %8x \n",rx_page[i],page[i+4]);
-  if (rx_page[i] != page[i+4])
-  {
-    error++;
+    for (int i = 0; i < TEST_PAGE_SIZE; ++i)
+    {
+      printf("read %8x, expected %8x \n",rx_page[i],page[i+4]);
+      if (rx_page[i] != page[i+4])
+      {
+        error++;
+      }
+    }
   }
-}
 
   if (error == 0)
   {
