@@ -5,3 +5,6 @@ peripherals:
   L1_control_check:
     path: ./tcdm_tests/L1_control_check #ok
     command: make clean all run
+  L1_check:
+    path: ./tcdm_tests/L1_check #ok
+    command: make clean all run
