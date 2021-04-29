@@ -22,7 +22,7 @@
 #include "pulp.h"
 #include "flash_page.h"
 
-#define REG_INTRSCKT_SEL 0x60
+#define REG_SPI_DIRECTION 0x60
 
 #define OUT 1
 #define IN  0
@@ -67,7 +67,7 @@ uint32_t set_intr_sckt_reg( uint32_t value){
   uint32_t value_wr;
   uint32_t address;
 
-  address = ARCHI_APB_SOC_CTRL_ADDR + REG_INTRSCKT_SEL;
+  address = ARCHI_APB_SOC_CTRL_ADDR + REG_SPI_DIRECTION;
   value_wr = pulp_read32(address);
   if (value == 1)
    {
@@ -86,7 +86,7 @@ uint32_t read_intr_sckt_reg(){
   uint32_t value_rd;
   uint32_t address;
 
-  address = ARCHI_APB_SOC_CTRL_ADDR + REG_INTRSCKT_SEL;
+  address = ARCHI_APB_SOC_CTRL_ADDR + REG_SPI_DIRECTION;
   value_rd = pulp_read32(address);
   printf( "Returned value from inter-socket register (address: %8x): %1x \n", address, value_rd);
   return value_rd;

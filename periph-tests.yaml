@@ -11,3 +11,4 @@ peripherals:
   intr_sckt:
     path: ./peripherals/intr_sckt #ok
     command: make clean all run
+    
