@@ -9,6 +9,7 @@
 #define SIZE 4
 
 //#define PARALLEL
+//#define PULP_COUNTERS
 
 L1_DATA int32_t matA[SIZE*SIZE] __attribute__ ((aligned (4)));
 L1_DATA int32_t matB[SIZE*SIZE] __attribute__ ((aligned (4)));
@@ -72,10 +73,13 @@ int main()
   uint32_t val;
   int error = 0;
   counter_num = 1 << 3 ;
+  #ifndef PULP_COUNTERS
   //enabling minstr
   asm volatile("csrc 0x320, %0" : : "r"(1<<2));
   //enabling mcycle
   asm volatile("csrc 0x320, %0" : : "r"(1));
+  #endif
+  
   for(int i=0; i<16; i++)
     {
        // disable reg 3
@@ -92,6 +96,10 @@ int main()
 
        error = matmul();
 
+       // disable perf count for reporting
+       asm volatile("csrs 0x320, %0" : : "r"(counter_num));
+       #ifndef PULP_COUNTERS
+
        // read the perf
        asm volatile("csrr %0, 0xB00" : "=r"(val));
 
@@ -100,6 +108,7 @@ int main()
        asm volatile("csrr %0, 0xB02" : "=r"(val));
 
        printf("Num isntr cumulative: %d\n", val);
+       #endif
        
        asm volatile("csrr %0, 0xB03" : "=r"(val));
 
