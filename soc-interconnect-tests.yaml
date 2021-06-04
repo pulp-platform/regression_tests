@@ -1,0 +1,10 @@
+soc_interconnect_tests:
+  power_axi_with_cluster:
+    path: ./soc_interconnect_tests/power_axi_with_cluster
+    command: make clean all run
+  power_tcdm_long:
+    path: ./soc_interconnect_tests/power_tcdm_long
+    command: make clean all run
+  wait_cycles:
+    path: ./soc_interconnect_tests/wait_cycles
+    command: make clean all run

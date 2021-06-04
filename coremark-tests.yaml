@@ -1,0 +1,4 @@
+coremark:
+  coremark:
+    path: ./coremark
+    command: make clean all run
