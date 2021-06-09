@@ -101,7 +101,7 @@ void check_regs_spi_slv(volatile int *rx_slv_test, int reg2, int reg3, int ch_in
   int u;
 
   u = ch_index;
-  
+
   //--- read back the length of the burst to transfer from reg2 (wrap_length low) of the SPI slave module
   plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) , (unsigned int)&rx_slv_test[0], 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
   plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u), (unsigned int)tx_buffer_cmd_read_reg2 , 6*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
@@ -226,7 +226,7 @@ int main()
                                                SPI_CMD_RX_DATA(1,0,8,0,0),
                                                SPI_CMD_EOT(0,0)};
 
-    
+
     u = 6;
 
     // Set inter-socket reg to '0' (master)
@@ -263,7 +263,7 @@ int main()
         error++;
       }
     }
-    
+
     u = 0;
 
     // Set inter-socket reg to '1' (slave)
@@ -277,12 +277,12 @@ int main()
     //--- get the base address of the SPIMx udma channels
     udma_spim_channel_base = hal_udma_channel_base(UDMA_CHANNEL_ID(ARCHI_UDMA_SPIM_ID(u)));
     printf("uDMA spim%d base channel address %8x\n", u,udma_spim_channel_base);
-    
+
     //
     // ATOMC READ/WRITE OPERATIONS TOWARD THE SPI SLAVE MODULE
     //
     buffer_slv_test[0] = 1;
-    buffer_slv_test[1] = 0;    
+    buffer_slv_test[1] = 0;
 
     //--- write the length of the burst to store into reg2 (wrap_length low) of the SPI slave module
     plp_udma_enqueue(UDMA_SPIM_TX_ADDR(u) , (unsigned int)&buffer_slv_test[0], 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
@@ -294,7 +294,7 @@ int main()
       poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_TX_ADDR(u));
       printf("Polling (write reg2): poll_var = %8x\n", poll_var);
     } while(poll_var != 0);
-    
+
     //--- write the length of the burst to store into reg3 (wrap_length high) of the SPI slave module
     plp_udma_enqueue(UDMA_SPIM_TX_ADDR(u) , (unsigned int)&buffer_slv_test[1], 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
     plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u), (unsigned int)tx_buffer_cmd_write_reg3 , 5*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
@@ -305,7 +305,7 @@ int main()
       poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_TX_ADDR(u));
       printf("Polling (write reg3): poll_var = %8x\n", poll_var);
     } while(poll_var != 0);
-    
+
     for (int j = 0; j < TEST_PAGE_SIZE_SLV-54; j++) {
 
       buffer_slv_test[0] = addr_slv_buff[j];
@@ -351,7 +351,7 @@ int main()
       }
 
     }
-    
+
     //
     // Burst of 254 write/read operations (arbitrarily chosen based on the number of data in the buffer in "flash_page.h") --> write 254 in two registers of 8 bits (00000000 11111110)
     //
@@ -368,7 +368,7 @@ int main()
       poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_TX_ADDR(u));
       printf("Polling (write reg2): poll_var = %8x\n", poll_var);
     } while(poll_var != 0);
-    
+
     //--- write the length of the burst to store into reg3 (wrap_length high) of the SPI slave module
     plp_udma_enqueue(UDMA_SPIM_TX_ADDR(u) , (unsigned int)&buffer_slv_test[1], 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
     plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u), (unsigned int)tx_buffer_cmd_write_reg3 , 5*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
@@ -393,9 +393,9 @@ int main()
       poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_TX_ADDR(u));
       printf("Polling (write burst): poll_var = %8x\n", poll_var);
     } while(poll_var != 0);
-    
+
     buffer_slv_test[0] = data_slv_buff[0];
-    
+
     /* For debug
     //--- try to read back data from L2
     pt_test = (unsigned int *)buffer_slv_test[0];
@@ -404,7 +404,7 @@ int main()
       printf("Read (FC burst): rx_page = %8x, at L2 memory address = %p, expected %8x\n", rx_page[0], pt_test+i, data_slv_buff[i+1]);
      }
     */
-    
+
     rx_page[0] = 0;
 
     //--- try to read back data from L2 using spi_master n°0
