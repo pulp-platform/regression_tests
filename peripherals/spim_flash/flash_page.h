@@ -15,7 +15,7 @@
  */
 
 /* 
- * Mantainer: Luca Valente (luca.valente2@unibo.it)
+ * Mantainers: Luca Valente (luca.valente2@unibo.it), Corrado Bonfanti (corrado.bonfanti@unibo.it)
  */
 
 int volatile page[260] = {
