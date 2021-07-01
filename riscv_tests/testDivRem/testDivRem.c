@@ -52,44 +52,44 @@ int main()
 void do_rem(testresult_t* result, int a, int b, int exp) {
   int act;
 
-  asm volatile ("p.rem %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
+  asm volatile ("rem %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
 
   if (act != exp) {
     result->errors++;
-    printf ("p.rem %d, %d: actual %d, expected %d\n", a, b, act, exp);
+    printf ("rem %d, %d: actual %d, expected %d\n", a, b, act, exp);
   }
 }
 
 void do_remu(testresult_t* result, unsigned int a, unsigned int b, unsigned int exp) {
   unsigned int act;
 
-  asm volatile ("p.remu %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
+  asm volatile ("remu %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
 
   if (act != exp) {
     result->errors++;
-    printf ("p.remu %u, %u: actual %u, expected %u\n", a, b, act, exp);
+    printf ("remu %u, %u: actual %u, expected %u\n", a, b, act, exp);
   }
 }
 
 void do_div(testresult_t* result, int a, int b, int exp) {
   int act;
 
-  asm volatile ("p.div %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
+  asm volatile ("div %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
 
   if (act != exp) {
     result->errors++;
-    printf ("p.div %d, %d: actual %d, expected %d\n", a, b, act, exp);
+    printf ("div %d, %d: actual %d, expected %d\n", a, b, act, exp);
   }
 }
 
 void do_divu(testresult_t* result, unsigned int a, unsigned int b, unsigned int exp) {
   unsigned int act;
 
-  asm volatile ("p.divu %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
+  asm volatile ("divu %[result], %[a], %[b]" : [result] "=r" (act) : [a] "r" (a), [b] "r" (b));
 
   if (act != exp) {
     result->errors++;
-    printf ("p.divu %u, %u: actual %u, expected %u\n", a, b, act, exp);
+    printf ("divu %u, %u: actual %u, expected %u\n", a, b, act, exp);
   }
 }
 

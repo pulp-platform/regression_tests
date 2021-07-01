@@ -1,4 +1,3 @@
-
 riscv_tests:
   testBitManipulation:
     path: ./riscv_tests/testBitManipulation #OK
@@ -16,7 +15,7 @@ riscv_tests:
     path: ./riscv_tests/testALU #ok
     command: make clean all cluster=1 run
   testMAC3:
-    path: ./riscv_tests/testMAC3 #ok 
+    path: ./riscv_tests/testMAC3 #ok
     command: make clean all cluster=1 run
   testVecArith:
     path: ./riscv_tests/testVecArith #ok
@@ -31,7 +30,7 @@ riscv_tests:
     path: ./riscv_tests/testComplex #ok
     command: make clean all cluster=1 run
   testCnt:
-    path: ./riscv_tests/testCnt #ok 
+    path: ./riscv_tests/testCnt #ok
     command: make clean all cluster=1 run
   testVecRelat:
     path: ./riscv_tests/testVecRelat #ok
@@ -42,9 +41,9 @@ riscv_tests:
   testMUL:
     path: ./riscv_tests/testMUL #ok
     command: make clean all cluster=1 run
-  testHWLP:
-    path: ./riscv_tests/testHWLP #ok
-    command: make clean all cluster=1 run
+#  testHWLP:
+#    path: ./riscv_tests/testHWLP #ok
+#    command: make clean all cluster=1 run
   testMacNorm:
     path: ./riscv_tests/testMacNorm #ook
     command: make clean all cluster=1 run
@@ -84,11 +83,11 @@ riscv_tests_soc:
     path: ./riscv_tests_soc/testALU #ok
     command: make clean all run
   testMAC3:
-    path: ./riscv_tests_soc/testMAC3 #ok 
+    path: ./riscv_tests_soc/testMAC3 #ok
     command: make clean all run
-  testEventsFlex:
-    path: ./riscv_tests_soc/testEventsFlex #ok
-    command: make clean all run
+#  testEventsFlex:
+#    path: ./riscv_tests_soc/testEventsFlex #ok
+#    command: make clean all run
   testVecArith:
     path: ./riscv_tests_soc/testVecArith #ok
     command: make clean all run
@@ -102,7 +101,7 @@ riscv_tests_soc:
     path: ./riscv_tests_soc/testComplex #ok
     command: make clean all run
   testCnt:
-    path: ./riscv_tests_soc/testCnt #ok 
+    path: ./riscv_tests_soc/testCnt #ok
     command: make clean all run
   testVecRelat:
     path: ./riscv_tests_soc/testVecRelat #ok
@@ -113,9 +112,9 @@ riscv_tests_soc:
   testMUL:
     path: ./riscv_tests_soc/testMUL #ok
     command: make clean all run
-  testHWLP:
-    path: ./riscv_tests_soc/testHWLP #ok
-    command: make clean all run
+#  testHWLP:
+#    path: ./riscv_tests_soc/testHWLP #ok
+#    command: make clean all run
   testMacNorm:
     path: ./riscv_tests_soc/testMacNorm #ook
     command: make clean all run

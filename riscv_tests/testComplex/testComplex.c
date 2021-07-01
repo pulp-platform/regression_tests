@@ -352,14 +352,14 @@ void check_pv_bitman(testresult_t *result, void (*start)(), void (*stop)()) {
   // Check pv.subrotmj.h
   //-----------------------------------------------------------------
 
-  for(i=0;i<N;i++)
-  {
-    asm volatile ("pv.pack.h.h %[c], %[a], %[b]\n"
-                  : [c] "=r" (tmp_result[i])
-                  : [a] "r"  (cplxbitman_opA[i]), [b] "r" (cplx_opB[i]));
-
-    check_uint32(result, "pv.pack.h.h", tmp_result[i],  cplxpack_opC[i]);
-  }
+//  for(i=0;i<N;i++)
+//  {
+//    asm volatile ("pv.pack.h.h %[c], %[a], %[b]\n"
+//                  : [c] "=r" (tmp_result[i])
+//                  : [a] "r"  (cplxbitman_opA[i]), [b] "r" (cplx_opB[i]));
+//
+//    check_uint32(result, "pv.pack.h.h", tmp_result[i],  cplxpack_opC[i]);
+//  }
 
 
   #include "testBitReverse_radix2.c"
