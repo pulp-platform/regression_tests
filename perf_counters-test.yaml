@@ -1,0 +1,4 @@
+perf_counters:
+  perf_counters:
+    path: ./perf_counters
+    command: make clean all run

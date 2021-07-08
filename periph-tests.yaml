@@ -1,7 +1,4 @@
 peripherals:
-  L2_check:
-    path: ./peripherals/L2_check #ok
-    command: make clean all run
   all_GPIOs:
     path: ./peripherals/all_GPIOs #ok
     command: make clean all run

@@ -111,7 +111,7 @@ ml_tests:
     path: ./ml_tests/mlSchur #ok
     command: make clean all run
   mlGemm:
-    path: ./ml_tests/mlGemm #ok 
+    path: ./ml_tests/mlGemm #ok
     command: make clean all run
   mlSin:
     path: ./ml_tests/mlSin #ok
@@ -173,7 +173,7 @@ riscv_tests:
     path: ./riscv_tests/testALU #ok
     command: make clean all cluster=1 run
   testMAC3:
-    path: ./riscv_tests/testMAC3 #ok 
+    path: ./riscv_tests/testMAC3 #ok
     command: make clean all cluster=1 run
   testVecArith:
     path: ./riscv_tests/testVecArith #ok
@@ -188,7 +188,7 @@ riscv_tests:
     path: ./riscv_tests/testComplex #ok
     command: make clean all cluster=1 run
   testCnt:
-    path: ./riscv_tests/testCnt #ok 
+    path: ./riscv_tests/testCnt #ok
     command: make clean all cluster=1 run
   testVecRelat:
     path: ./riscv_tests/testVecRelat #ok
@@ -241,7 +241,7 @@ riscv_tests_soc:
     path: ./riscv_tests_soc/testALU #ok
     command: make clean all run
   testMAC3:
-    path: ./riscv_tests_soc/testMAC3 #ok 
+    path: ./riscv_tests_soc/testMAC3 #ok
     command: make clean all run
   testEventsFlex:
     path: ./riscv_tests_soc/testEventsFlex #ok
@@ -259,7 +259,7 @@ riscv_tests_soc:
     path: ./riscv_tests_soc/testComplex #ok
     command: make clean all run
   testCnt:
-    path: ./riscv_tests_soc/testCnt #ok 
+    path: ./riscv_tests_soc/testCnt #ok
     command: make clean all run
   testVecRelat:
     path: ./riscv_tests_soc/testVecRelat #ok
@@ -293,4 +293,36 @@ riscv_tests_soc:
     command: make clean all run
   testBuiltins:
     path: ./riscv_tests_soc/testBuiltins #ok
+    command: make clean all run
+
+tcdm_tests:
+  L2_check:
+    path: ./tcdm_tests/L2_check #ok
+    command: make clean all run
+  L1_control_check:
+    path: ./tcdm_tests/L1_control_check #ok
+    command: make clean all run
+  L1_check:
+    path: ./tcdm_tests/L1_check #ok
+    command: make clean all run
+
+mchan_tests:
+  testMCHAN_basic:
+    path: ./mchan_tests/testMCHAN_basic
+    command: make clean all run
+  testMCHAN_basic8cores:
+    path: ./mchan_tests/testMCHAN_pe_basic
+    command: make clean all run
+  testMCHAN_pe_fc_basic:
+    path: ./mchan_tests/testMCHAN_pe_fc_basic
+    command: make clean all run
+
+coremark:
+  coremark:
+    path: ./coremark
+    command: make clean all run
+
+perf_counters:
+  perf_counters:
+    path: ./perf_counters
     command: make clean all run
