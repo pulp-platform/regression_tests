@@ -2,67 +2,67 @@
 sequential_bare_test:
   dct:
     path: ./sequential_bare_tests/dct
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   fft2:
     path: ./sequential_bare_tests/fft2
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   rijndael:
     path: ./sequential_bare_tests/rijndael
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   jacobi-2d-imper:
     path: ./sequential_bare_tests/jacobi-2d-imper
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   bitDescriptor:
     path: ./sequential_bare_tests/bitDescriptor
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   stencil_vect:
     path: ./sequential_bare_tests/stencil_vect
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   keccak:
     path: ./sequential_bare_tests/keccak
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   fir:
     path: ./sequential_bare_tests/fir
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   stencil:
     path: ./sequential_bare_tests/stencil
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   ipm:
     path: ./sequential_bare_tests/ipm
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   towerofhanoi:
     path: ./sequential_bare_tests/towerofhanoi
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   crc32:
     path: ./sequential_bare_tests/crc32
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   conv2d:
     path: ./sequential_bare_tests/conv2d
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   seidel:
     path: ./sequential_bare_tests/seidel
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   fibonacci:
     path: ./sequential_bare_tests/fibonacci
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   gauss-2d:
     path: ./sequential_bare_tests/gauss-2d
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   aes_cbc:
     path: ./sequential_bare_tests/aes_cbc
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   bubblesort:
     path: ./sequential_bare_tests/bubblesort
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   fdtd-1d:
     path: ./sequential_bare_tests/fdtd-1d
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   jacobi-1d-imper:
     path: ./sequential_bare_tests/jacobi-1d-imper
-    command: make clean all run
+    command: make clean all run VERBOSE=1
   fft:
     path: ./sequential_bare_tests/fft
-    command: make clean all run
+    command: make clean all run VERBOSE=1
 
 
 parallel_bare_tests:
