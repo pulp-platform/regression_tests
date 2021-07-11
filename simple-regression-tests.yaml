@@ -199,9 +199,9 @@ riscv_tests:
   testMUL:
     path: ./riscv_tests/testMUL #ok
     command: make clean all cluster=1 run
-  testHWLP:
-    path: ./riscv_tests/testHWLP #ok
-    command: make clean all cluster=1 run
+#  testHWLP:
+#    path: ./riscv_tests/testHWLP #ok
+#    command: make clean all cluster=1 run
   testMacNorm:
     path: ./riscv_tests/testMacNorm #ook
     command: make clean all cluster=1 run
@@ -270,9 +270,9 @@ riscv_tests_soc:
   testMUL:
     path: ./riscv_tests_soc/testMUL #ok
     command: make clean all run
-  testHWLP:
-    path: ./riscv_tests_soc/testHWLP #ok
-    command: make clean all run
+#  testHWLP:
+#    path: ./riscv_tests_soc/testHWLP #ok
+#    command: make clean all run
   testMacNorm:
     path: ./riscv_tests_soc/testMacNorm #ook
     command: make clean all run

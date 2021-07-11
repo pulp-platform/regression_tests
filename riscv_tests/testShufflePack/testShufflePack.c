@@ -22,7 +22,7 @@
 #define SHUFFLEI3_B_SCI  "pv.shuffleI3.sci.b"
 #define SHUFFLE2_H       "pv.shuffle2.h"
 #define SHUFFLE2_B       "pv.shuffle2.b"
-#define PACK_H_SC        "pv.pack.h"
+#define PACK_H_SC        "pv.pack"
 #define PACKHI_B_SC      "pv.packhi.b"
 #define PACKLO_B_SC      "pv.packlo.b"
 
@@ -228,7 +228,7 @@ void check_pack_h(testresult_t *result, void (*start)(), void (*stop) ()) {
   unsigned int i,res = 0;
 
   //-----------------------------------------------------------------
-  // Check pv.pack.h
+  // Check pv.pack
   //-----------------------------------------------------------------
   for(i = 0; i < NumberOfStimuli; i++) {
     asm volatile (PACK_H_SC " %[c], %[a], %[b]\n"
