@@ -59,7 +59,7 @@ int error = 0;
 int tx_buffer[BUFFER_SIZE] = {'S','t','a','y',' ','a','t',' ','h','o','m','e','!','!','!','!'};
 int rx_buffer[BUFFER_SIZE];
 
-for (int u = 0; u < 2; ++u)
+for (int u = 0; u < 1; ++u)
 {
   for (int j = 0; j < BUFFER_SIZE; ++j)
   {
