@@ -134,8 +134,8 @@ int testMCHAN(unsigned int len, char type, char incr, char twd, char ele, char i
       read = *(unsigned char*)(tcdm_addr + i);
       
       if ( test != read ){
-	printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
-	error++;
+        printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+        error++;
       }
       
     }
@@ -146,8 +146,8 @@ int testMCHAN(unsigned int len, char type, char incr, char twd, char ele, char i
       read = *(unsigned char*)(tcdm_addr + i);
       
       if ( test != read ){
-	printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
-	error++;
+        printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+        error++;
       }
       
     }
@@ -160,8 +160,8 @@ int testMCHAN(unsigned int len, char type, char incr, char twd, char ele, char i
       read = *(unsigned char*)(ext_addr + i);
       
       if ( test != read ){
-	printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
-	error++;
+        printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+        error++;
       }
       
     }
@@ -172,8 +172,8 @@ int testMCHAN(unsigned int len, char type, char incr, char twd, char ele, char i
       read = *(unsigned char*)(ext_addr + i);
       
       if ( test != read ){
-	printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
-	error++;
+        printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+        error++;
       }
       
     }

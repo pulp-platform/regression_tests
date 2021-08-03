@@ -48,21 +48,21 @@ int main()
     
     for ( int i = 4; i < 64; i=2*i ) { // EXT COUNT
       for ( int j = i; j < 64; j=2*j ) { // EXT STRIDE
-	for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
-	  for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
-	    error_count += testMCHAN(i*i, RX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
-	  }
-	}
+        for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
+          for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
+            error_count += testMCHAN(i*i, RX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
+          }
+        }
       }
     }
     
     for ( int i = 4; i < 64; i=2*i ) { // EXT COUNT
       for ( int j = i; j < 64; j=2*j ) { // EXT STRIDE
-	for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
-	  for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
-	    error_count += testMCHAN(i*i, TX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
-	  }
-	}
+        for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
+          for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
+            error_count += testMCHAN(i*i, TX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
+          }
+        }
       }
     }
     
@@ -72,44 +72,44 @@ int main()
 
     for ( int i = 4; i < 64; i=2*i ) { // EXT COUNT
       for ( int j = i; j < 64; j=2*j ) { // EXT STRIDE
-	for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
-	  for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
-	    error_count += testMCHAN(i*i, RX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
-	  }
-	}
+        for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
+          for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
+            error_count += testMCHAN(i*i, RX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
+          }
+        }
       }
     }
     
     for ( int i = 4; i < 64; i=2*i ) { // EXT COUNT
       for ( int j = i; j < 64; j=2*j ) { // EXT STRIDE
-	for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
-	  for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
-	    error_count += testMCHAN(i*i, TX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
-	  }
-	}
+        for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
+          for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
+            error_count += testMCHAN(i*i, TX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
+          }
+        }
       }
     }
     
-     rt_freq_set(RT_FREQ_DOMAIN_FC, 80000000);
-     rt_freq_set(RT_FREQ_DOMAIN_CL, 10000000);
+   rt_freq_set(RT_FREQ_DOMAIN_FC, 80000000);
+   rt_freq_set(RT_FREQ_DOMAIN_CL, 10000000);
     
     for ( int i = 4; i < 64; i=2*i ) { // EXT COUNT
       for ( int j = i; j < 64; j=2*j ) { // EXT STRIDE
-	for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
-	  for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
-	    error_count += testMCHAN(i*i, RX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
-	  }
-	}
+        for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
+          for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
+            error_count += testMCHAN(i*i, RX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
+          }
+        }
       }
     }
     
     for ( int i = 4; i < 64; i=2*i ) { // EXT COUNT
       for ( int j = i; j < 64; j=2*j ) { // EXT STRIDE
-	for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
-	  for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
-	    error_count += testMCHAN(i*i, TX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
-	  }
-	}
+        for ( int k = 4; k < 64; k=2*k ) { // TCDM COUNT
+          for ( int l = k; l < 64; l=2*l ) { // TCDM STRIDE
+            error_count += testMCHAN(i*i, TX, INC, TWD, TWD, 1, 0, 0, EXT_DATA_ADDR, TCDM_DATA_ADDR, i, j, k, l);
+          }
+        }
       }
     }
     

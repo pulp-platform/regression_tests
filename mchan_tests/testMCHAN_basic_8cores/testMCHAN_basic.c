@@ -33,10 +33,10 @@ int main()
     
     for ( int i = 256; i < 16384/4; i=2*i) {
       error_count += testMCHAN(i>>3, TX, INC, LIN, LIN, 1, 0, 0,  ((unsigned int) ext)+(get_core_id()*(i>>3)), TCDM_DATA_ADDR+(get_core_id()*(i>>3)), 0, 0, 0, 0);
-      } 
-      for ( int i = 256; i < 16384/4; i=2*i ) {
-        error_count += testMCHAN(i>>3, RX, INC, LIN, LIN, 1, 0, 0, EXT_DATA_ADDR+(get_core_id()*(i>>3)), TCDM_DATA_ADDR+(get_core_id()*(i>>3)), 0, 0, 0, 0);
-      }
+    } 
+    for ( int i = 256; i < 16384/4; i=2*i ) {
+      error_count += testMCHAN(i>>3, RX, INC, LIN, LIN, 1, 0, 0, EXT_DATA_ADDR+(get_core_id()*(i>>3)), TCDM_DATA_ADDR+(get_core_id()*(i>>3)), 0, 0, 0, 0);
+    }
     
   synch_barrier();
   return error_count;
@@ -100,8 +100,8 @@ int testMCHAN(unsigned int len, char type, char incr, char twd_ext, char twd_tcd
       read = *(unsigned char*)(tcdm_addr + i);
       
       if ( test != read ){
-	printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
-	error++;
+        printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+        error++;
       }
       
     }
@@ -114,8 +114,8 @@ int testMCHAN(unsigned int len, char type, char incr, char twd_ext, char twd_tcd
       read = *(unsigned char*)(ext_addr + i);
       
       if ( test != read ){
-	printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
-	error++;
+        printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+        error++;
       }
       
     }
