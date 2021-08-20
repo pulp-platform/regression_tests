@@ -223,6 +223,9 @@ int tx_buffer_cmd_read_WIP[BUFFER_SIZE] = {SPI_CMD_CFG(1,0,0),
                                            SPI_CMD_EOT(0,0)};
 
 int u = 0;
+ 
+// Giving time to the VIP memory to power up for AXI boot (which is much faster than JTAG boot)
+wait_cycles(100000);
 
   for (u=0;u<8;u++) {
 
