@@ -540,6 +540,8 @@ int volatile addr_slv_buff[256] = {
   0x1c08f800,
 };
 
+int volatile rx_page[256];
+
 int volatile data_slv_buff[255] = {
   0x1c010000,
   0xcafedead,
