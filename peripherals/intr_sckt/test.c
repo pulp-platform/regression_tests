@@ -92,9 +92,10 @@ uint32_t read_intr_sckt_reg(){
   return value_rd;
 }
 
-//
-// The code below can be used to check if the burst length is correctly stored in the registers of the SPI slave module
-//
+/**************************************************************/
+// The code below can be used to check if the burst length
+// is correctly stored in the registers of the SPI slave module.
+/**************************************************************/
 void check_regs_spi_slv(volatile int *rx_slv_test, int reg2, int reg3, int ch_index, int *tx_buffer_cmd_read_reg2, int *tx_buffer_cmd_read_reg3)  {
 
   int poll_var;
@@ -103,30 +104,30 @@ void check_regs_spi_slv(volatile int *rx_slv_test, int reg2, int reg3, int ch_in
   u = ch_index;
 
   //--- read back the length of the burst to transfer from reg2 (wrap_length low) of the SPI slave module
-  plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) , (unsigned int)&rx_slv_test[0], 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+  plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) , (unsigned int)&rx_slv_test, 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
   plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u), (unsigned int)tx_buffer_cmd_read_reg2 , 6*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
 
   do {
     poll_var = pulp_read32(UDMA_CHANNEL_SIZE_OFFSET + UDMA_SPIM_RX_ADDR(u));
-    printf("Polling (read reg2) remaining bytes =  %d\n", poll_var);
+    //printf("Polling (read reg2) remaining bytes =  %d\n", poll_var);
     poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_RX_ADDR(u));
-    printf("Polling (read reg2): poll_var = %8x\n", poll_var);
+    //printf("Polling (read reg2): poll_var = %8x\n", poll_var);
   } while(poll_var != 0);
 
-  printf("rx_slv_test[0] = %d, expected = %d\n", rx_slv_test[0], reg2);
+  printf("rx_slv_test (read reg3)= %d, expected = %d\n", rx_slv_test, reg2);
 
   //--- read back the length of the burst to transfer from reg3 (wrap_length high) of the SPI slave module
-  plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) , (unsigned int)&rx_slv_test[1], 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+  plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) , (unsigned int)&rx_slv_test, 1*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
   plp_udma_enqueue(UDMA_SPIM_CMD_ADDR(u), (unsigned int)tx_buffer_cmd_read_reg3, 6*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
 
   do {
     poll_var = pulp_read32(UDMA_CHANNEL_SIZE_OFFSET + UDMA_SPIM_RX_ADDR(u));
-    printf("Polling (read reg3): remaining bytes =  %d\n", poll_var);
+    //printf("Polling (read reg3): remaining bytes =  %d\n", poll_var);
     poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_RX_ADDR(u));
-    printf("Polling (read reg3): poll_var = %8x\n", poll_var);
+    //printf("Polling (read reg3): poll_var = %8x\n", poll_var);
   } while(poll_var != 0);
 
-  printf("rx_slv_test[1] = %d, expected = %d\n", rx_slv_test[1], reg3);
+  printf("rx_slv_test (read reg3) = %d, expected = %d\n", rx_slv_test, reg3);
 }
 
 int main()
@@ -161,7 +162,6 @@ int main()
                                               SPI_CMD_RX_DATA(TEST_PAGE_SIZE,0,8,0,0),
                                               SPI_CMD_EOT(0,0)};
 
-    int rx_page[TEST_PAGE_SIZE];
     int tx_buffer_cmd_read_WIP[BUFFER_SIZE] = {SPI_CMD_CFG(1,0,0),
                                                SPI_CMD_SOT(1),
                                                SPI_CMD_SEND_CMD(0x07,8,0),
@@ -188,7 +188,7 @@ int main()
                                                   SPI_CMD_SOT(1),
                                                   SPI_CMD_SEND_CMD(0x02,8,0),
                                                   SPI_CMD_TX_DATA(1,0,32,0,0), //--- write 4B addr
-                                                  SPI_CMD_TX_DATA(TEST_PAGE_SIZE_SLV,0,32,0,0), //--- write 256 words of data
+                                                  SPI_CMD_TX_DATA(TEST_PAGE_SIZE_SLV,0,32,0,0), //--- write 254 words of data
                                                   SPI_CMD_EOT(0,0)};
 
     int tx_buffer_cmd_read_slv_burst[BUFFER_SIZE] = {SPI_CMD_CFG(1,0,0),
@@ -290,9 +290,9 @@ int main()
 
     do {
       poll_var = pulp_read32(UDMA_CHANNEL_SIZE_OFFSET + UDMA_SPIM_TX_ADDR(u));
-      printf("Polling (write reg2): remaining bytes =  %d\n", poll_var);
+      //printf("Polling (write reg2): remaining bytes =  %d\n", poll_var);
       poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_TX_ADDR(u));
-      printf("Polling (write reg2): poll_var = %8x\n", poll_var);
+      //printf("Polling (write reg2): poll_var = %8x\n", poll_var);
     } while(poll_var != 0);
 
     //--- write the length of the burst to store into reg3 (wrap_length high) of the SPI slave module
@@ -301,12 +301,12 @@ int main()
 
     do {
       poll_var = pulp_read32(UDMA_CHANNEL_SIZE_OFFSET + UDMA_SPIM_TX_ADDR(u));
-      printf("Polling (write reg3): remaining bytes =  %d\n", poll_var);
+      //printf("Polling (write reg3): remaining bytes =  %d\n", poll_var);
       poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_TX_ADDR(u));
-      printf("Polling (write reg3): poll_var = %8x\n", poll_var);
+      //printf("Polling (write reg3): poll_var = %8x\n", poll_var);
     } while(poll_var != 0);
 
-    for (int j = 0; j < TEST_PAGE_SIZE_SLV-54; j++) {
+    for (int j = 0; j < 10/*TEST_PAGE_SIZE_SLV-54*/; j++) {
 
       buffer_slv_test[0] = addr_slv_buff[j];
       buffer_slv_test[1] = data_slv_buff[j+1];
@@ -318,9 +318,9 @@ int main()
       //--- polling to check if the transfer is completed (when channel SADDR register = 0)
       do {
         poll_var = pulp_read32(UDMA_CHANNEL_SIZE_OFFSET + UDMA_SPIM_TX_ADDR(u));
-        printf("Polling (write) n%d: remaining bytes =  %d\n", j, poll_var);
+        //printf("Polling (write) n%d: remaining bytes =  %d\n", j, poll_var);
         poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_TX_ADDR(u));
-        printf("Polling (write) n%d: poll_var = %8x\n", j, poll_var);
+        //printf("Polling (write) n%d: poll_var = %8x\n", j, poll_var);
       } while(poll_var != 0);
 
       //--- try to read back data from L2
@@ -337,9 +337,9 @@ int main()
       //--- polling to check if the transfer is completed (when channel SADDR register = 0)
       do {
         poll_var = pulp_read32(UDMA_CHANNEL_SIZE_OFFSET + UDMA_SPIM_RX_ADDR(u));
-        printf("Polling (read) n%d: remaining bytes = %d\n", j, poll_var);
+        //printf("Polling (read) n%d: remaining bytes = %d\n", j, poll_var);
         poll_var = pulp_read32(UDMA_CHANNEL_SADDR_OFFSET + UDMA_SPIM_RX_ADDR(u));
-        printf("Polling (read) n%d: poll_var = %8x\n", j, poll_var);
+        //printf("Polling (read) n%d: poll_var = %8x\n", j, poll_var);
       } while(poll_var != 0);
 
 
@@ -394,6 +394,7 @@ int main()
       printf("Polling (write burst): poll_var = %8x\n", poll_var);
     } while(poll_var != 0);
 
+    // Copy the address of the first position in L2 to store the data
     buffer_slv_test[0] = data_slv_buff[0];
 
     /* For debug
@@ -404,8 +405,6 @@ int main()
       printf("Read (FC burst): rx_page = %8x, at L2 memory address = %p, expected %8x\n", rx_page[0], pt_test+i, data_slv_buff[i+1]);
      }
     */
-
-    rx_page[0] = 0;
 
     //--- try to read back data from L2 using spi_master n°0
     plp_udma_enqueue(UDMA_SPIM_RX_ADDR(u) , (unsigned int)rx_page, TEST_PAGE_SIZE_SLV*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
