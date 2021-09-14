@@ -66,6 +66,10 @@ void check_matrix_mul(testresult_t *result, void (*start)(), void (*stop)()) {
   lb = core_id * chunk;
   // upper bound
   ub = lb + chunk;
+  // Ensure entire range is calculated if SIZE/num_cores is not an integer
+  if (core_id == num_cores-1) {
+    ub = SIZE;
+  }
 
   if(core_id == 0) {
     matrix_init();
@@ -109,6 +113,10 @@ void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*st
   lb = core_id * chunk;
   // upper bound
   ub = lb + chunk;
+  // Ensure entire range is calculated if SIZE/num_cores is not an integer
+  if (core_id == num_cores-1) {
+    ub = SIZE;
+  }
 
   if(core_id == 0) {
     matrix_init();

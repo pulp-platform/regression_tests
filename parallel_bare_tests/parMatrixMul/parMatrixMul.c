@@ -18,6 +18,7 @@
  * Mantainer: Luca Valente, luca.valente2@unibo.it
  */
 #include <pulp.h>
+#include <stdio.h>
 
 #include "parMatrixMul.h"
 
@@ -57,12 +58,31 @@ testcase_t testcases[] = {
 
 int main() {
 
-  if (rt_cluster_id() != 0)
+  // printf("Testing IRQ reg: 0x%x\n", rt_irq_get_fc_vector_base());
+
+  if (rt_cluster_id() != 0) {
+#ifdef ARCHI_TCLS
+    enable_tcls();
+#endif // TCLS
     return bench_cluster_forward(0);
+  }
+
+#ifdef ARCHI_TCLS
+  // Enable interrupts
+  hal_irq_enable();
+#endif // TCLS
 
   int nbErrors = run_suite(testcases);
 
   synch_barrier();
+
+#ifdef ARCHI_TCLS
+  printf("Reading group %d core0_mismatch_reg: 0x%x\n", rt_core_id(), *(volatile int *)(ARCHI_TCLS_ADDR + 0x8 + rt_core_id()*0x100));
+  printf("Reading group %d core1_mismatch_reg: 0x%x\n", rt_core_id(), *(volatile int *)(ARCHI_TCLS_ADDR + 0xC + rt_core_id()*0x100));
+  printf("Reading group %d core2_mismatch_reg: 0x%x\n", rt_core_id(), *(volatile int *)(ARCHI_TCLS_ADDR + 0x10 + rt_core_id()*0x100));
+
+  synch_barrier();
+#endif // TCLS
 
   return nbErrors != 0;
 }
@@ -84,7 +104,8 @@ void matrix_multiplication(testresult_t *result, void (*start)(), void (*stop)()
   //lower bound
   lb = coreid * chunk;
   //upper bound
-  ub = lb + chunk;  
+  ub = lb + chunk;
+  if (coreid == numcores-1) {ub = SIZE;}
   
   synch_barrier();
   
