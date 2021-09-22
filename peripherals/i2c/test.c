@@ -22,8 +22,8 @@
 #include "pulp.h"
 
 #define DATA_SIZE 4
-#define BUFFER_SIZE 19
-#define BUFFER_SIZE_READ 18
+#define BUFFER_SIZE 10
+#define BUFFER_SIZE_READ 12
 #define UART_BAUDRATE 115200
 
 int main()
@@ -66,7 +66,7 @@ int main()
 
     
     
-  for (u=0;u<1;u++) {
+  for (u=0;u<ARCHI_UDMA_NB_I2C;u++) {
 
     //WRITE
 
@@ -78,6 +78,11 @@ int main()
     //--- get the base address of the udma channels
     unsigned int udma_i2c_channel_base = hal_udma_channel_base(UDMA_CHANNEL_ID(ARCHI_UDMA_I2C_ID(u)));
     printf("uDMA i2c%d base channel address %8x\n", u,udma_i2c_channel_base);
+
+    expected_rx_buffer[1]=u;
+
+    cmd_buffer_wr[2] = (((uint32_t)I2C_CMD_WRB)<<24) | 0xa0 | u<<1;
+    cmd_buffer_wr[6] = (((uint32_t)I2C_CMD_WRB)<<24) | expected_rx_buffer[1];
 
     plp_udma_enqueue(UDMA_I2C_TX_ADDR(u), (int)expected_rx_buffer, 4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
     //--- enqueue cmds on cmd channel
@@ -99,7 +104,6 @@ int main()
     {
       rx_buffer[j] = 0;
     }
-    expected_rx_buffer[1]=u;
 
     printf("[%d, %d] Start test i2c read %d\n",  get_cluster_id(), get_core_id(),u);
 
@@ -111,6 +115,9 @@ int main()
     printf("uDMA i2c%d base channel address %8x\n", u,udma_i2c_channel_base);
 
     //--- enqueue cmds on cmd channel and set the rx channel
+
+    cmd_buffer_rd[2] = (((uint32_t)I2C_CMD_WRB)<<24) | 0xa0 | u<<1;
+    cmd_buffer_rd[6] = (((uint32_t)I2C_CMD_WRB)<<24) | 0xa1 | u<<1;
 
     plp_udma_enqueue(UDMA_I2C_DATA_ADDR(u) ,  (int)rx_buffer     , 4               , UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
     plp_udma_enqueue(UDMA_I2C_CMD_ADDR(u) ,  (int)cmd_buffer_rd  , BUFFER_SIZE_READ*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
