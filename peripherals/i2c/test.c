@@ -22,8 +22,8 @@
 #include "pulp.h"
 
 #define DATA_SIZE 4
-#define BUFFER_SIZE 19
-#define BUFFER_SIZE_READ 18
+#define BUFFER_SIZE 10
+#define BUFFER_SIZE_READ 12
 #define UART_BAUDRATE 115200
 
 int main()
@@ -39,34 +39,34 @@ int main()
   //--- rx buffer
   volatile uint8_t rx_buffer[DATA_SIZE];
   //--- CMD buffer for WRITE command
-  volatile uint8_t cmd_buffer_wr[BUFFER_SIZE] = {I2C_CMD_CFG,0x0,0x40,
-                                                 I2C_CMD_START,
-                                                 I2C_CMD_WR,0xa0, //Control-->write
-                                                 I2C_CMD_WR,0x00, //Addr MSB
-                                                 I2C_CMD_WR,0x00, //ADDR LSB
-                                                 I2C_CMD_WR,expected_rx_buffer[0], //DATA0
-                                                 I2C_CMD_WR,expected_rx_buffer[1], //DATA1
-                                                 I2C_CMD_WR,expected_rx_buffer[2], //DATA2
-                                                 I2C_CMD_WR,expected_rx_buffer[3], //DATA3
-                                                 I2C_CMD_STOP};
-  //--- CMD buffer for READ command
-  volatile uint8_t cmd_buffer_rd[BUFFER_SIZE_READ] = {I2C_CMD_CFG,0x0,0x40,
-                                                      I2C_CMD_START,
-                                                      I2C_CMD_WR,0xa0, //Control-->write (the address)
-                                                      I2C_CMD_WR,0x00, //Addr MSB
-                                                      I2C_CMD_WR,0x00, //ADDR LSB
-                                                      I2C_CMD_START,
-                                                      I2C_CMD_WR,0xa1, //Control--> read
-                                                      I2C_CMD_RD_ACK, //DATA0
-                                                      I2C_CMD_RD_ACK, //DATA1
-                                                      I2C_CMD_RD_ACK, //DATA2
-                                                      I2C_CMD_RD_NACK, //DATA3
-                                                      I2C_CMD_STOP};
+  volatile uint32_t cmd_buffer_wr[BUFFER_SIZE] = {(((uint32_t)I2C_CMD_CFG) << 24) | 0x40,
+                                                 (((uint32_t)I2C_CMD_START)<<24),
+                                                 (((uint32_t)I2C_CMD_WRB)<<24) | 0xa0, //Control-->write
+                                                 (((uint32_t)I2C_CMD_WRB)<<24), //Addr MSB
+                                                 (((uint32_t)I2C_CMD_WRB)<<24), //ADDR LSB
+                                                 (((uint32_t)I2C_CMD_WRB)<<24) | expected_rx_buffer[0], //DATA0
+                                                 (((uint32_t)I2C_CMD_WRB)<<24) | expected_rx_buffer[1], //DATA1
+                                                 (((uint32_t)I2C_CMD_WRB)<<24) | expected_rx_buffer[2], //DATA2
+                                                 (((uint32_t)I2C_CMD_WRB)<<24) | expected_rx_buffer[3], //DATA3
+                                                 (((uint32_t)I2C_CMD_STOP)<<24)};
+ //--- CMD buffer for READ command
+  volatile uint32_t cmd_buffer_rd[BUFFER_SIZE_READ] = {(((uint32_t)I2C_CMD_CFG)<<24) | 0x40,
+                                                 (((uint32_t)I2C_CMD_START)<<24),
+                                                 (((uint32_t)I2C_CMD_WRB)<<24 | 0xa0), //Control-->write (the address)
+                                                 (((uint32_t)I2C_CMD_WRB)<<24), //Addr MSB
+                                                 (((uint32_t)I2C_CMD_WRB)<<24), //ADDR LSB
+                                                 (((uint32_t)I2C_CMD_START)<<24),
+                                                 (((uint32_t)I2C_CMD_WRB)<<24 | 0xa1), //Control--> read
+                                                 (((uint32_t)I2C_CMD_RD_ACK)<<24), //DATA0
+                                                 (((uint32_t)I2C_CMD_RD_ACK)<<24), //DATA1
+                                                 (((uint32_t)I2C_CMD_RD_ACK)<<24), //DATA2
+                                                 (((uint32_t)I2C_CMD_RD_NACK)<<24), //DATA3
+                                                 (((uint32_t)I2C_CMD_STOP)<<24)};
 
 
     
     
-  for (u=0;u<1;u++) {
+  for (u=0;u<ARCHI_UDMA_NB_I2C;u++) {
 
     //WRITE
 
@@ -79,9 +79,14 @@ int main()
     unsigned int udma_i2c_channel_base = hal_udma_channel_base(UDMA_CHANNEL_ID(ARCHI_UDMA_I2C_ID(u)));
     printf("uDMA i2c%d base channel address %8x\n", u,udma_i2c_channel_base);
 
-    
+    expected_rx_buffer[1]=u;
+
+    cmd_buffer_wr[2] = (((uint32_t)I2C_CMD_WRB)<<24) | 0xa0 | u<<1;
+    cmd_buffer_wr[6] = (((uint32_t)I2C_CMD_WRB)<<24) | expected_rx_buffer[1];
+
+    plp_udma_enqueue(UDMA_I2C_TX_ADDR(u), (int)expected_rx_buffer, 4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
     //--- enqueue cmds on cmd channel
-    plp_udma_enqueue(UDMA_I2C_CMD_ADDR(u) ,  (int)cmd_buffer_wr     , BUFFER_SIZE, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
+    plp_udma_enqueue(UDMA_I2C_CMD_ADDR(u) ,  (int)cmd_buffer_wr     , BUFFER_SIZE*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
 
     
     // WAIT WRITE TO BE DONE BY THE MEMORY
@@ -99,7 +104,6 @@ int main()
     {
       rx_buffer[j] = 0;
     }
-    expected_rx_buffer[1]=u;
 
     printf("[%d, %d] Start test i2c read %d\n",  get_cluster_id(), get_core_id(),u);
 
@@ -112,9 +116,12 @@ int main()
 
     //--- enqueue cmds on cmd channel and set the rx channel
 
+    cmd_buffer_rd[2] = (((uint32_t)I2C_CMD_WRB)<<24) | 0xa0 | u<<1;
+    cmd_buffer_rd[6] = (((uint32_t)I2C_CMD_WRB)<<24) | 0xa1 | u<<1;
+
     plp_udma_enqueue(UDMA_I2C_DATA_ADDR(u) ,  (int)rx_buffer     , 4               , UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
-    plp_udma_enqueue(UDMA_I2C_CMD_ADDR(u) ,  (int)cmd_buffer_rd  , BUFFER_SIZE_READ, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_8);
-    for (volatile int i = 0; i < 25000; ++i)
+    plp_udma_enqueue(UDMA_I2C_CMD_ADDR(u) ,  (int)cmd_buffer_rd  , BUFFER_SIZE_READ*4, UDMA_CHANNEL_CFG_EN | UDMA_CHANNEL_CFG_SIZE_32);
+    for (volatile int i = 0; i < 10000; ++i)
     {
       i++;
     }

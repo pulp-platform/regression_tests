@@ -37,7 +37,7 @@ export PULP_RISCV_GCC_TOOLCHAIN= *path to riscv gcc toolchain*
 
 cd regression_tests/hello
 
-mae clean all run gui=1
+make clean all run gui=1
 ```
 #### To run all the tests
 ```
