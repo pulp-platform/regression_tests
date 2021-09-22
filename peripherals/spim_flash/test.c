@@ -222,7 +222,7 @@ int tx_buffer_cmd_read_WIP[BUFFER_SIZE] = {SPI_CMD_CFG(1,0,0),
                                            SPI_CMD_RX_DATA(1,1,8,0,0),
                                            SPI_CMD_EOT(0,0)};
 
-int u = 3; //--- select spi3
+int u = 0; //--- select spi0
 
 
 printf("[%d, %d] Start test flash page programming over qspi %d\n",  get_cluster_id(), get_core_id(),u);
