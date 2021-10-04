@@ -6,14 +6,14 @@ BUILDDIR ?= $(CURDIR)/build
 BOOTCODE = $(BUILDDIR)/bootcode
 
 
-CFLAGS += -march=rv32imcxgap9
+CFLAGS += -march=rv32imc
 
 ifndef VERBOSE
 V = @
 endif
 
 LDFLAGS += -Tlink.ld -nostdlib
-CFLAGS += -Os -g -fno-jump-tables -I$(CURDIR)/include
+CFLAGS += -Os -g -fno-jump-tables -I$(CURDIR)/include -DRV_ISA_RV32 -U__riscv__
 
 OBJS += $(patsubst %.c,$(BUILDDIR)/%.o,$(SRCS))
 OBJS += $(patsubst %.S,$(BUILDDIR)/%.o,$(ASM_SRCS))
