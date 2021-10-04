@@ -46,6 +46,6 @@ stimuli.gvsoc:
 		
 stimuli.rtl:
 	objcopy --srec-len 1 --output-target=srec $(BOOTCODE) $(BOOTCODE).s19
-	./s19toboot.py $(BOOTCODE).s19 boot_code.cde pulp
+	python s19toboot.py $(BOOTCODE).s19 boot_code.cde pulp
 
 stimuli: stimuli.gvsoc stimuli.rtl
