@@ -43,6 +43,8 @@
 #define REG_PADCFG14_OFFSET 0x5C
 #define REG_PADCFG15_OFFSET 0x60
 
+#define REG_SPI_DIRECTION 0x60
+
 #define OUT 1
 #define IN  0
 
@@ -84,7 +86,24 @@ __wait_cycles_end:
   return;
 }
 
+uint32_t set_intr_sckt_reg( uint32_t value){
+  uint32_t value_wr;
+  uint32_t address;
 
+  address = ARCHI_APB_SOC_CTRL_ADDR + REG_SPI_DIRECTION;
+  value_wr = pulp_read32(address);
+  if (value == 1)
+   {
+    value_wr |= (1);
+    printf( "Set the select signal value for the inter-socket SPI peripheral to %1x (slave), at address:  %8x\n",  value_wr, address);
+   }else{
+    value_wr &= ~(1);
+    printf( "Set the select signal value for the inter-socket SPI peripheral to %1x (master), at address:  %8x\n",  value_wr, address);
+   }
+  pulp_write32(address, value_wr);
+
+  while(pulp_read32(address) != value_wr);
+}
 
 uint32_t configure_gpio(uint32_t number, uint32_t direction, uint32_t alternate){
   uint32_t which_reg_fun = number / 16; //select the correct register 
@@ -226,6 +245,9 @@ int u = 0;
  
 // Giving time to the VIP memory to power up for AXI boot (which is much faster than JTAG boot)
 wait_cycles(100000);
+
+// Set inter-socket reg to '0' (master)
+set_intr_sckt_reg(0);
 
   for (u=0;u<8;u++) {
 
