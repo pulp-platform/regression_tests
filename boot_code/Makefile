@@ -6,14 +6,14 @@ BUILDDIR ?= $(CURDIR)/build
 BOOTCODE = $(BUILDDIR)/bootcode
 
 
-CFLAGS += -march=rv32imcxgap9
+CFLAGS += -march=rv32imc
 
 ifndef VERBOSE
 V = @
 endif
 
 LDFLAGS += -Tlink.ld -nostdlib
-CFLAGS += -Os -g -fno-jump-tables -I$(CURDIR)/include
+CFLAGS += -Os -g -fno-jump-tables -I$(CURDIR)/include -DRV_ISA_RV32 -U__riscv__
 
 OBJS += $(patsubst %.c,$(BUILDDIR)/%.o,$(SRCS))
 OBJS += $(patsubst %.S,$(BUILDDIR)/%.o,$(ASM_SRCS))
@@ -46,6 +46,6 @@ stimuli.gvsoc:
 		
 stimuli.rtl:
 	objcopy --srec-len 1 --output-target=srec $(BOOTCODE) $(BOOTCODE).s19
-	./s19toboot.py $(BOOTCODE).s19 boot_code.cde pulp
+	python s19toboot.py $(BOOTCODE).s19 boot_code.cde pulp
 
 stimuli: stimuli.gvsoc stimuli.rtl
