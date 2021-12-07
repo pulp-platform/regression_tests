@@ -26,7 +26,7 @@
 //#define INFINITE_LOOP
 
 #define ADDR_FIRST 0x1c010000
-#define ADDR_LAST  0x1c082000
+#define ADDR_LAST  0x1c080000
 #define STRIDE 128
 
 #ifdef USE_BYTE_FEEDBACK
