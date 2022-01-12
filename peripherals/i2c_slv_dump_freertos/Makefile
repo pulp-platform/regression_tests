@@ -40,7 +40,7 @@ CPPFLAGS += -DDEBUG_ACTIVE
 #Uncomment this to print information via printf
 CPPFLAGS += -DPRINTF_ACTIVE
 CPPFLAGS += -DDEBUG_PRINTF
-CPPFLAGS += -DDUMP_ONLY
+CPPFLAGS += -UDUMP_ONLY
 CPPFLAGS += -DHRO_PRINTF
 
 # Uncomment to add debug option
