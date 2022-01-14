@@ -2,6 +2,9 @@ peripherals:
   i2c:
     path: ./peripherals/i2c #ok
     command: make clean all run
+  i2c_slv_irq_runtime:
+    path: ./peripherals/i2c_slv_irq_runtime
+    command: make clean all run
   spim_flash:
     path: ./peripherals/spim_flash #ok
     command: make clean all run
@@ -11,4 +14,3 @@ peripherals:
   intr_sckt:
     path: ./peripherals/intr_sckt #ok
     command: make clean all run
-    
