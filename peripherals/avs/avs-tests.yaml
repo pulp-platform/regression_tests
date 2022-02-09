@@ -1,0 +1,4 @@
+avs_tests:
+  avs:
+    path: ./avs-basic
+    command: make clean all SIM_TOP=tb_avs_fpga run

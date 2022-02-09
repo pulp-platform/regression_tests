@@ -2,7 +2,7 @@ PULP_APP = avs
 PULP_APP_FC_SRCS = avs.c
 PULP_APP_HOST_SRCS = avs.c
 PULP_APP_ASM_SRCS = handler.S
-PULP_CFLAGS = -DCOUNTER_TIME=1000 -Os -g3 -Wall -Wextra -I../include \
+PULP_CFLAGS = -DCOUNTER_TIME=1000 -Os -g3 -Wall -Wextra -I../../include \
 	-Wno-unused-parameter -Wno-unused-function -Wno-unused-variable \
 	-Wnull-dereference -Wformat=2
 
