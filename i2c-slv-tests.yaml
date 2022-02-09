@@ -1,0 +1,4 @@
+i2c_slv_tests:
+  i2c_slv_irq:
+    path: ./peripherals/i2c_slv_irq_runtime
+    command: make clean all run SIM_TOP=tb_i2c_slv_irq_fpga
