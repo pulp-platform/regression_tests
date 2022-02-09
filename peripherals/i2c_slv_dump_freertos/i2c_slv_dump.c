@@ -16,6 +16,12 @@
  * Author: Antonio Mastrandrea (a.mastrandrea@unibo.it)
  */
 
+/* The test checks I2C slave W transactions
+ * The test interacts with a simulated external I2C master in the RTL testbench (tb_i2c_slv_dump.sv or tb_i2c_slv_dump_fpga.sv).
+ * Data are seamlessly written in L2 and the result is checked and dumped through stdout.
+ * The test does not use interrupts. Synchronization happens at the testbench level.
+ */
+
 /* FreeRTOS kernel includes. */
 #include <FreeRTOS.h>
 #include <task.h>

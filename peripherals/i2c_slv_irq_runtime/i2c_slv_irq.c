@@ -17,6 +17,13 @@
  * Author: Antonio Mastrandrea (a.mastrandrea@unibo.it)
  */
 
+/* The test checks I2C slave W transactions
+ * The test interacts with a simulated external I2C master in the RTL testbench (tb_i2c_slv_irq.sv or tb_i2c_slv_irq_fpga.sv).
+ * Data are seamlessly written in L2 and the result is checked afterwards.
+ * The test uses interrupts. The I2C slave module triggers an interrupt once the last data of the packet has been written, which
+ * notifies the core.
+ */
+
 #include <stdio.h>
 #include "pulp.h"
 
