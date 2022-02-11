@@ -29,19 +29,13 @@
 
 #include "csr.h"
 #include "io.h"
-
+#include "bits.h"
 #include "clic.h"
 
 #define I2CSLAVE_START_ADDR 0X1A140000
 #define REG1		    0x00 //
 #define REG2		    0x04 //
 #define REG3		    0x08 //
-
-#define CLIC_BASE_ADDR 0x1A200000
-#define CLIC_END_ADDR  0x1A20FFFF
-
-#define BIT(n)	    (1 << (n))
-#define BIT_MASK(n) (BIT(n) - 1)
 
 #define assert(expression)                                                     \
 	do {                                                                   \
@@ -51,67 +45,8 @@
 		}                                                              \
 	} while (0)
 
-#define CLIC_BASE_ADDR 0x1A200000
-#define CLIC_END_ADDR  0x1A20FFFF
-
 void clic_setup_mtvec(void);
 void clic_setup_mtvt(void);
-
-// Some irq low-level APIs for the CLIC
-// Remove when updating the test with Freertos
-void irq_clic_enable(int id)
-{
-	assert(0 <= id && id < CLIC_PARAM_NUM_SRC);
-	/* TODO: enable selective hardware vectoring for interrupt. We might
-	 * later make this configurable */
-	writew(1 << CLIC_CLICINTATTR_SHV_BIT,
-	       (uintptr_t)(CLIC_BASE_ADDR + CLIC_CLICINTATTR_REG_OFFSET(id)));
-
-	writew(1ul,
-	       (uintptr_t)(CLIC_BASE_ADDR + CLIC_CLICINTIE_REG_OFFSET(id)));
-
-	/* TODO: fix this quick hack which is there just to get going */
-	irq_clic_set_lvl_and_prio(id, 1, 1);
-	/* TODO: assume edge triggered interrupt by default */
-	irq_clic_set_trigger_type(id, CLIC_TRIG_EDGE | CLIC_TRIG_POSITIVE);
-}
-
-void irq_clic_set_trigger_type(int id, int flags)
-{
-	uint32_t reg = readw(
-		(uintptr_t)(CLIC_BASE_ADDR + CLIC_CLICINTATTR_REG_OFFSET(id)));
-	reg &= ~(CLIC_CLICINTATTR_TRIG_MASK << CLIC_CLICINTATTR_TRIG_OFFSET);
-	reg |= (flags & CLIC_CLICINTATTR_TRIG_MASK)
-	       << CLIC_CLICINTATTR_TRIG_OFFSET;
-	writew(reg,
-	       (uintptr_t)(CLIC_BASE_ADDR + CLIC_CLICINTATTR_REG_OFFSET(id)));
-}
-
-void irq_clic_set_lvl_and_prio(int id, int lvl, int prio)
-{
-	/* TODO: probe CLICINTCTLBITS */
-	uint32_t nlbits =
-		readw((uintptr_t)(CLIC_BASE_ADDR + CLIC_CLICCFG_REG_OFFSET)) >>
-			CLIC_CLICCFG_NLBITS_OFFSET &
-		CLIC_CLICCFG_NLBITS_MASK;
-
-	uint32_t shift = 8 - nlbits;
-	uint32_t val = ((((uint32_t)lvl & BIT_MASK(nlbits)) << shift |
-			 ((uint32_t)prio & BIT_MASK(shift))) &
-			0xff);
-	writew(val,
-	       (uintptr_t)(CLIC_BASE_ADDR + CLIC_CLICINTCTL_REG_OFFSET(id)));
-}
-
-void pulp_irq_init()
-{
-	/* min threshold, thereby propagating all interrupts */
-	csr_write(CSR_MINTTHRESH, 0x0);
-	/* set nlbits to four which gives 4 bits for level and priority */
-	/* TODO: implement freertos level interrupts */
-	writeb((0x4 << CLIC_CLICCFG_NLBITS_OFFSET),
-	       CLIC_BASE_ADDR + CLIC_CLICCFG_REG_OFFSET);
-}
 
 int var_glb = 0;
 

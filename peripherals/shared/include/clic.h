@@ -19,6 +19,15 @@
 
 #ifndef __CLIC_H__
 #define __CLIC_H__
+/*
+void irq_clic_enable(int id);
+void irq_clic_set_trigger_type(int id, int flags);
+void irq_clic_set_lvl_and_prio(int id, int lvl, int prio);
+void pulp_irq_init();
+*/
+/* CLIC base and end address */
+#define CLIC_BASE_ADDR 0x1A200000
+#define CLIC_END_ADDR  0x1A20FFFF
 
 /* Number of interrupt sources */
 /* taken from target configuration */
