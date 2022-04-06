@@ -1,0 +1,4 @@
+idma_tests:
+  idma_basic:
+    path: ./idma_tests/idma_basic
+    command: make clean all run
