@@ -17,8 +17,6 @@
 #include <math.h>
 #include "pulp.h"
 #include <stdio.h>
-// #include "pulp_idma.h"
-//#include "hal/dma/idma_v1.h"
 
 #define VERBOSE
 #define MAX_BUFFER_SIZE 0x400
