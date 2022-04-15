@@ -1,6 +1,6 @@
-PULP_APP = test
+PULP_APP = idma_basic_8cores
 
-TEST_SRCS ?= idma_basic.c
+TEST_SRCS ?= idma_basic_8cores.c
 PULP_APP_SRCS = $(TEST_SRCS)
 PULP_APP_FC_SRCS = $(TEST_FC_SRCS)
 ifdef TEST_FC_SRCS
@@ -13,7 +13,7 @@ space +=
 #BUILD_DIR = $(subst $(space),_,$(CURDIR)/build/$(TEST_SRCS))
 
 ifdef VERBOSE
-PULP_CFLAGS += -DVERBOSE
+PULP_CFLAGS += -UVERBOSE
 endif
 
 PULP_CFLAGS += -O3
