@@ -20,6 +20,8 @@
 
 #define MAX_BUFFER_SIZE 0x400
 
+#define CL_DMA 1
+
 L2_DATA static unsigned char ext[MAX_BUFFER_SIZE * 8];
 L1_DATA static unsigned char loc[MAX_BUFFER_SIZE * 8];
 
@@ -76,7 +78,7 @@ int test_idma(unsigned int src_addr, unsigned int dst_addr,
 	}
 
 	unsigned int dma_tx_id =
-		pulp_idma_memcpy(dst_addr, src_addr, num_bytes);
+	      pulp_idma_memcpy(CL_DMA, dst_addr, src_addr, num_bytes);
 
 	plp_dma_wait(dma_tx_id);
 

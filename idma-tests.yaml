@@ -1,7 +1,7 @@
 idma_tests:
   idma_basic:
-    path: ./idma_tests/idma-basic
+    path: ./cl_idma_tests/idma-basic
     command: make clean all run
   idma_basic_8cores:
-    path: ./idma_tests/idma-basic-8cores
+    path: ./cl_idma_tests/idma-basic-8cores
     command: make clean all run
