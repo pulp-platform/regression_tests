@@ -26,7 +26,7 @@ L1_DATA static unsigned char loc[MAX_BUFFER_SIZE * 8];
 #define EXT_DATA_ADDR  ((unsigned int)ext)
 #define TCDM_DATA_ADDR ((unsigned int)loc)
 
-int test_idma(unsigned int src_addr, unsigned int dst_addr,
+int test_idma(unsiged int base, unsigned int src_addr, unsigned int dst_addr,
 	      unsigned int num_bytes);
 
 int main()
@@ -38,15 +38,18 @@ int main()
 	int error_count = 0;
 	int core_id = get_core_id();
 
+	// get dma base address
+	unsigned int base = get_dma_base_addr(DMA_CL);
+
 	for (int i = 1; i < MAX_BUFFER_SIZE; i = 2 * i) {
 		error_count +=
-			test_idma(EXT_DATA_ADDR + (core_id * MAX_BUFFER_SIZE),
+		    test_idma(base, EXT_DATA_ADDR + (core_id * MAX_BUFFER_SIZE),
 				  TCDM_DATA_ADDR + (core_id * MAX_BUFFER_SIZE),
 				  i);
 	}
 	for (int i = 1; i < MAX_BUFFER_SIZE; i = 2 * i) {
 		error_count +=
-			test_idma(TCDM_DATA_ADDR + (core_id * MAX_BUFFER_SIZE),
+		    test_idma(base, TCDM_DATA_ADDR + (core_id * MAX_BUFFER_SIZE),
 				  EXT_DATA_ADDR + (core_id * MAX_BUFFER_SIZE),
 				  i);
 	}
@@ -54,7 +57,7 @@ int main()
 	return error_count;
 }
 
-int test_idma(unsigned int src_addr, unsigned int dst_addr,
+int test_idma(unsigned int base, unsigned int src_addr, unsigned int dst_addr,
 	      unsigned int num_bytes)
 {
 
@@ -74,9 +77,9 @@ int test_idma(unsigned int src_addr, unsigned int dst_addr,
 	synch_barrier();
 
 	unsigned int dma_tx_id =
-		pulp_idma_memcpy(dst_addr, src_addr, num_bytes);
+	    pulp_idma_memcpy(base, dst_addr, src_addr, num_bytes);
 
-	plp_dma_wait(dma_tx_id);
+	plp_dma_wait(base, dma_tx_id);
 
 	unsigned int test, read;
 	unsigned int error = 0;
