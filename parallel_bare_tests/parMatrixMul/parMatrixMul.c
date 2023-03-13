@@ -57,9 +57,11 @@ testcase_t testcases[] = {
 
 int main() {
 
-  if (rt_cluster_id() != 0)
-    return bench_cluster_forward(0);
+//  if (rt_cluster_id() != 0)
+//    return bench_cluster_forward(0);
 
+  synch_barrier();
+ 
   int nbErrors = run_suite(testcases);
 
   synch_barrier();
@@ -106,10 +108,10 @@ void matrix_multiplication(testresult_t *result, void (*start)(), void (*stop)()
   stop();
   
   /********************* Benchmark Execution *********************/
-
 #ifdef CHECKSUM
   if(coreid == 0) {
 
+    printf("Finished...\n");
     int chk = 0;
     for (k = 0; k < SIZE; k++)
       for (j = 0; j < SIZE; j++)
@@ -118,4 +120,6 @@ void matrix_multiplication(testresult_t *result, void (*start)(), void (*stop)()
     check_uint32(result, "Checksum failed", CHKSM, chk);
   }
 #endif
+  synch_barrier();
 }
+
