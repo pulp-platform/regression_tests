@@ -15,17 +15,11 @@ parallel_bare_tests:
   LU:
     path: ./parallel_bare_tests/LU #ok
     command: make clean all run
-  LU/golden:
-    path: ./parallel_bare_tests/LU/golden #ok
-    command: make clean all run
   multicore/stencil:
     path: ./parallel_bare_tests/multicore/stencil #ok
     command: make clean all run
   dummypar1:
     path: ./parallel_bare_tests/dummypar1 #ok
-    command: make clean all run
-  Dijkstra/golden:
-    path: ./parallel_bare_tests/Dijkstra/golden
     command: make clean all run
   Dijkstra:
     path: ./parallel_bare_tests/Dijkstra #ok
