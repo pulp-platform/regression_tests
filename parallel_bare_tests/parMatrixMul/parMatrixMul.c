@@ -29,9 +29,9 @@
 #define CHKSM 88408
 #endif
 
-__attribute__ ((section(".heapsram"))) int A[SIZE][SIZE];
-__attribute__ ((section(".heapsram"))) int B[SIZE][SIZE];
-__attribute__ ((section(".heapsram"))) int C[SIZE][SIZE];
+__attribute__ ((section("__heap_sram"))) int A[SIZE][SIZE];
+__attribute__ ((section("__heap_sram"))) int B[SIZE][SIZE];
+__attribute__ ((section("__heap_sram"))) int C[SIZE][SIZE];
 
 
 void initialize_mat();
@@ -56,9 +56,6 @@ testcase_t testcases[] = {
 };
 
 int main() {
-
-  if (rt_cluster_id() != 0)
-    return bench_cluster_forward(0);
 
   int nbErrors = run_suite(testcases);
 
@@ -85,9 +82,9 @@ void matrix_multiplication(testresult_t *result, void (*start)(), void (*stop)()
   lb = coreid * chunk;
   //upper bound
   ub = lb + chunk;  
-  
+
   synch_barrier();
-  
+
   /********************* Benchmark Execution *********************/
   if (coreid<numcores) {
     start();
