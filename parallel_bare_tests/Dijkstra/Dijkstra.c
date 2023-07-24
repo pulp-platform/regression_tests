@@ -96,8 +96,8 @@ int main()
 #endif
 
     if ( hc == 2 && id == 0 ) {
-      reset_timer();
-      start_timer();
+      reset_timer(rt_cluster_id());
+      start_timer(rt_cluster_id());
     }
 
     synch_barrier();
@@ -105,8 +105,8 @@ int main()
     dijkstra_distance(mind, ohd);
 
     if ( hc == 2 && id == 0 ) {
-      stop_timer();
-      time = get_time();
+      stop_timer(rt_cluster_id());
+      time = get_time(rt_cluster_id());
     }
 #ifdef PROFILE
     // stop performance counters
