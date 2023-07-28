@@ -72,24 +72,24 @@ extern const uint16_t plpBitRevIndexTable_fixed_4096[PLPBITREVINDEXTABLE_FIXED_4
 
 
 
-extern short bit_rev_radix2_LUT_32[32];
-extern short bit_rev_radix2_LUT_64[64];
-extern short bit_rev_radix2_LUT_128[128];
-extern short bit_rev_radix2_LUT_256[256];
-extern short bit_rev_radix2_LUT_512[512];
-extern short bit_rev_radix2_LUT_1024[1024];
-extern short bit_rev_radix2_LUT_2048[2048];
+extern const short bit_rev_radix2_LUT_32[32];
+extern const short bit_rev_radix2_LUT_64[64];
+extern const short bit_rev_radix2_LUT_128[128];
+extern const short bit_rev_radix2_LUT_256[256];
+extern const short bit_rev_radix2_LUT_512[512];
+extern const short bit_rev_radix2_LUT_1024[1024];
+extern const short bit_rev_radix2_LUT_2048[2048];
 
-extern short bit_rev_radix4_LUT_256[256];
-extern short bit_rev_radix4_LUT_1024[1024];
+extern const short bit_rev_radix4_LUT_256[256];
+extern const short bit_rev_radix4_LUT_1024[1024];
 
-extern short bit_rev_radix8_LUT_16[16];
-extern short bit_rev_radix8_LUT_64[64];
-extern short bit_rev_radix8_LUT_512[512];
+extern const short bit_rev_radix8_LUT_16[16];
+extern const short bit_rev_radix8_LUT_64[64];
+extern const short bit_rev_radix8_LUT_512[512];
 
-extern short bit_rev_radix_2by4_LUT_32[32];
-extern short bit_rev_radix_2by4_LUT_128[128];
-extern short bit_rev_radix_2by4_LUT_2048[2048];
+extern const short bit_rev_radix_2by4_LUT_32[32];
+extern const short bit_rev_radix_2by4_LUT_128[128];
+extern const short bit_rev_radix_2by4_LUT_2048[2048];
 
 extern const uint16_t filterLengths_fb_32[32];
 extern const uint16_t startingIndices_fb_32[32];

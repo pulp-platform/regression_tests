@@ -7,7 +7,9 @@
 
 #define BITWIDTH 32
 
-const int32_t p1_init[2*SIZE] = {
+#define CHECK_EXECUTION 1
+
+__attribute__ ((section(".l2_data"))) const int32_t p1_init[2*SIZE] = {
 -1210987396, -485084393,
 -1112019765, 2026461831,
 -1976499619, -729621605,
@@ -266,7 +268,7 @@ const int32_t p1_init[2*SIZE] = {
 449552358, 224164673
 };
 
-const int32_t p1_result[2*SIZE] = {
+__attribute__ ((section(".l2_data"))) const int32_t p1_result[2*SIZE] = {
 -32002183, 152203277,
 -125578898, -80123379,
 -45667704, -94103947,

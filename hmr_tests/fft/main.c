@@ -23,7 +23,7 @@
 #include "cfft_data.h"
 
 #if BITWIDTH == 16
-__attribute__ ((section(".heapsram"))) int16_t p1[2*SIZE];
+__attribute__ ((section(".data_l1.working_data"))) int16_t p1[2*SIZE];
 #if SIZE == 16
 const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len16;
 #elif SIZE == 32
@@ -45,7 +45,7 @@ const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len4096;
 #endif
 #endif
 #if BITWIDTH == 32
-__attribute__ ((section(".heapsram"))) int32_t p1[2*SIZE];
+__attribute__ ((section(".data_l1.working_data"))) int32_t p1[2*SIZE];
 #if SIZE == 16
 const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len16;
 #elif SIZE == 32
@@ -84,7 +84,7 @@ int main() {
     for (int i = 0; i < 2*SIZE; i++) {
       p1[i] = p1_init[i];
     }
-    printf("Executing on %d cores\n", num_cores);
+    printf("Executing Q%d CFFT len %d on %d cores\n", BITWIDTH, SIZE, num_cores);
 
     // Set up barrier correctly
     eu_bar_setup(eu_bar_addr(0), (1<<num_cores) - 1);
@@ -127,6 +127,7 @@ int main() {
   } else {
     return 0;
   }
+#if CHECK_EXECUTION
   if (core_id() == 0) {
     // stop timer
     // Compare result with expected outcome
@@ -146,6 +147,9 @@ int main() {
   } else {
     return 0;
   }
+#else
+  return 0;
+#endif
 
 
 }

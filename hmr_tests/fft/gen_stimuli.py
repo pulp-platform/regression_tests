@@ -102,6 +102,7 @@ def q_roundnorm(a, p):
 def main():
     size = 256
     bitwidth = 32
+    check_execution = 1
 
     if (bitwidth == 16):
         input_ctype = 'int16_t'
@@ -116,18 +117,20 @@ def main():
         f.write('#ifndef CFFT_DATA_H_\n#define CFFT_DATA_H_\n\n')
         f.write('#define SIZE %d\n\n' % size)
         f.write('#define BITWIDTH %d\n\n' % bitwidth)
-        f.write('const int%d_t p1_init[2*SIZE] = {\n' % bitwidth)
+        f.write('#define CHECK_EXECUTION %d\n\n' % check_execution)
+        f.write('__attribute__ ((section(".l2_data"))) const int%d_t p1_init[2*SIZE] = {\n' % bitwidth)
         for i in range(size):
             if i != 0:
                 f.write(',\n')
             f.write('%d, %d' % (input_value[2*i], input_value[2*i+1]))
         f.write('\n};\n\n');
-        f.write('const int%d_t p1_result[2*SIZE] = {\n' % bitwidth)
-        for i in range(size):
-            if i != 0:
-                f.write(',\n')
-            f.write('%d, %d' % (result[2*i], result[2*i+1]))
-        f.write('\n};\n\n');
+        if (check_execution):
+            f.write('__attribute__ ((section(".l2_data"))) const int%d_t p1_result[2*SIZE] = {\n' % bitwidth)
+            for i in range(size):
+                if i != 0:
+                    f.write(',\n')
+                f.write('%d, %d' % (result[2*i], result[2*i+1]))
+            f.write('\n};\n\n');
         f.write('#endif\n')
 
 

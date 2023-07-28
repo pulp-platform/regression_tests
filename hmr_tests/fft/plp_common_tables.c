@@ -42,7 +42,7 @@
   Convert Floating point to q15(Fixed point 1.15):
         round(twiddleCoefq15(i) * pow(2, 15))
  */
-const int16_t twiddleCoef_16_q16[24] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_16_q16[24] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7641, (int16_t)0x30FB, (int16_t)0x5A82,
     (int16_t)0x5A82, (int16_t)0x30FB, (int16_t)0x7641, (int16_t)0x0000, (int16_t)0x7FFF,
     (int16_t)0xCF04, (int16_t)0x7641, (int16_t)0xA57D, (int16_t)0x5A82, (int16_t)0x89BE,
@@ -50,7 +50,7 @@ const int16_t twiddleCoef_16_q16[24] = {
     (int16_t)0xA57D, (int16_t)0xA57D, (int16_t)0xCF04, (int16_t)0x89BE
 };
 
-const int16_t twiddleCoef_32_q16[48] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_32_q16[48] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7D8A, (int16_t)0x18F8, (int16_t)0x7641,
     (int16_t)0x30FB, (int16_t)0x6A6D, (int16_t)0x471C, (int16_t)0x5A82, (int16_t)0x5A82,
     (int16_t)0x471C, (int16_t)0x6A6D, (int16_t)0x30FB, (int16_t)0x7641, (int16_t)0x18F8,
@@ -63,7 +63,7 @@ const int16_t twiddleCoef_32_q16[48] = {
     (int16_t)0x89BE, (int16_t)0xE707, (int16_t)0x8275
 };
 
-const int16_t twiddleCoef_64_q16[96] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_64_q16[96] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7F62, (int16_t)0x0C8B, (int16_t)0x7D8A,
     (int16_t)0x18F8, (int16_t)0x7A7D, (int16_t)0x2528, (int16_t)0x7641, (int16_t)0x30FB,
     (int16_t)0x70E2, (int16_t)0x3C56, (int16_t)0x6A6D, (int16_t)0x471C, (int16_t)0x62F2,
@@ -86,7 +86,7 @@ const int16_t twiddleCoef_64_q16[96] = {
     (int16_t)0x809D
 };
 
-const int16_t twiddleCoef_128_q16[192] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_128_q16[192] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7FD8, (int16_t)0x0647, (int16_t)0x7F62,
     (int16_t)0x0C8B, (int16_t)0x7E9D, (int16_t)0x12C8, (int16_t)0x7D8A, (int16_t)0x18F8,
     (int16_t)0x7C29, (int16_t)0x1F19, (int16_t)0x7A7D, (int16_t)0x2528, (int16_t)0x7884,
@@ -128,7 +128,7 @@ const int16_t twiddleCoef_128_q16[192] = {
     (int16_t)0xF9B8, (int16_t)0x8027
 };
 
-const int16_t twiddleCoef_256_q16[384] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_256_q16[384] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7FF6, (int16_t)0x0324, (int16_t)0x7FD8,
     (int16_t)0x0647, (int16_t)0x7FA7, (int16_t)0x096A, (int16_t)0x7F62, (int16_t)0x0C8B,
     (int16_t)0x7F09, (int16_t)0x0FAB, (int16_t)0x7E9D, (int16_t)0x12C8, (int16_t)0x7E1D,
@@ -208,7 +208,7 @@ const int16_t twiddleCoef_256_q16[384] = {
     (int16_t)0xF9B8, (int16_t)0x8027, (int16_t)0xFCDB, (int16_t)0x8009
 };
 
-const int16_t twiddleCoef_512_q16[768] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_512_q16[768] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7FFD, (int16_t)0x0192, (int16_t)0x7FF6,
     (int16_t)0x0324, (int16_t)0x7FE9, (int16_t)0x04B6, (int16_t)0x7FD8, (int16_t)0x0647,
     (int16_t)0x7FC2, (int16_t)0x07D9, (int16_t)0x7FA7, (int16_t)0x096A, (int16_t)0x7F87,
@@ -365,7 +365,7 @@ const int16_t twiddleCoef_512_q16[768] = {
     (int16_t)0x8009, (int16_t)0xFE6D, (int16_t)0x8002
 };
 
-const int16_t twiddleCoef_1024_q16[1536] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_1024_q16[1536] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7FFF, (int16_t)0x00C9, (int16_t)0x7FFD,
     (int16_t)0x0192, (int16_t)0x7FFA, (int16_t)0x025B, (int16_t)0x7FF6, (int16_t)0x0324,
     (int16_t)0x7FF0, (int16_t)0x03ED, (int16_t)0x7FE9, (int16_t)0x04B6, (int16_t)0x7FE1,
@@ -676,7 +676,7 @@ const int16_t twiddleCoef_1024_q16[1536] = {
     (int16_t)0x8000
 };
 
-const int16_t twiddleCoef_2048_q16[3072] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_2048_q16[3072] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7FFF, (int16_t)0x0064, (int16_t)0x7FFF,
     (int16_t)0x00C9, (int16_t)0x7FFE, (int16_t)0x012D, (int16_t)0x7FFD, (int16_t)0x0192,
     (int16_t)0x7FFC, (int16_t)0x01F6, (int16_t)0x7FFA, (int16_t)0x025B, (int16_t)0x7FF8,
@@ -1294,7 +1294,7 @@ const int16_t twiddleCoef_2048_q16[3072] = {
     (int16_t)0xFF9B, (int16_t)0x8000
 };
 
-const int16_t twiddleCoef_4096_q16[6144] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int16_t twiddleCoef_4096_q16[6144] = {
     (int16_t)0x7FFF, (int16_t)0x0000, (int16_t)0x7FFF, (int16_t)0x0032, (int16_t)0x7FFF,
     (int16_t)0x0064, (int16_t)0x7FFF, (int16_t)0x0096, (int16_t)0x7FFF, (int16_t)0x00C9,
     (int16_t)0x7FFF, (int16_t)0x00FB, (int16_t)0x7FFE, (int16_t)0x012D, (int16_t)0x7FFE,
@@ -2543,7 +2543,7 @@ const int16_t twiddleCoef_4096_q16[6144] = {
   Convert Floating point to q32(Fixed point 1.31):
   round(twiddleCoefq32(i) * pow(2, 31))
  */
-const int32_t twiddleCoef_16_q32[24] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_16_q32[24] = {
     (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7641AF3C, (int32_t)0x30FBC54D,
     (int32_t)0x5A82799A, (int32_t)0x5A82799A, (int32_t)0x30FBC54D, (int32_t)0x7641AF3C,
     (int32_t)0x00000000, (int32_t)0x7FFFFFFF, (int32_t)0xCF043AB2, (int32_t)0x7641AF3C,
@@ -2552,7 +2552,7 @@ const int32_t twiddleCoef_16_q32[24] = {
     (int32_t)0xA57D8666, (int32_t)0xA57D8666, (int32_t)0xCF043AB2, (int32_t)0x89BE50C3
 };
 
-const int32_t twiddleCoef_32_q32[48] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_32_q32[48] = {
     (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7D8A5F3F, (int32_t)0x18F8B83C,
     (int32_t)0x7641AF3C, (int32_t)0x30FBC54D, (int32_t)0x6A6D98A4, (int32_t)0x471CECE6,
     (int32_t)0x5A82799A, (int32_t)0x5A82799A, (int32_t)0x471CECE6, (int32_t)0x6A6D98A4,
@@ -2567,7 +2567,7 @@ const int32_t twiddleCoef_32_q32[48] = {
     (int32_t)0xCF043AB2, (int32_t)0x89BE50C3, (int32_t)0xE70747C3, (int32_t)0x8275A0C0
 };
 
-const int32_t twiddleCoef_64_q32[96] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_64_q32[96] = {
      (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7F62368F, (int32_t)0x0C8BD35E, 
      (int32_t)0x7D8A5F3F, (int32_t)0x18F8B83C, (int32_t)0x7A7D055B, (int32_t)0x25280C5D, 
      (int32_t)0x7641AF3C, (int32_t)0x30FBC54D, (int32_t)0x70E2CBC6, (int32_t)0x3C56BA70,
@@ -2594,7 +2594,7 @@ const int32_t twiddleCoef_64_q32[96] = {
      (int32_t)0xE70747C3, (int32_t)0x8275A0C0, (int32_t)0xF3742CA1, (int32_t)0x809DC970
 };
 
-const int32_t twiddleCoef_128_q32[192] = { 
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_128_q32[192] = { 
      (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7FD8878D, (int32_t)0x0647D97C, 
      (int32_t)0x7F62368F, (int32_t)0x0C8BD35E, (int32_t)0x7E9D55FC, (int32_t)0x12C8106E, 
      (int32_t)0x7D8A5F3F, (int32_t)0x18F8B83C, (int32_t)0x7C29FBEE, (int32_t)0x1F19F97B, 
@@ -2645,7 +2645,7 @@ const int32_t twiddleCoef_128_q32[192] = {
      (int32_t)0xF3742CA1, (int32_t)0x809DC970, (int32_t)0xF9B82683, (int32_t)0x80277872
 };
 
-const int32_t twiddleCoef_256_q32[384] = { 
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_256_q32[384] = { 
      (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7FF62182, (int32_t)0x03242ABF, 
      (int32_t)0x7FD8878D, (int32_t)0x0647D97C, (int32_t)0x7FA736B4, (int32_t)0x096A9049, 
      (int32_t)0x7F62368F, (int32_t)0x0C8BD35E, (int32_t)0x7F0991C3, (int32_t)0x0FAB272B, 
@@ -2744,7 +2744,7 @@ const int32_t twiddleCoef_256_q32[384] = {
      (int32_t)0xF9B82683, (int32_t)0x80277872, (int32_t)0xFCDBD541, (int32_t)0x8009DE7D
 };
 
-const int32_t twiddleCoef_512_q32[768] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_512_q32[768] = {
   (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7FFD885A,
   (int32_t)0x01921D1F, (int32_t)0x7FF62182, (int32_t)0x03242ABF,
   (int32_t)0x7FE9CBC0, (int32_t)0x04B6195D, (int32_t)0x7FD8878D,
@@ -3003,7 +3003,7 @@ const int32_t twiddleCoef_512_q32[768] = {
   (int32_t)0x8009DE7D, (int32_t)0xFE6DE2E0, (int32_t)0x800277A5
 };
 
-const int32_t twiddleCoef_1024_q32[1536] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_1024_q32[1536] = {
   (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7FFF6216,
   (int32_t)0x00C90F88, (int32_t)0x7FFD885A, (int32_t)0x01921D1F,
   (int32_t)0x7FFA72D1, (int32_t)0x025B26D7, (int32_t)0x7FF62182,
@@ -3518,7 +3518,7 @@ const int32_t twiddleCoef_1024_q32[1536] = {
   (int32_t)0x800277A5, (int32_t)0xFF36F078, (int32_t)0x80009DE9
 };
 
-const int32_t twiddleCoef_2048_q32[3072] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_2048_q32[3072] = {
   (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7FFFD885,
   (int32_t)0x006487E3, (int32_t)0x7FFF6216, (int32_t)0x00C90F88,
   (int32_t)0x7FFE9CB2, (int32_t)0x012D96B0, (int32_t)0x7FFD885A,
@@ -4545,7 +4545,7 @@ const int32_t twiddleCoef_2048_q32[3072] = {
   (int32_t)0x80009DE9, (int32_t)0xFF9B781D, (int32_t)0x8000277A
 };
 
-const int32_t twiddleCoef_4096_q32[6144] =
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const int32_t twiddleCoef_4096_q32[6144] =
 {
   (int32_t)0x7FFFFFFF, (int32_t)0x00000000, (int32_t)0x7FFFF621,
   (int32_t)0x003243F5, (int32_t)0x7FFFD885, (int32_t)0x006487E3,
@@ -6597,25 +6597,25 @@ const int32_t twiddleCoef_4096_q32[6144] =
   (int32_t)0x8000277A, (int32_t)0xFFCDBC0A, (int32_t)0x800009DE
 };
 
-const uint16_t plpBitRevIndexTable_fixed_16[PLPBITREVINDEXTABLE_FIXED_16_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_16[PLPBITREVINDEXTABLE_FIXED_16_TABLE_LENGTH] = {
     /* radix 4, size 12 */
     8, 64, 16, 32, 24, 96, 40, 80, 56, 112, 88, 104
 };
 
-const uint16_t plpBitRevIndexTable_fixed_32[PLPBITREVINDEXTABLE_FIXED_32_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_32[PLPBITREVINDEXTABLE_FIXED_32_TABLE_LENGTH] = {
     /* 4x2, size 24 */
     8,  128, 16, 64,  24,  192, 40,  160, 48,  96,  56,  224,
     72, 144, 88, 208, 104, 176, 120, 240, 152, 200, 184, 232
 };
 
-const uint16_t plpBitRevIndexTable_fixed_64[PLPBITREVINDEXTABLE_FIXED_64_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_64[PLPBITREVINDEXTABLE_FIXED_64_TABLE_LENGTH] = {
     /* radix 4, size 56 */
     8,   256, 16,  128, 24,  384, 32,  64,  40,  320, 48,  192, 56,  448, 72,  288, 80,  160, 88,
     416, 104, 352, 112, 224, 120, 480, 136, 272, 152, 400, 168, 336, 176, 208, 184, 464, 200, 304,
     216, 432, 232, 368, 248, 496, 280, 392, 296, 328, 312, 456, 344, 424, 376, 488, 440, 472
 };
 
-const uint16_t plpBitRevIndexTable_fixed_128[PLPBITREVINDEXTABLE_FIXED_128_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_128[PLPBITREVINDEXTABLE_FIXED_128_TABLE_LENGTH] = {
     /* 4x2, size 112 */
     8,   512, 16,  256, 24,  768, 32,  128, 40,  640, 48,  384,  56,   896, 72,  576, 80,  320, 88,
     832, 96,  192, 104, 704, 112, 448, 120, 960, 136, 544, 144,  288,  152, 800, 168, 672, 176, 416,
@@ -6625,7 +6625,7 @@ const uint16_t plpBitRevIndexTable_fixed_128[PLPBITREVINDEXTABLE_FIXED_128_TABLE
     840, 616, 712, 632, 968, 664, 808, 696, 936, 728, 872, 760,  1000, 824, 920, 888, 984
 };
 
-const uint16_t plpBitRevIndexTable_fixed_256[PLPBITREVINDEXTABLE_FIXED_256_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_256[PLPBITREVINDEXTABLE_FIXED_256_TABLE_LENGTH] = {
     /* radix 4, size 240 */
     8,    1024, 16,   512,  24,   1536, 32,   256,  40,   1280, 48,   768,  56,   1792, 64,   128,
     72,   1152, 80,   640,  88,   1664, 96,   384,  104,  1408, 112,  896,  120,  1920, 136,  1088,
@@ -6644,7 +6644,7 @@ const uint16_t plpBitRevIndexTable_fixed_256[PLPBITREVINDEXTABLE_FIXED_256_TABLE
     1496, 1768, 1528, 2024, 1592, 1816, 1624, 1688, 1656, 1944, 1720, 1880, 1784, 2008, 1912, 1976
 };
 
-const uint16_t plpBitRevIndexTable_fixed_512[PLPBITREVINDEXTABLE_FIXED_512_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_512[PLPBITREVINDEXTABLE_FIXED_512_TABLE_LENGTH] = {
     /* 4x2, size 480 */
     8,    2048, 16,   1024, 24,   3072, 32,   512,  40,   2560, 48,   1536, 56,   3584, 64,   256,
     72,   2304, 80,   1280, 88,   3328, 96,   768,  104,  2816, 112,  1792, 120,  3840, 136,  2176,
@@ -6678,7 +6678,7 @@ const uint16_t plpBitRevIndexTable_fixed_512[PLPBITREVINDEXTABLE_FIXED_512_TABLE
     3288, 3480, 3320, 3992, 3384, 3672, 3448, 3928, 3512, 3800, 3576, 4056, 3704, 3896, 3832, 4024
 };
 
-const uint16_t plpBitRevIndexTable_fixed_1024[PLPBITREVINDEXTABLE_FIXED_1024_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_1024[PLPBITREVINDEXTABLE_FIXED_1024_TABLE_LENGTH] = {
     /* radix 4, size 992 */
     8,    4096, 16,   2048, 24,   6144, 32,   1024, 40,   5120, 48,   3072, 56,   7168, 64,   512,
     72,   4608, 80,   2560, 88,   6656, 96,   1536, 104,  5632, 112,  3584, 120,  7680, 128,  256,
@@ -6744,7 +6744,7 @@ const uint16_t plpBitRevIndexTable_fixed_1024[PLPBITREVINDEXTABLE_FIXED_1024_TAB
     7096, 7640, 7160, 8152, 7288, 7736, 7352, 7480, 7416, 7992, 7544, 7864, 7672, 8120, 7928, 8056
 };
 
-const uint16_t plpBitRevIndexTable_fixed_2048[PLPBITREVINDEXTABLE_FIXED_2048_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_2048[PLPBITREVINDEXTABLE_FIXED_2048_TABLE_LENGTH] = {
     /* 4x2, size 1984 */
     8,     8192,  16,    4096,  24,    12288, 32,    2048,  40,    10240, 48,    6144,  56,
     14336, 64,    1024,  72,    9216,  80,    5120,  88,    13312, 96,    3072,  104,   11264,
@@ -6901,7 +6901,7 @@ const uint16_t plpBitRevIndexTable_fixed_2048[PLPBITREVINDEXTABLE_FIXED_2048_TAB
     15224, 15800, 15352, 16312, 15608, 15992, 15864, 16248
 };
 
-const uint16_t plpBitRevIndexTable_fixed_4096[PLPBITREVINDEXTABLE_FIXED_4096_TABLE_LENGTH] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_fixed_4096[PLPBITREVINDEXTABLE_FIXED_4096_TABLE_LENGTH] = {
     /* radix 4, size 4032 */
     8,     16384, 16,    8192,  24,    24576, 32,    4096,  40,    20480, 48,    12288, 56,
     28672, 64,    2048,  72,    18432, 80,    10240, 88,    26624, 96,    6144,  104,   22528,
@@ -7239,35 +7239,35 @@ for i in range(2**9):
     print(int("{:0>9}".format(bin(i)[2:])[::-1],2), end=', ')
 */
 
-short bit_rev_radix8_LUT_16[16] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix8_LUT_16[16] = {
     0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15
 };
 
-short bit_rev_radix2_LUT_32[32] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix2_LUT_32[32] = {
     0, 16, 8, 24, 4, 20, 12, 28, 2, 18, 10, 26, 6, 22, 14, 30, 
     1, 17, 9, 25, 5, 21, 13, 29, 3, 19, 11, 27, 7, 23, 15, 31
 };
 
-short bit_rev_radix_2by4_LUT_32[32] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix_2by4_LUT_32[32] = {
      1,  8,  4,  2, 16,  3, 24,  5, 10, 20,  6, 18, 17,  9, 12, 7, 
     26, 21, 11, 28, 13, 14, 22, 19, 25, 15, 30, 23, 27, 29,  0, 0  
 };
 
-short bit_rev_radix2_LUT_64[64] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix2_LUT_64[64] = {
     0, 32, 16, 48, 8, 40, 24, 56, 4, 36, 20, 52, 12, 44, 28, 60, 
     2, 34, 18, 50, 10, 42, 26, 58, 6, 38, 22, 54, 14, 46, 30, 62, 
     1, 33, 17, 49, 9, 41, 25, 57, 5, 37, 21, 53, 13, 45, 29, 61, 
     3, 35, 19, 51, 11, 43, 27, 59, 7, 39, 23, 55, 15, 47, 31, 63
 };
 
-short bit_rev_radix8_LUT_64[64] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix8_LUT_64[64] = {
     0, 8, 16, 24, 32, 40, 48, 56, 1, 9, 17, 25, 33, 41, 49, 57, 
     2, 10, 18, 26, 34, 42, 50, 58, 3, 11, 19, 27, 35, 43, 51, 59, 
     4, 12, 20, 28, 36, 44, 52, 60, 5, 13, 21, 29, 37, 45, 53, 61, 
     6, 14, 22, 30, 38, 46, 54, 62, 7, 15, 23, 31, 39, 47, 55, 63
 };
 
-short bit_rev_radix2_LUT_128[128] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix2_LUT_128[128] = {
     0, 64, 32, 96, 16, 80, 48, 112, 8, 72, 40, 104, 24, 88, 56, 120, 4, 68, 36,
     100, 20, 84, 52, 116, 12, 76, 44, 108, 28, 92, 60, 124, 2, 66, 34, 98, 18, 82,
     50, 114, 10, 74, 42, 106, 26, 90, 58, 122, 6, 70, 38, 102, 22, 86, 54, 118,
@@ -7277,7 +7277,7 @@ short bit_rev_radix2_LUT_128[128] = {
     7, 71, 39, 103, 23, 87, 55, 119, 15, 79, 47, 111, 31, 95, 63, 127
 };
 
-short bit_rev_radix_2by4_LUT_128[128] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix_2by4_LUT_128[128] = {
      1,  32,   4,   8,  16,   2,  64,   3,  96,   5,  40,  20,  10,  80,   6,  72, 
     17,  34,  68,   9,  48,   7, 104,  21,  42,  84,  11, 112,  12,  24,  18,  66, 
     65,  33,  36,  13,  56,  22,  74,  81,  35, 100,  14,  88,  19,  98,  69,  41, 
@@ -7289,7 +7289,7 @@ short bit_rev_radix_2by4_LUT_128[128] = {
 };
 
 
-short bit_rev_radix2_LUT_256[256] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix2_LUT_256[256] = {
     0, 128, 64, 192, 32, 160, 96, 224, 16, 144, 80, 208, 48, 176, 112, 240, 
     8, 136, 72, 200, 40, 168, 104, 232, 24, 152, 88, 216, 56, 184, 120, 248, 
     4, 132, 68, 196, 36, 164, 100, 228, 20, 148, 84, 212, 52, 180, 116, 244, 
@@ -7308,7 +7308,7 @@ short bit_rev_radix2_LUT_256[256] = {
     15, 143, 79, 207, 47, 175, 111, 239, 31, 159, 95, 223, 63, 191, 127, 255,
 };
 
-short bit_rev_radix4_LUT_256[256] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix4_LUT_256[256] = {
     0,  64, 128, 192,  16,  80, 144, 208,  32,  96, 160, 224,  48, 112, 176, 240, 
     4,  68, 132, 196,  20,  84, 148, 212,  36, 100, 164, 228,  52, 116, 180, 244, 
     8,  72, 136, 200,  24,  88, 152, 216,  40, 104, 168, 232,  56, 120, 184, 248, 
@@ -7327,7 +7327,7 @@ short bit_rev_radix4_LUT_256[256] = {
     15,  79, 143, 207,  31,  95, 159, 223,  47, 111, 175, 239,  63, 127, 191, 255,
 };
 
-short bit_rev_radix2_LUT_512[512] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix2_LUT_512[512] = {
     0, 256, 128, 384, 64, 320, 192, 448, 32, 288, 160, 416, 96, 352, 224, 480, 16,
     272, 144, 400, 80, 336, 208, 464, 48, 304, 176, 432, 112, 368, 240, 496, 8,
     264, 136, 392, 72, 328, 200, 456, 40, 296, 168, 424, 104, 360, 232, 488, 24,
@@ -7362,7 +7362,7 @@ short bit_rev_radix2_LUT_512[512] = {
     287, 159, 415, 95, 351, 223, 479, 63, 319, 191, 447, 127, 383, 255, 511,
 };
 
-short bit_rev_radix8_LUT_512[512] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix8_LUT_512[512] = {
     0,  64, 128, 192, 256, 320, 384, 448,   8,  72, 136, 200, 264, 328, 392, 456, 
     16,  80, 144, 208, 272, 336, 400, 464,  24,  88, 152, 216, 280, 344, 408, 472, 
     32,  96, 160, 224, 288, 352, 416, 480,  40, 104, 168, 232, 296, 360, 424, 488, 
@@ -7397,7 +7397,7 @@ short bit_rev_radix8_LUT_512[512] = {
     55, 119, 183, 247, 311, 375, 439, 503,  63, 127, 191, 255, 319, 383, 447, 511
 };
 
-short bit_rev_radix2_LUT_1024[1024] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix2_LUT_1024[1024] = {
     0, 512, 256, 768, 128, 640, 384, 896, 64, 576, 320, 832, 192, 704, 448, 960, 
     32, 544, 288, 800, 160, 672, 416, 928, 96, 608, 352, 864, 224, 736, 480, 992, 
     16, 528, 272, 784, 144, 656, 400, 912, 80, 592, 336, 848, 208, 720, 464, 976, 
@@ -7464,7 +7464,7 @@ short bit_rev_radix2_LUT_1024[1024] = {
     63, 575, 319, 831, 191, 703, 447, 959, 127, 639, 383, 895, 255, 767, 511, 1023 
 };
 
-short bit_rev_radix4_LUT_1024[1024] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix4_LUT_1024[1024] = {
     0, 256, 512, 768,  64, 320, 576, 832, 128, 384, 640, 896, 192, 448, 704, 960, 
     16, 272, 528, 784,  80, 336, 592, 848, 144, 400, 656, 912, 208, 464, 720, 976, 
     32, 288, 544, 800,  96, 352, 608, 864, 160, 416, 672, 928, 224, 480, 736, 992, 
@@ -7531,7 +7531,7 @@ short bit_rev_radix4_LUT_1024[1024] = {
     63, 319, 575, 831, 127, 383, 639, 895, 191, 447, 703, 959, 255, 511, 767, 1023
 };
 
-short bit_rev_radix_2by4_LUT_2048[2048] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix_2by4_LUT_2048[2048] = {
    1,  512,    4,  128,   16,   32,   64,    8,  256,    2, 1024,    3, 1536,    5,  640,   20, 
  160,   80,   40,  320,   10, 1280,    6, 1152,   17,  544,   68,  136,  272,   34, 1088,    9, 
  768,    7, 1664,   21,  672,   84,  168,  336,   42, 1344,   11, 1792,   12,  384,   18, 1056, 
@@ -7662,7 +7662,7 @@ short bit_rev_radix_2by4_LUT_2048[2048] = {
 1975, 1783, 1789, 1023, 2046, 1535, 2043, 1919, 2031, 2015, 1983, 2039, 1791, 2045,    0,    0
 };
 
-short bit_rev_radix2_LUT_2048[2048] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const short bit_rev_radix2_LUT_2048[2048] = {
     0,   1024, 512, 1536, 256, 1280, 768, 1792, 128, 1152, 640, 1664, 384, 1408, 896,  1920,
     64,  1088, 576, 1600, 320, 1344, 832, 1856, 192, 1216, 704, 1728, 448, 1472, 960,  1984,
     32,  1056, 544, 1568, 288, 1312, 800, 1824, 160, 1184, 672, 1696, 416, 1440, 928,  1952,
@@ -7794,7 +7794,7 @@ short bit_rev_radix2_LUT_2048[2048] = {
 };
 
 
-const uint16_t plpBitRevIndexTable_rfftfast_1024[1800] =
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_rfftfast_1024[1800] =
 {
    /* 8x2, size 1800 */
       8,4096,    16,512,   24,4608,  32,1024,    40,5120,   48,1536,  56,5632, 64,2048,
@@ -7946,7 +7946,7 @@ const uint16_t plpBitRevIndexTable_rfftfast_1024[1800] =
    8112,8136, 8120,8168, 8136,8160, 8152,8176
 };
 
-const uint16_t plpBitRevIndexTable_rfftfast_512[448] =
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_rfftfast_512[448] =
 {
    /* radix 8, size 448 */
    8,512, 16,1024, 24,1536, 32,2048, 40,2560, 48,3072, 56,3584, 72,576,
@@ -7986,7 +7986,7 @@ const uint16_t plpBitRevIndexTable_rfftfast_512[448] =
    3448,3952, 3512,4016, 3576,4080
 };
 
-const uint16_t plpBitRevIndexTable_rfftfast_256[440] = {
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_rfftfast_256[440] = {
    /* 8x4, size 440 */
    8,512, 16,1024, 24,1536, 32,64, 40,576, 48,1088, 56,1600, 64,128, 72,640,
    80,1152, 88,1664, 96,192, 104,704, 112,1216, 120,1728, 128,256, 136,768,
@@ -8023,7 +8023,7 @@ const uint16_t plpBitRevIndexTable_rfftfast_256[440] = {
    1960,1968, 2008,2032, 1992,2016, 2024,2032
 };
 
-const uint16_t plpBitRevIndexTable_rfftfast_128[208] =
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_rfftfast_128[208] =
 {
    /* 8x2, size 208 */
    8,512, 16,64, 24,576, 32,128, 40,640, 48,192, 56,704, 64,256, 72,768,
@@ -8041,7 +8041,7 @@ const uint16_t plpBitRevIndexTable_rfftfast_128[208] =
    904,928, 912,960, 920,992, 944,968, 952,1000, 968,992, 984,1008
 };
 
-const uint16_t plpBitRevIndexTable_rfftfast_64[56] =
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_rfftfast_64[56] =
 {
    /* radix 8, size 56 */
    8,64, 16,128, 24,192, 32,256, 40,320, 48,384, 56,448, 80,136, 88,200,
@@ -8050,7 +8050,7 @@ const uint16_t plpBitRevIndexTable_rfftfast_64[56] =
    368,424, 376,488, 440,496
 };
 
-const uint16_t plpBitRevIndexTable_rfftfast_32[48] =
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_rfftfast_32[48] =
 {
    /* 8x4, size 48 */
    8,64, 16,128, 24,192, 32,64, 40,72, 48,136, 56,200, 64,128, 72,80, 88,208,
@@ -8058,7 +8058,7 @@ const uint16_t plpBitRevIndexTable_rfftfast_32[48] =
    152,224, 176,208, 184,232, 216,240, 200,224, 232,240
 };
 
-const uint16_t plpBitRevIndexTable_rfftfast_16[20] =
+__attribute__ ((section(".l2_data.plp_dsp_tables"))) const uint16_t plpBitRevIndexTable_rfftfast_16[20] =
 {
    /* 8x2, size 20 */
    8,64, 24,72, 16,64, 40,80, 32,64, 56,88, 48,72, 88,104, 72,96, 104,112
