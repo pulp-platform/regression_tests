@@ -2,7 +2,7 @@
 # @Author: Michael Rogenmoser
 # @Date:   2023-07-27 17:07:37
 # @Last Modified by:   Michael Rogenmoser
-# @Last Modified time: 2023-07-27 18:49:00
+# @Last Modified time: 2023-07-28 11:21:43
 
 import numpy as np
 
@@ -101,25 +101,34 @@ def q_roundnorm(a, p):
 
 def main():
     size = 256
+    bitwidth = 32
 
-    input_ctype = 'int16_t'
-    input_value = np.random.randint(low=(-(2**15)), high=((2**15)-1), size=size*2, dtype=np.int16)
+    if (bitwidth == 16):
+        input_ctype = 'int16_t'
+        input_value = np.random.randint(low=(-(2**15)), high=((2**15)-1), size=size*2, dtype=np.int16)
+    if (bitwidth == 32):
+        input_ctype = 'int32_t'
+        input_value = np.random.randint(low=(-(2**31)), high=((2**31)-1), size=size*2, dtype=np.int32)
     result = compute_result(input_ctype, input_value)
     with open('cfft_data.h', 'w') as f:
         f.write('#include <stdint.h>\n\n')
-        f.write('#define SIZE=%d\n\n' % size)
-        f.write('const int16_t p1_init[] = {\n')
+
+        f.write('#ifndef CFFT_DATA_H_\n#define CFFT_DATA_H_\n\n')
+        f.write('#define SIZE %d\n\n' % size)
+        f.write('#define BITWIDTH %d\n\n' % bitwidth)
+        f.write('const int%d_t p1_init[2*SIZE] = {\n' % bitwidth)
         for i in range(size):
             if i != 0:
                 f.write(',\n')
             f.write('%d, %d' % (input_value[2*i], input_value[2*i+1]))
         f.write('\n};\n\n');
-        f.write('const int16_t p1_result[] = {\n')
+        f.write('const int%d_t p1_result[2*SIZE] = {\n' % bitwidth)
         for i in range(size):
             if i != 0:
                 f.write(',\n')
             f.write('%d, %d' % (result[2*i], result[2*i+1]))
         f.write('\n};\n\n');
+        f.write('#endif\n')
 
 
 

@@ -22,7 +22,50 @@
 #include "plp_const_structs.h"
 #include "cfft_data.h"
 
-__attribute__ ((section(".heapsram"))) int16_t p1[2*256];
+#if BITWIDTH == 16
+__attribute__ ((section(".heapsram"))) int16_t p1[2*SIZE];
+#if SIZE == 16
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len16;
+#elif SIZE == 32
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len32;
+#elif SIZE == 64
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len64;
+#elif SIZE == 128
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len128;
+#elif SIZE == 256
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len256;
+#elif SIZE == 512
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len512;
+#elif SIZE == 1024
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len1024;
+#elif SIZE == 2048
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len2048;
+#elif SIZE == 4096
+const plp_cfft_instance_q16* used_struct = &plp_cfft_sR_q16_len4096;
+#endif
+#endif
+#if BITWIDTH == 32
+__attribute__ ((section(".heapsram"))) int32_t p1[2*SIZE];
+#if SIZE == 16
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len16;
+#elif SIZE == 32
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len32;
+#elif SIZE == 64
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len64;
+#elif SIZE == 128
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len128;
+#elif SIZE == 256
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len256;
+#elif SIZE == 512
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len512;
+#elif SIZE == 1024
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len1024;
+#elif SIZE == 2048
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len2048;
+#elif SIZE == 4096
+const plp_cfft_instance_q32* used_struct = &plp_cfft_sR_q32_len4096;
+#endif
+#endif
 
 int main() {
 
@@ -34,11 +77,11 @@ int main() {
   }
 
   int unsigned num_errors = 0;
-  int unsigned num_cores = 3;//hmr_get_active_cores(0);
+  int unsigned num_cores = 12;//hmr_get_active_cores(0);
 
   if (core_id() == 0) {
     // Copy data to p1
-    for (int i = 0; i < 2*256; i++) {
+    for (int i = 0; i < 2*SIZE; i++) {
       p1[i] = p1_init[i];
     }
     printf("Executing on %d cores\n", num_cores);
@@ -53,8 +96,9 @@ int main() {
     synch_barrier();
     perf_start();
     // Execute FFT
+#if BITWIDTH == 16
     plp_cfft_instance_q16_parallel args = {
-      .S              = &plp_cfft_sR_q16_len256, 
+      .S              = used_struct, 
       .p1             = p1,         /* Source/destination vector */
       .ifftFlag       = 0,          /* forward (not inverse)     */
       .bitReverseFlag = 1,          /* Do bitreversal            */
@@ -63,6 +107,19 @@ int main() {
 
 
     plp_cfft_q16p_xpulpv2((void*)&args);
+#endif
+#if BITWIDTH == 32
+    plp_cfft_instance_q32_parallel args = {
+      .S              = used_struct, 
+      .p1             = p1,         /* Source/destination vector */
+      .ifftFlag       = 0,          /* forward (not inverse)     */
+      .bitReverseFlag = 1,          /* Do bitreversal            */
+      .fracBits       = 0,          /* fracBits not used         */
+      .nPE            = num_cores}; /* nPE                       */
+
+
+    plp_cfft_q32p_xpulpv2((void*)&args);
+#endif
     synch_barrier();
     perf_stop();
 
@@ -73,7 +130,7 @@ int main() {
   if (core_id() == 0) {
     // stop timer
     // Compare result with expected outcome
-    for (int i = 0; i < 2*256; i++) {
+    for (int i = 0; i < 2*SIZE; i++) {
       if (!((p1[i] >= p1_result[i] - 31) &&
             (p1[i] <= p1_result[i] + 31))) {
         num_errors++;
