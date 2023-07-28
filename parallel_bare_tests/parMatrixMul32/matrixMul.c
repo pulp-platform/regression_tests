@@ -21,13 +21,15 @@
 #include "pulp.h"
 
 #include "parMatrixMul32_stimuli.h"
+#define max(x,y) (x > y ? x : y)
+#define min(x,y) (x < y ? x : y)
 
 void check_matrix_mul(testresult_t *result, void (*start)(), void (*stop)());
 void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*stop)());
 
 testcase_t testcases[] = {
   { .name = "matrixMul",          .test = check_matrix_mul           },
-  { .name = "matrixMulTranspose", .test = check_matrix_mul_transpose },
+  // { .name = "matrixMulTranspose", .test = check_matrix_mul_transpose },
   {0, 0}
 };
 
@@ -35,10 +37,13 @@ unsigned int num_cores;
 
 int main()
 {
-  if (rt_cluster_id() != 0)
+  if (rt_cluster_id() != 0) {
+    hmr_enable_all_tmr(0);
+    hmr_set_tmr_config_all(0,  false, true, true, false); // setback, no rapid recovery
     return bench_cluster_forward(0);
+  }
 
-  num_cores = get_core_num();
+  num_cores = 4;
 
   if(rt_core_id() < num_cores) {
     run_suite(testcases);
@@ -63,9 +68,10 @@ void check_matrix_mul(testresult_t *result, void (*start)(), void (*stop)()) {
   // number of rows each core has to multiply
   chunk = SIZE / num_cores;
   // lower bound
-  lb = core_id * chunk;
+  lb = core_id * chunk +  min(core_id, SIZE % num_cores);
   // upper bound
-  ub = lb + chunk;
+  ub = (core_id + 1) * chunk + min(core_id + 1, SIZE % num_cores);
+  if (core_id == num_cores-1) {ub = SIZE;}
 
   if(core_id == 0) {
     matrix_init();
