@@ -1736,7 +1736,7 @@ const int m_exp[] = {
 };
 
 #define SIZE 24
-__attribute__ ((section("__heap_sram"))) int g_mA[SIZE][SIZE];
-__attribute__ ((section("__heap_sram"))) int g_mB[SIZE][SIZE];
-__attribute__ ((section("__heap_sram"))) int g_mC[SIZE][SIZE];
-__attribute__ ((section("__heap_sram"))) int g_mB_tmp[SIZE][SIZE];
+__attribute__ ((section(".heapsram"))) int g_mA[SIZE][SIZE];
+__attribute__ ((section(".heapsram"))) int g_mB[SIZE][SIZE];
+__attribute__ ((section(".heapsram"))) int g_mC[SIZE][SIZE];
+__attribute__ ((section(".heapsram"))) int g_mB_tmp[SIZE][SIZE];

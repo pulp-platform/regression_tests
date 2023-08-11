@@ -35,7 +35,7 @@ unsigned int num_cores;
 
 int main()
 {
-  if (rt_cluster_id() != 1)
+  if (rt_cluster_id() != 0)
     return bench_cluster_forward(0);
 
   num_cores = get_core_num();

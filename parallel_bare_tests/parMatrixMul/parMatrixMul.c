@@ -29,9 +29,9 @@
 #define CHKSM 88408
 #endif
 
-__attribute__ ((section("__heap_sram"))) int A[SIZE][SIZE];
-__attribute__ ((section("__heap_sram"))) int B[SIZE][SIZE];
-__attribute__ ((section("__heap_sram"))) int C[SIZE][SIZE];
+__attribute__ ((section(".heapsram"))) int A[SIZE][SIZE];
+__attribute__ ((section(".heapsram"))) int B[SIZE][SIZE];
+__attribute__ ((section(".heapsram"))) int C[SIZE][SIZE];
 
 
 void initialize_mat();

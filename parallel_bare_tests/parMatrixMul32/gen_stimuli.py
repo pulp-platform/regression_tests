@@ -47,8 +47,8 @@ write_arr(f, 'm_exp', m_exp)
 f.write('#define SIZE %d\n' % SIZE)
 
 
-f.write('__attribute__ ((section("__heap_sram"))) int g_mA[SIZE][SIZE];\n')
-f.write('__attribute__ ((section("__heap_sram"))) int g_mB[SIZE][SIZE];\n')
-f.write('__attribute__ ((section("__heap_sram"))) int g_mC[SIZE][SIZE];\n')
-f.write('__attribute__ ((section("__heap_sram"))) int g_mB_tmp[SIZE][SIZE];\n')
+f.write('__attribute__ ((section(".heapsram"))) int g_mA[SIZE][SIZE];\n')
+f.write('__attribute__ ((section(".heapsram"))) int g_mB[SIZE][SIZE];\n')
+f.write('__attribute__ ((section(".heapsram"))) int g_mC[SIZE][SIZE];\n')
+f.write('__attribute__ ((section(".heapsram"))) int g_mB_tmp[SIZE][SIZE];\n')
 
