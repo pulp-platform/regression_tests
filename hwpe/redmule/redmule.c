@@ -21,30 +21,52 @@
 
 #include <stdint.h>
 #include "stdio.h"
-#include "utils/redmule_utils.h"
 #include "archi_redmule.h"
 #include "hal_redmule.h"
-
-// #include "inc/x_input.h"
-// #include "inc/w_input.h"
-// #include "inc/y_input.h"
-// #include "inc/z_output.h"
-#include "inc/golden.h"
 
 int main() {
 
   volatile int errors = 0;
 
   if(get_core_id() == 0){
+
     uint16_t m_size = M_SIZE;
     uint16_t n_size = N_SIZE;
     uint16_t k_size = K_SIZE;
+
+    uint8_t *x_ext = x_inp;
+    uint8_t *w_ext = w_inp;
+    uint8_t *y_ext = y_inp;
+    uint8_t *z_ext = z_oup;
 
     uint8_t volatile *x = (uint8_t volatile *) pi_l1_malloc(0, (2*m_size*n_size));
     uint8_t volatile *w = (uint8_t volatile *) pi_l1_malloc(0, (2*n_size*k_size));
     uint8_t volatile *y = (uint8_t volatile *) pi_l1_malloc(0, (2*m_size*k_size));
 
-    generate_test_data16((int) x, (int) w, (int) y, (int) m_size, (int) n_size, (int) k_size);
+    #ifdef USE_DMA
+      volatile unsigned int dma_id = 0;
+      dma_id = mchan_alloc();
+      mchan_transfer((unsigned int) 2*(2*m_size*n_size),
+                     (unsigned int) x_ext,
+                     (unsigned int) x    );
+      mchan_barrier(dma_id);
+      mchan_free(dma_id);
+    
+      dma_id = mchan_alloc();
+      mchan_transfer((unsigned int) 2*(2*n_size*k_size),
+                     (unsigned int) w_ext,
+                     (unsigned int) w    );
+      mchan_barrier(dma_id);
+      mchan_free(dma_id);
+    
+      dma_id = mchan_alloc();
+      mchan_transfer((unsigned int) 2*(2*m_size*k_size),
+                     (unsigned int) y_ext,
+                     (unsigned int) y    );
+      mchan_barrier(dma_id);
+    #else
+      generate_test_data16((int) x, (int) w, (int) y, (int) m_size, (int) n_size, (int) k_size);
+    #endif
 
     int gold_sum = 0, check_sum = 0;
     int i,j;
@@ -55,8 +77,6 @@ int main() {
     hwpe_cg_enable();
 
     hwpe_soft_clear();
-
-    // while( ( offload_id_tmp = hwpe_acquire_job() ) < 0);
 
     // redmule_cfg ((unsigned int) x,
     //              (unsigned int) w,

@@ -62,8 +62,17 @@
  *
  */
 
-#define ARCHI_CL_EVT_ACC0 12
-#define ARCHI_CL_EVT_ACC1 13
+/* PULP Cluster Archi defines */
+#define ARCHI_CLUST_CTRL_BASE 0x50200000
+#define ARCHI_CLUST_HWPE_BASE 0x50201000
+#define DMA_COMMAND_QUEUE     0x50204400
+#define DMA_STATUS_REGISTER   0x50204404
+#define ARCHI_CL_HWPE_EVT0 12
+#define ARCHI_CL_HWPE_EVT1 13
+#define FC_DMA_EVENT 8
+#define CL_DMA_EVENT 22
+#define CLUST_CTRL_HWPE_EN 0x18
+#define CLUST_CTRL_HWPE_EN_MASK 0x800
 #define __builtin_bitinsert(a,b,c,d) (a | (((b << (32-c)) >> (32-c)) << d))
 
 // RedMulE architecture
@@ -73,9 +82,6 @@
 #define ARRAY_HEIGHT 4
 #define PIPE_REGS    3
 #define ARRAY_WIDTH  12 /* Superior limit is ARRAY_HEIGHT*PIPE_REGS */
-
-// Base address
-#define REDMULE_BASE_ADD 0x50201000
 
 // Commands
 #define REDMULE_TRIGGER     0x00
@@ -141,5 +147,18 @@
 #define FP8     0x3
 #define FP16ALT 0x4
 #define FP8ALT  0x5
+
+/* DMA Archi */
+#define DMA_TX  0
+#define DMA_RX  1
+#define DMA_INC 1
+
+#define PLP_DMA_TYPE_BIT    0x00000011
+#define PLP_DMA_INCR_BIT    0x00000012
+#define PLP_DMA_2D_BIT      0x00000013
+#define PLP_DMA_ELE_BIT     0x00000014
+#define PLP_DMA_ILE_BIT     0x00000015
+#define PLP_DMA_BLE_BIT     0x00000016
+#define PLP_DMA_2D_TCDM_BIT 0x0000017
 
 #endif
