@@ -1,13 +1,13 @@
 mchan_tests:
   testMCHAN_2D_ext_tcdm:
     path: ./mchan_tests/testMCHAN_2D_ext_tcdm
-    command:
+    command: make clean all run
   testMCHAN_basic:
     path: ./mchan_tests/testMCHAN_basic
     command: make clean all run
   testMCHAN_multi_trans:
     path: ./mchan_tests/testMCHAN_multi_trans
-    command:
+    command: make clean all run
   testMCHAN_pe_basic:
     path: ./mchan_tests/testMCHAN_pe_basic
     command: make clean all run
@@ -16,10 +16,10 @@ mchan_tests:
     command: make clean all run
   testMCHAN_4k_crossing:
     path: ./mchan_tests/testMCHAN_4k_crossing
-    command:
+    command: make clean all run
   testMCHAN_basic_FC_TCDM:
     path: ./mchan_tests/testMCHAN_basic_FC_TCDM
-    command:
+    command: make clean all run
   testMCHAN_not_incremental:
     path: ./mchan_tests/testMCHAN_not_incremental
     command: make clean all run
