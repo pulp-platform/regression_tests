@@ -1,0 +1,15 @@
+GNU Make 3.82
+Built for x86_64-redhat-linux-gnu
+Copyright (C) 2010  Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Lettura dei makefile...
+/scratch2/rtedeschi/pulp_cluster/alsaqr_cluster/pulp-runtime/rules/pulpos/targets/pulp_cluster.mk:74: warning: overriding recipe for target `run'
+/scratch2/rtedeschi/pulp_cluster/alsaqr_cluster/pulp-runtime/rules/pulpos/default_rules.mk:322: warning: ignoring old recipe for target `run'
+Aggiornamento degli obbiettivi....
+ Il file «all» non esiste.
+   Il file «/scratch2/rtedeschi/pulp_cluster/alsaqr_cluster/regression-tests/fpu_tests/matmul/FP32/build/fp_matmul/fp_matmul» non esiste.
+     Il file «/scratch2/rtedeschi/pulp_cluster/alsaqr_cluster/regression-tests/fpu_tests/matmul/FP32/build/fp_matmul/support_func.o» non esiste.
+    L'obiettivo «/scratch2/rtedeschi/pulp_cluster/alsaqr_cluster/regression-tests/fpu_tests/matmul/FP32/build/fp_matmul/support_func.o» deve essere rigenerato.
+make: *** Nessuna regola per generare l'obiettivo «/scratch2/rtedeschi/pulp_cluster/alsaqr_cluster/regression-tests/fpu_tests/matmul/FP32/build/fp_matmul/support_func.o», necessario per «/scratch2/rtedeschi/pulp_cluster/alsaqr_cluster/regression-tests/fpu_tests/matmul/FP32/build/fp_matmul/fp_matmul».  Stop.
