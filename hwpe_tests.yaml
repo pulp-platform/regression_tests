@@ -1,0 +1,5 @@
+hwpe_tests:
+  redmule:
+    path: ./hwpe/redmule
+    command: make clean all use_dma=1 run
+    
