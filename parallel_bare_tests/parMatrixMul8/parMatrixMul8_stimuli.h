@@ -17,7 +17,7 @@
 /* 
  * Mantainer: Luca Valente, luca.valente2@unibo.it
  */
-const char m_a[] = {
+PI_L2 const char m_a[] = {
 -2,
 3,
 2,
@@ -1044,7 +1044,7 @@ const char m_a[] = {
 3,
 };
 
-const char m_b[] = {
+PI_L2 const char m_b[] = {
 0,
 1,
 -4,
@@ -2071,7 +2071,7 @@ const char m_b[] = {
 0,
 };
 
-const char m_exp[] = {
+PI_L2 const char m_exp[] = {
 -7,
 54,
 40,

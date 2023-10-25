@@ -17,7 +17,7 @@
 /* 
  * Mantainer: Luca Valente, luca.valente2@unibo.it
  */
-const short m_a[] = {
+PI_L2 const short m_a[] = {
 3,
 -2,
 -1,
@@ -1044,7 +1044,7 @@ const short m_a[] = {
 1,
 };
 
-const short m_b[] = {
+PI_L2 const short m_b[] = {
 0,
 3,
 3,
@@ -2071,7 +2071,7 @@ const short m_b[] = {
 2,
 };
 
-const short m_exp[] = {
+PI_L2 const short m_exp[] = {
 -8,
 10,
 -3,

@@ -17,7 +17,7 @@
 /* 
  * Mantainer: Luca Valente, luca.valente2@unibo.it
  */
-const int m_a[] = {
+PI_L2 const int m_a[] = {
 830,
 -456,
 -926,
@@ -1044,7 +1044,7 @@ const int m_a[] = {
 -460,
 };
 
-const int m_b[] = {
+PI_L2 const int m_b[] = {
 739,
 -691,
 -674,
@@ -2071,7 +2071,7 @@ const int m_b[] = {
 426,
 };
 
-const int m_exp[] = {
+PI_L2 const int m_exp[] = {
 162957,
 806616,
 -3843440,
