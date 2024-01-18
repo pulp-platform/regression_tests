@@ -57,9 +57,11 @@ void generate_transactions(testresult_t *result, void (*start)(), void (*stop)()
     mchan_free(n);
   }
   #else
-  for(int p=0; p<SIZE*2/SIZE;p++) {
-    for(int k = 0; k< SIZE; k++) {
-      g_mA[k][p] = * ( (uint32_t *) (A_shared + k*SIZE + p + cid*0x80000) );
+  for(int i = 0; i < 2; i++) {
+    for(int p=0; p<SIZE*2/SIZE;p++) {
+      for(int k = 0; k< SIZE; k++) {
+        g_mA[k][p] = * ( (uint32_t *) (A_shared + k*SIZE + p + cid*0x80000 + i*num_cores*0x80000) );
+      }
     }
   }
   #endif
