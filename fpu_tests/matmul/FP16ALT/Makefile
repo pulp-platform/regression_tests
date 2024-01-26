@@ -1,4 +1,4 @@
-PULP_APP = fp_matmul
+PULP_APP = test
 
 PULP_APP_FC_SRCS = main.c
 PULP_APP_SRCS = support_func.c matmul.c
