@@ -16,7 +16,7 @@ f = open('parMatrixMul32_stimuli.h', 'w')
 
 
 SIZE = 24
-RANGE = 2**15/SIZE
+RANGE = int(2**15/SIZE)
 
 m_a   = []
 m_b   = []

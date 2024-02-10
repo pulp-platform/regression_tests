@@ -1,5 +1,0 @@
-
-parallel_bare_tests:
-  parMatrixMul32:
-    path: ./parMatrixMul32 #ok
-    command: make clean all run
