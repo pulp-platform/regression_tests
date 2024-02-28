@@ -43,12 +43,15 @@ int main() {
   for (int i = 0; i < NUM_BANKS; i++)
     tcdm_scrubber_set_interval(cluster_id, i, SCRUBBER_INTERVAL);
 
-  // Initialize the error vector
+  // Initialize the error-tracking variables
+  bool  mismatch = 0;
   unsigned int error = 0;
   for (int i = 0; i < SIZE; i++) {
-    error += (pulp_read32(&test_array[i]) != i);
-    if (error != 0)
+    mismatch = (pulp_read32(&test_array[i]) != i);
+    if (mismatch) {
+      error ++;
       printf("Expected 0x%x, got 0x%x\n", i, pulp_read32(&test_array[i]));
+    }
   }
 
   return error;
