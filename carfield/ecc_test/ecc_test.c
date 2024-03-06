@@ -54,6 +54,16 @@ int main() {
     }
   }
 
-  return error;
+  unsigned int mismatch_cnt = 0;
+  unsigned int fix_cnt = 0;
+  unsigned int uncorrectable_cnt = 0;
+  for (int i = 0; i < 16; i++) {
+    mismatch_cnt += tcdm_scrubber_get_mismatch_count(cluster_id, i);
+    fix_cnt += tcdm_scrubber_get_fix_count(cluster_id, i);
+    uncorrectable_cnt += tcdm_scrubber_get_uncorrectable_count(cluster_id, i);
+  }
 
+  printf("mismatch_cnt: %d, fix_cnt: %d, uncorrectable_cnt: %d\n", mismatch_cnt, fix_cnt, uncorrectable_cnt);
+
+  return (error != 0) || (uncorrectable_cnt != 0);
 }

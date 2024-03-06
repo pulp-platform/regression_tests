@@ -6,7 +6,7 @@
 
 transcript quietly
 if {! [info exists ::env(VSIM_PATH)]} {error "Define VSIM_PATH"}
-set utils_base_path  [file join $::env(VSIM_PATH) scripts fault_injection_config]
+set utils_base_path  [file join $::env(VSIM_PATH) scripts fault_injection_utils]
 set script_base_path [file join $::env(VSIM_PATH) fault_injection_sim scripts]
 
 set verbosity            2
@@ -28,7 +28,7 @@ set max_num_fault_inject 0
 set signal_fault_duration 20ns
 set register_fault_duration 0ns
 
-set allow_multi_bit_upset 1
+set allow_multi_bit_upset [info exists ::env(MULTI_BIT_UPSET)]
 set use_bitwidth_as_weight 0
 set check_core_output_modification 0
 set check_core_next_state_modification 0
