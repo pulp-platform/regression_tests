@@ -65,5 +65,5 @@ int main() {
 
   printf("mismatch_cnt: %d, fix_cnt: %d, uncorrectable_cnt: %d\n", mismatch_cnt, fix_cnt, uncorrectable_cnt);
 
-  return (error != 0) || (uncorrectable_cnt != 0);
+  return (error != 0) ^ (uncorrectable_cnt != 0);
 }
