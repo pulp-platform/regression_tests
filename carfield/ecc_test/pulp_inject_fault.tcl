@@ -28,7 +28,7 @@ set max_num_fault_inject 0
 set signal_fault_duration 20ns
 set register_fault_duration 0ns
 
-set allow_multi_bit_upset [info exists ::env(MULTI_BIT_UPSET)]
+set allow_multi_bit_upset $::env(MULTI_BIT_UPSET)
 set use_bitwidth_as_weight 0
 set check_core_output_modification 0
 set check_core_next_state_modification 0
