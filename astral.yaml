@@ -1,0 +1,16 @@
+carfield:
+  parMatrixMul8:
+    path: ./astral/parMatrixMul8 #ok
+    command: make clean all run
+  parMatrixMul16:
+    path: ./astral/parMatrixMul16 #ok
+    command: make clean all run
+  parMatrixMul32:
+    path: ./astral/parMatrixMul32 #ok
+    command: make clean all run
+  dmr_matmul:
+    path: ./astral/dmr_matmul #ok
+    command: make clean all run
+  redmule:
+    path: ./astral/redmule #ok
+    command: make clean all run
