@@ -1,0 +1,3 @@
+[submodule "hwpe/neureka/pulp-nnx"]
+	path = hwpe/neureka/pulp-nnx
+	url = git@github.com:pulp-platform/pulp-nnx
