@@ -1,16 +1,19 @@
 carfield:
   parMatrixMul8:
-    path: ./carfield/parMatrixMul8 #ok
+    path: ./carfield/parMatrixMul8
     command: make clean all run
   parMatrixMul16:
-    path: ./carfield/parMatrixMul16 #ok
+    path: ./carfield/parMatrixMul16
     command: make clean all run
   parMatrixMul32:
-    path: ./carfield/parMatrixMul32 #ok
+    path: ./carfield/parMatrixMul32
     command: make clean all run
   dmr_matmul:
-    path: ./carfield/dmr_matmul #ok
+    path: ./carfield/dmr_matmul
     command: make clean all run
   redmule:
-    path: ./carfield/redmule #ok
+    path: ./carfield/redmule
+    command: make clean all run
+  neureka:
+    path: ./carfield/neureka
     command: make clean all run
