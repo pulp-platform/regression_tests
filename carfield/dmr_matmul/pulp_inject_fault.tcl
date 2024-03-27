@@ -5,9 +5,18 @@
 # Author: Michael Rogenmoser (michaero@iis.ee.ethz.ch)
 
 transcript quietly
-if {! [info exists ::env(VSIM_PATH)]} {error "Define VSIM_PATH"}
-set utils_base_path  [file join $::env(VSIM_PATH) scripts fault_injection_utils]
-set script_base_path [file join $::env(VSIM_PATH) fault_injection_sim scripts]
+
+if {![info exists ::env(FI_CL_ROOT)]} { error "Define FI_CL_ROOT" }
+set fi_cl_root $::env(FI_CL_ROOT)
+
+if {![info exists ::env(FI_CLUSTER_INSTANCE)]} { error "Define FI_CLUSTER_INSTANCE" }
+set fi_cluster_instance $::env(FI_CLUSTER_INSTANCE)
+
+echo "\[Fault Injection\] Info: FI_CL_ROOT set to $fi_cl_root"
+echo "\[Fault Injection\] Info: FI_CLUSTER_INSTANCE set to $fi_cluster_instance"
+
+set fi_cluster_dir [file join $fi_cl_root scripts fault_injection_utils]
+set fi_common_dir  [file join $fi_cl_root fault_injection_sim scripts]
 
 set verbosity            2
 set log_injections       1
@@ -19,7 +28,7 @@ set print_statistics     1
 
 set inject_start_time 250856000000ps
 set inject_stop_time 413000000000ps
-set injection_clock "pulp_cluster_tb/cluster_i/clk_i"
+set injection_clock "$fi_cluster_instance/clk_i"
 set injection_clock_trigger 0
 set fault_period 250
 set rand_initial_injection_phase 0
@@ -34,7 +43,7 @@ set check_core_output_modification 0
 set check_core_next_state_modification 0
 set reg_to_sig_ratio 1
 
-source [file join $utils_base_path pulp_extract_nets.tcl]
+source [file join $fi_cluster_dir pulp_extract_nets.tcl]
 
 set inject_signals_netlist []
 set inject_register_netlist []
@@ -47,5 +56,6 @@ for {set idx 0} {$idx < 12} {incr idx} {
     set output_netlist [list {*}$output_netlist {*}[get_core_output_nets $idx]]
 }
 
-source [file join $script_base_path inject_fault.tcl]
+set script_base_path $fi_common_dir
+source [file join $fi_common_dir inject_fault.tcl]
 
