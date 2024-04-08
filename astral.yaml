@@ -1,16 +1,19 @@
-carfield:
+astral:
   parMatrixMul8:
-    path: ./astral/parMatrixMul8 #ok
+    path: ./astral/parMatrixMul8
     command: make clean all run
   parMatrixMul16:
-    path: ./astral/parMatrixMul16 #ok
+    path: ./astral/parMatrixMul16
     command: make clean all run
   parMatrixMul32:
-    path: ./astral/parMatrixMul32 #ok
+    path: ./astral/parMatrixMul32
     command: make clean all run
   dmr_matmul:
-    path: ./astral/dmr_matmul #ok
+    path: ./astral/dmr_matmul
     command: make clean all run
   redmule:
-    path: ./astral/redmule #ok
+    path: ./astral/redmule
+    command: make clean all run
+  neureka:
+    path: ./astral/neureka
     command: make clean all run
