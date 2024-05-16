@@ -50,7 +50,7 @@ testcase_t testcases[] = {
   { .name = "adduRN"     , .test = check_adduRN      },
   { .name = "addRN"      , .test = check_addRN       },
   { .name = "subRN"      , .test = check_subRN       },
-#ifndef __riscv__
+#if !(defined(__cv32e40p__) || defined(__riscv__))
   { .name = "addNl"      , .test = check_addNl       },
   { .name = "subNl"      , .test = check_subNl       },
 #else
@@ -79,7 +79,7 @@ int main()
 
 #include "testAddSubNorm_stimuli.h"
 
-#ifdef __riscv__
+#if defined(__cv32e40p__) || defined(__riscv__)
 #define ADDU_N      "p.addun"
 #define ADD_N       "p.addn"
 #define ADDU_RN     "p.addurn"
@@ -149,7 +149,7 @@ void check_addRN(testresult_t *result, void (*start)(), void (*stop)()) {
   }
 }
 
-#ifdef __riscv__
+#if defined(__cv32e40p__) || defined(__riscv__)
 
 void check_adduRNr(testresult_t *result, void (*start)(), void (*stop)()) {
   unsigned int i;
@@ -290,7 +290,7 @@ void check_subRN(testresult_t *result, void (*start)(), void (*stop)()) {
   }
 }
 
-#ifndef __riscv__
+#if !(defined(__cv32e40p__) || defined(__riscv__))
 void check_addNl(testresult_t *result, void (*start)(), void (*stop)()) {
   unsigned int i;
   unsigned int res;
