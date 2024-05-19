@@ -75,7 +75,13 @@ int main()
                       (0b00000   <<  7) /* imm_lo */ | \
                       (0b1011011 <<  0) /* opcode */   \n");
 
-  printf("Hello %08x!\n", z);
+  if(z == 0x40a06) {
+    printf("Hello %08x!\n", z);
+    return 0;
+  }
+  else {
+    printf("No bueno %08x!\n", z);
+    return 1;
+  }
 
-  return 0;
 }

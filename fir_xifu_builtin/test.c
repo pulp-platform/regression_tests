@@ -18,9 +18,26 @@
 
 int main()
 {
-  printf("Hello !\n");
 
-  // *(int*)(0x10000000)=0xABBAABBA;
-  
-  return 0;
+  unsigned int x = 0x01020304;
+  unsigned int y = 0x01010101;
+  unsigned int z = 0;
+  register int *px = (int *) &x;
+  register int *py = (int *) &y;
+  register int *pz = (int *) &z;
+
+  px = __builtin_xfir_lw(0, px, 0);
+  py = __builtin_xfir_lw(1, py, 0);
+  __builtin_xfir_dotp(2, 1, 0);
+  pz = __builtin_xfir_sw(pz, 2, 0, 0);
+
+  if(z == 0x40a06) {
+    printf("Hello %08x!\n", z);
+    return 0;
+  }
+  else {
+    printf("No bueno %08x!\n", z);
+    return 1;
+  }
+
 }
