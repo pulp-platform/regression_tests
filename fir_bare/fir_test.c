@@ -136,10 +136,14 @@ void test_run() {
 
 #if WORD==16
 int test_check() {
+  int crc = crc32(output, 190 * sizeof(int16_t));
+  printf("crc32 = %08x\n", crc);
   return crc32(output, 190 * sizeof(int16_t)) == 0x156b4864;
 }
 #else
 int test_check() {
+  int crc = crc32(output, 188 * sizeof(int16_t));
+  printf("crc32 = %08x\n", crc);
   return crc32(output, 188 * sizeof(int16_t)) == 0xa2f52891;
 }
 #endif

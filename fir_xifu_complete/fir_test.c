@@ -21,7 +21,7 @@
 #include "common.h"
 
 #if WORD==16
-#define FILTER_SIZE 10
+#define FILTER_SIZE 12
 
 int16_t input_l2[200] = {
   0x0000, 0x07ff, 0x0c00, 0x0800, 0x0200, 0xf800, 0xf300, 0x0400, 0x0000, 0x07ff,
@@ -47,14 +47,18 @@ int16_t input_l2[200] = {
 };
 
 int16_t filter_l2[FILTER_SIZE] = {
-  0x0c60, 0x0c40, 0x0c20, 0x0c00, 0xf600, 0xf400, 0xf200, 0xf000, 0x0c60, 0x0c40
+  0x0c60, 0x0c40, 0x0c20, 0x0c00, 0xf600, 0xf400, 0xf200, 0xf000, 0x0c60, 0x0c40, 0, 0
 };
 
 int16_t input[200] __sram;
-int16_t filter[10] __sram;
+int16_t filter[12] __sram;
+int16_t filter1[14] __sram;
 int16_t output[200] __sram;
 
 extern void fir16_unroll6(const int16_t *in, const int16_t *coeffs, int16_t *out,
+                unsigned in_length, unsigned coeffs_length);
+
+extern void fir16_unroll6x2(const int16_t *in, const int16_t *coeffs, const int16_t *coeffs1, int16_t *out,
                 unsigned in_length, unsigned coeffs_length);
 
 const char* get_testname() {
@@ -115,6 +119,10 @@ void test_setup() {
     input[i] = input_l2[i];
   for (int k=0;k<FILTER_SIZE;k++)
     filter[k] = filter_l2[k];
+  filter1[0] = 0;
+  for (int k=0;k<FILTER_SIZE;k++)
+    filter1[k+1] = filter_l2[k];
+  filter1[13] = 0;
 }
 
 void test_clear() {
@@ -125,7 +133,7 @@ void test_clear() {
 
 void test_run() {
 #if WORD==16
-  fir16_unroll6(input, filter, output, 200, 10);
+  fir16_unroll6x2(input, filter, filter1, output, 200, 10);
 #else
   fir8(input, filter, output, 200, 12);
 #endif
@@ -133,10 +141,14 @@ void test_run() {
 
 #if WORD==16
 int test_check() {
+  int crc = crc32(output, 190 * sizeof(int16_t));
+  printf("crc32 = %08x\n", crc);
   return crc32(output, 190 * sizeof(int16_t)) == 0x156b4864;
 }
 #else
 int test_check() {
+  int crc = crc32(output, 188 * sizeof(int16_t));
+  printf("crc32 = %08x\n", crc);
   return crc32(output, 188 * sizeof(int16_t)) == 0xa2f52891;
 }
 #endif

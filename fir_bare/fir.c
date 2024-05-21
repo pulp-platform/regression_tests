@@ -24,12 +24,15 @@ void fir16(const int16_t *arr, const int16_t *coeff, int16_t *output,
          unsigned arr_length, unsigned coeff_len) {
 
   for (unsigned i = 0; i < arr_length - coeff_len; i++) {
-    uint16_t sum = 0;
+    int sum = 0;
     for (unsigned j = 0; j < coeff_len; j++) {
       sum += arr[i+j] * coeff[j];
+      printf("%04x,%04x,%08x\n", arr[i+j], coeff[j], sum);
     }
 
-    output[i] = sum;
+    // doesn't make much sense...
+    output[i] = (int16_t) (sum & 0xffff);
+    printf("%04x\n", output[i]);
   }
 }
 
@@ -37,12 +40,12 @@ void fir8(const int8_t *arr, const int8_t *coeff, int16_t *output,
          unsigned arr_length, unsigned coeff_len) {
 
   for (unsigned i = 0; i < arr_length - coeff_len; i++) {
-    uint16_t sum = 0;
+    int sum = 0;
     for (unsigned j = 0; j < coeff_len; j++) {
       sum += arr[i+j] * coeff[j];
     }
 
-    output[i] = sum;
+    output[i] = (int8_t) (sum & 0xffff);
   }
 }
 

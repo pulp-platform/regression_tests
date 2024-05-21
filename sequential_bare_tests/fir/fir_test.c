@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include "common.h"
 
+#define WORD 16
+
 #if WORD==16
 #define FILTER_SIZE 10
 
