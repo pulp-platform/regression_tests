@@ -30,16 +30,13 @@ void fir16(
   unsigned      right_shift
 ) {
   for (int i=0; i<arr_len; i++) {
-    // needs more than 32 bits!
-    int64_t sum=0;
+    int32_t sum=0;
     for (int j=0; j<coeff_len; j++) {
       sum += arr[i+j] * coeff[j];
-      // printf("%04x * %04x -> %016x\n", arr[i+j], coeff[j], sum);
     }
 
     // shift accumulator and fit it into 16 bits
-    output[i] = (int16_t) ((sum >> right_shift) & 0x000000000000ffff);
-    // printf("sum=%08x out=%04x\n", sum, output[i]);
+    output[i] = (int16_t) ((sum >> right_shift) & 0x0000ffff);
   }
 }
 
