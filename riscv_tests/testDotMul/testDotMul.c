@@ -15,13 +15,13 @@
 
 #include <stdio.h>
 #include "pulp.h"
-#ifdef __riscv__
+#if defined(__riscv__) || defined(__cv32e40p__)
 #include "testDotMul_stimuli_riscv.h"
 #else
 #include "testDotMul_stimuli.h"
 #endif
 
-#ifdef __riscv__
+#if defined(__riscv__) || defined(__cv32e40p__)
 #define DOTP_H "pv.dotsp.h"
 #define DOTP_H_SC "pv.dotsp.sc.h"
 #define DOTP_H_SCI "pv.dotsp.sci.h"
@@ -146,7 +146,9 @@ int main()
     retval = run_suite(testcases);
   }
 
+#if ARCHI_HAS_CLUSTER
   synch_barrier();
+#endif
 
   return retval;
 }

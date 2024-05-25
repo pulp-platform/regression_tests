@@ -46,7 +46,9 @@ int main() {
 
   unsigned int errors = 0;
 
+#if ARCHI_HAS_CLUSTER
   synch_barrier();
+#endif
 
   // Work!
   if(core_id == 0) {
@@ -61,7 +63,9 @@ int main() {
     stop_timer();
   }
 
+#if ARCHI_HAS_CLUSTER
   synch_barrier();
+#endif
 
   if(core_id == 0) {
     // now check the responses

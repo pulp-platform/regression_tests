@@ -33,9 +33,6 @@ static inline void fir16_unroll6x2_inner(
     coeff_buffer[k] = coeff0[j+k-1];
   }
   coeff_buffer[13] = 0;
-  // for(int i=0; i<7; i++) {
-  //   printf("%08x\n", ((int *)coeff_buffer)[i]);
-  // }
 
   // load coefficients into FIR XIFU
   volatile int *pcoeff0 = (volatile int *) &coeff0[j];
@@ -60,8 +57,6 @@ static inline void fir16_unroll6x2_inner(
   for (int i=0; i<nb_stripmine_iter; i++) {
 
     // pointers to temp buffer
-    // printf("reading psum0 idx=%d: @%08x %08d\n", 2*i,   &buffer[2*i],   buffer[2*i]);
-    // printf("reading psum1 idx=%d: @%08x %08x\n", 2*i+1, &buffer[2*i+1], buffer[2*i+1]);
     volatile int *psum0 = (volatile int *) &buffer[2*i];
     volatile int *psum1 = (volatile int *) &buffer[2*i+1];
 
@@ -99,8 +94,6 @@ static inline void fir16_unroll6x2_inner(
     // store temporary
     psum0 = __builtin_xfir_sw((int *) psum0, 0, 0, 0);
     psum1 = __builtin_xfir_sw((int *) psum1, 1, 0, 0);
-    // printf("writing psum0 idx=%d: @%08x %08d\n", 2*i,   &buffer[2*i],   buffer[2*i]);
-    // printf("writing psum1 idx=%d: @%08x %08x\n", 2*i+1, &buffer[2*i+1], buffer[2*i+1]);
     
   }
   // leftover on output dimension
@@ -164,7 +157,6 @@ void fir16_unroll6x2(
 
   // process outputs
   for (int i=0; i<arr_len; i++) {
-    // printf("buffer[%d] = %08x\n", i, buffer[i]);
     output[i] = (int16_t) ((buffer[i] >> right_shift) & 0xffff);
   }
 

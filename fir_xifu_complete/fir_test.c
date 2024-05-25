@@ -143,7 +143,10 @@ void test_run() {
 int test_check() {
   int crc = crc32(output, 190 * sizeof(int16_t));
   printf("crc32 = %08x\n", crc);
-  return crc32(output, 190 * sizeof(int16_t)) == 0x156b4864;
+  if(crc32(output, 190 * sizeof(int16_t)) == 0x156b4864)
+    return 0;
+  else
+    return 1;
 }
 #else
 int test_check() {
@@ -155,6 +158,11 @@ int test_check() {
 
 int main() {
   test_setup();
+  reset_timer();
+  start_timer();
   test_run();
+  stop_timer();
+  int t = get_time();
+  printf("Test ended in %d cycles\n", t);
   return test_check();
 }

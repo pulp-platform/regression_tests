@@ -58,6 +58,7 @@ void Process_Descriptor(unsigned int *Descr, int Size, void action(int index))
 }
 
 #ifndef __riscv__
+#ifndef __cv32e40p__
 void Process_Descriptor_Bis(unsigned int *Descr, int Size, void action(int index))
 
 {
@@ -77,6 +78,7 @@ void Process_Descriptor_Bis(unsigned int *Descr, int Size, void action(int index
     }
   }
 }
+#endif
 #endif
 
 
@@ -120,6 +122,7 @@ void Process(testresult_t *result, char *Mess, unsigned int *Descr, int Descr_Si
   Count_Regular = Count;
 
 #ifndef __riscv__
+#ifndef __cv32e40p__
   Count = 0;
   reset_timer();
   start_timer();
@@ -132,6 +135,7 @@ void Process(testresult_t *result, char *Mess, unsigned int *Descr, int Descr_Si
   if(Count != Count_Regular) {
     result->errors += 1;
   }
+#endif
 #endif
 }
 

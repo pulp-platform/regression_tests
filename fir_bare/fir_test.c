@@ -150,6 +150,11 @@ int test_check() {
 
 int main() {
   test_setup();
+  reset_timer();
+  start_timer();
   test_run();
-  test_check();
+  stop_timer();
+  int t = get_time();
+  printf("Test ended in %d cycles\n", t);
+  return test_check();
 }

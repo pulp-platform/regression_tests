@@ -19,8 +19,6 @@
 int main()
 {
   printf("Hello !\n");
-
-  // *(int*)(0x10000000)=0xABBAABBA;
   
   return 0;
 }

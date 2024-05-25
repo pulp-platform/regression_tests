@@ -49,6 +49,10 @@ int main() {
 
   printf("(%d %d) %s %d\n", rt_cluster_id(), rt_core_id(), __FILE__, __LINE__);
 
+#if ARCHI_HAS_CLUSTER
+  synch_barrier();
+#endif
+
   printf("(%d %d) %s %d\n", rt_cluster_id(), rt_core_id(), __FILE__, __LINE__);
 
   if (cid == 0) {
