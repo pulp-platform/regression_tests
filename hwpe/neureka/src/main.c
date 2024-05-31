@@ -23,15 +23,19 @@
  * Main Test Program for N-EUREKA
  */
 
+#include <pulp.h>
 #include <stdint.h>
 #include <stdio.h>
 
 #include "layer_util.h"
 #include "nnx_layer.h"
+#include "ecc_check.h"
 
 #define OUTPUT_SIZE 512
 
 extern int8_t output[];
+
+uint32_t ecc_errs[ECC_REGS];
 
 static int check_output() {
     int checksum = 0;
@@ -42,10 +46,17 @@ static int check_output() {
 }
 
 int errors = 0;
+unsigned int intc_data_correctable_cnt = 0;
+unsigned int intc_meta_correctable_cnt = 0;
+unsigned int intc_data_uncorrectable_cnt = 0;
+unsigned int intc_meta_uncorrectable_cnt = 0;
 
 int main() {
 
-  if (get_core_id() == 0) {
+  unsigned int core_id = get_core_id();
+  unsigned int cluster_id = rt_cluster_id();
+
+  if (core_id == 0) {
 
     // execute NNX layer
     execute_nnx_layer(NULL);
@@ -58,8 +69,25 @@ int main() {
     else
       printf ("[OK] Terminated test with no errors!!!\n");
 
+    // Check number of detected errors by ECC modules inside interconnect
+    intc_data_correctable_cnt = hwpe_hci_ecc_get_data_correctable_count(cluster_id);
+    intc_meta_correctable_cnt = hwpe_hci_ecc_get_meta_correctable_count(cluster_id);
+    intc_data_uncorrectable_cnt = hwpe_hci_ecc_get_data_uncorrectable_count(cluster_id);
+    intc_meta_uncorrectable_cnt = hwpe_hci_ecc_get_meta_uncorrectable_count(cluster_id);
+    for (int i = 0; i < 16; i++) {
+      intc_meta_correctable_cnt += tcdm_scrubber_get_mismatch_count(cluster_id, i);
+    }
+
+    printf("Data errors corrected inside Neureka: %d. Data errors uncorrectable inside Neureka: %d\n",
+      ecc_errs[0], ecc_errs[1]);
+    printf("Meta errors corrected inside Neureka: %d. Meta errors uncorrectable inside Neureka: %d\n",
+      ecc_errs[2], ecc_errs[3]);
+
+    printf("Data errors corrected inside intc: %d. Data errors uncorrectable inside intc: %d\n",
+      intc_data_correctable_cnt, intc_data_uncorrectable_cnt);
+    printf("Meta errors corrected inside intc: %d. Meta errors uncorrectable inside intc: %d\n",
+      intc_meta_correctable_cnt, intc_meta_uncorrectable_cnt);
   }
   synch_barrier();
-  return errors;
-
+  return (errors != 0) && (intc_data_uncorrectable_cnt == 0 && intc_meta_uncorrectable_cnt == 0 && (ecc_errs[1]==0 && ecc_errs[3]==0));
 }
