@@ -52,6 +52,8 @@ int main()
                       (0b00000   <<  7) /* rd     */ | \
                       (0b1011011 <<  0) /* opcode */   \n");
 
+  asm volatile("xor zero, zero, zero");
+
   // XFIRLW xr1, 0(t1)
   asm volatile(".word (0x000     << 20) /* imm    */ | \
                       (0b00110   << 15) /* rs1    */ | \
@@ -59,6 +61,7 @@ int main()
                       (0b00001   <<  7) /* rd     */ | \
                       (0b1011011 <<  0) /* opcode */   \n");
 
+  asm volatile("xor zero, zero, zero");
   // XFIRDOTP xr2, xr1, xr0
   asm volatile(".word (0x0       << 25) /* empty  */ | \
                       (0b00001   << 20) /* rs2    */ | \
@@ -67,6 +70,7 @@ int main()
                       (0b00010   <<  7) /* rd     */ | \
                       (0b1011011 <<  0) /* opcode */   \n");
 
+  asm volatile("xor zero, zero, zero");
   // XFIRSW 0(t2), xr2
   asm volatile(".word (0x00      << 25) /* imm_hi */ | \
                       (0b00010   << 20) /* rs2    */ | \

@@ -18,25 +18,25 @@
  * Author: Francesco Conti f.conti@unibo.it
  */
 
-void fir16_unroll6x2(
-  const int16_t *arr,
-  const int16_t *coeff0,
-  const int16_t *coeff1,
-  int32_t       *buffer,
-  int16_t       *output,
-  unsigned      arr_len,
-  unsigned      coeff_len,
-  unsigned      right_shift
-);
+#ifndef COMMON_H
+#define COMMON_H
 
+#include <stdint.h>
+#include <stddef.h>
+#include "pulp.h"
 
-void fir16_unroll8x2(
-  const int16_t *arr,
-  const int16_t *coeff0,
-  const int16_t *coeff1,
-  int32_t       *buffer,
-  int16_t       *output,
-  unsigned      arr_len,
-  unsigned      coeff_len,
-  unsigned      right_shift
-);
+#define __sram RT_LOCAL_DATA
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+uint32_t crc32(const void *src, size_t len);
+
+#include "string.h"
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

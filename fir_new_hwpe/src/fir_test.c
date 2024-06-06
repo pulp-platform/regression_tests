@@ -30,10 +30,8 @@
 #define RIGHT_SHIFT 15
 #define VERBOSE
 
-int16_t pad_input[2*NB_TAPS+NB_SAMPLES] __sram;
-int16_t h_stim_tmp_buffer[8] __sram;
+int16_t pad_input[NB_TAPS+NB_SAMPLES] __sram;
 int16_t output[NB_SAMPLES] __sram;
-int32_t tmp_buffer[NB_SAMPLES] __sram;
 
 const char* get_testname() {
   return "fir16";
@@ -46,16 +44,10 @@ void test_setup() {
   for (int i=NB_TAPS-1; i<NB_SAMPLES+NB_TAPS-1; i++) {
     pad_input[i] = ((int16_t *) x_stim)[i-NB_TAPS+1];
   }
-  for (int i=NB_SAMPLES+NB_TAPS-1; i<NB_SAMPLES+2*NB_TAPS-1; i++) {
-    pad_input[i] = 0;
-  }
-  for (int i=0; i<NB_SAMPLES-1; i++) {
-    tmp_buffer[i] = 0;
-  }
 }
 
 void test_run() {
-  fir16_unroll8x2(pad_input, (int16_t *) h_stim, h_stim_tmp_buffer, tmp_buffer, output, NB_SAMPLES, NB_TAPS, RIGHT_SHIFT);
+  fir16(x_stim, h_stim, output, NB_SAMPLES, NB_TAPS, RIGHT_SHIFT);
 }
 
 int test_check() {
