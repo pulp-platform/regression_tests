@@ -1,0 +1,10 @@
+parallel_bare_tests:
+  xpnn_conv:
+    path: ./rt_nn_tests/xpnn_conv
+    command: make clean all run
+  xpnnv2_conv:
+    path: ./rt_nn_tests/xpnnv2_conv
+    command: make clean all run
+  xpnn_maxpool_2b:
+    path: ./xpnn_maxpool_2b/xpnn_maxpool_2b
+    command: make clean all run
