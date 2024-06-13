@@ -6,5 +6,11 @@ parallel_bare_tests:
     path: ./rt_nn_tests/xpnnv2_conv
     command: make clean all run
   xpnn_maxpool_2b:
-    path: ./xpnn_maxpool_2b/xpnn_maxpool_2b
+    path: ./rt_nn_tests/xpnn_maxpool_2b
+    command: make clean all run
+  xptnn_linear:
+    path: ./rt_nn_tests/xptnn_linear
+    command: make clean all run
+  xptnn_maxpool:
+    path: ./rt_nn_tests/xptnn_maxpool
     command: make clean all run
