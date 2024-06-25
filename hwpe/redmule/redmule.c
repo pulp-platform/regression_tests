@@ -28,6 +28,11 @@
 int main() {
 
   volatile int errors = 0;
+  unsigned int cluster_id = rt_cluster_id();
+  unsigned int intc_data_correctable_cnt, redmule_data_correctable_cnt = 0;
+  unsigned int intc_meta_correctable_cnt = 0;
+  unsigned int intc_data_uncorrectable_cnt, redmule_data_uncorrectable_cnt = 0;
+  unsigned int intc_meta_uncorrectable_cnt = 0;
 
   if(get_core_id() == 0){
 
@@ -97,6 +102,10 @@ int main() {
     // Wait for end of computation
     redmule_evt_wait();
 
+    // Check number of detected errors by ECC modules inside RedMulE
+    redmule_data_correctable_cnt = redmule_get_data_correctable_count();
+    redmule_data_uncorrectable_cnt = redmule_get_data_uncorrectable_count();
+
     // Disable RedMulE
     hwpe_cg_disable();
 
@@ -106,7 +115,24 @@ int main() {
 
     printf ("Terminated test with %d errors. See you!\n", errors);
 
+    // Check number of detected errors by ECC modules inside interconnect
+    intc_data_correctable_cnt = hwpe_hci_ecc_get_data_correctable_count(cluster_id);
+    intc_meta_correctable_cnt = hwpe_hci_ecc_get_meta_correctable_count(cluster_id);
+    intc_data_uncorrectable_cnt = hwpe_hci_ecc_get_data_uncorrectable_count(cluster_id);
+    intc_meta_uncorrectable_cnt = hwpe_hci_ecc_get_meta_uncorrectable_count(cluster_id);
+    for (int i = 0; i < 16; i++) {
+      intc_meta_correctable_cnt += tcdm_scrubber_get_mismatch_count(cluster_id, i);
+    }
+
+    printf ("Data errors corrected inside RedMulE: %d. Data errors uncorrectable inside RedMulE: %d \n",
+      redmule_data_correctable_cnt, redmule_data_uncorrectable_cnt);
+    printf("Data errors corrected inside intc: %d. Data errors uncorrectable inside intc: %d\n",
+      intc_data_correctable_cnt, intc_data_uncorrectable_cnt);
+    printf("Meta errors corrected inside intc: %d. Meta errors uncorrectable inside intc: %d\n",
+      intc_meta_correctable_cnt, intc_meta_uncorrectable_cnt);
+
+
   }
   synch_barrier();
-  return errors;
+  return (errors != 0) && (redmule_data_uncorrectable_cnt==0 && intc_data_uncorrectable_cnt == 0 && intc_meta_uncorrectable_cnt == 0);
 }
