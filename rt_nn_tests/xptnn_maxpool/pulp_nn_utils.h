@@ -1977,30 +1977,29 @@ static void __attribute__((noinline)) xpulp_tnn_compare_and_replace_if_larger_te
                                                 int8_t * target,
                                                 uint16_t length)
 {
-  int8_t mask2 = 0x0c;
-  int8_t n_mask2 = ~ mask2;
-  int8_t mask4 = 0x30;
-  int8_t n_mask4 = ~ mask4;
-  int8_t mask6 = 0xc0;
-  int8_t n_mask6 = ~ mask6;
-  int8_t off2 = 2;
-  int8_t off4 = 4;
-  int8_t off6 = 6;
+  uint8_t mask2 = 0x0c;
+  uint8_t n_mask2 = ~ mask2;
+  uint8_t mask4 = 0x30;
+  uint8_t n_mask4 = ~ mask4;
+  uint8_t mask6 = 0xc0;
+  uint8_t n_mask6 = ~ mask6;
+  uint8_t off2 = 2;
+  uint8_t off4 = 4;
+  uint8_t off6 = 6;
 
-  int8_t *pIn = base;
-  int8_t *pCom = target;
-  int8_t *out;
+  uint8_t *pIn = (uint8_t *) base;
+  uint8_t *pCom = (uint8_t *) target;
+  uint8_t *out;
 
   int cnt = length >> 2;
-  int32_t result;
+  uint32_t result;
 
   while(cnt > 0u)
   {
     uint32_t in1 = *((uint32_t *)pIn);
     uint32_t in2 = *((int32_t *)pCom);
-    //CompressedMax(result, in1, in2);
     result = maxs20(in1, in2);
-    *((int32_t *)pIn) = result;
+    *((uint32_t *)pIn) = result;
 
     pIn+=4;
     pCom+=4;
@@ -2010,22 +2009,14 @@ static void __attribute__((noinline)) xpulp_tnn_compare_and_replace_if_larger_te
   int left = length & 0x3;
   if (left>0u)
   {
-    uint32_t in1_padded = 0, in2_padded = 0;
-    // we take the <4 leftover bytes of each input and copy them into a 32-bit word
-    // TODO: just copy the whole word
-    for (int i=0; i<left; i++) {
-      in1_padded |= (*(pIn + i)) << (8 * i);
-      in2_padded |= (*(pCom + i)) << (8 * i);
-    }
-    // now do a compressedMax on the 0-padded word (bytes that are 0 won't be used)
-    //CompressedMax(result, in1_padded, in2_padded);
-    result = maxs20(in1_padded, in2_padded);
-
+    // do the vector max on the whole word - we won't use the leftover bytes
+    uint32_t in1 = *((uint32_t *)pIn);
+    uint32_t in2 = *((int32_t *)pCom);
+    result = maxs20(in1, in2);
 
     // ...and copy back the relevant bytes of the result to pIn
     for (int i=0; i<left; i++)
-      *((int8_t*)(pIn + i)) = (int8_t) (result >> (8*i));
-
+      *((uint8_t*)(pIn + i)) = (uint8_t) (result >> (8*i));
 
   }
 }

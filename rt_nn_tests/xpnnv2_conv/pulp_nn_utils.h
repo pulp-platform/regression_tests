@@ -107,6 +107,7 @@ typedef   signed char  v4s __attribute__((vector_size (4)));
 #define maxs8(a, b)                                             __builtin_pulp_max8(a, b)
 #define max16(a, b)                                             __builtin_pulp_maxu16(a, b)
 #define maxs16(a, b)                                            __builtin_pulp_max16(a, b)
+#define maxs20(a, b)                                            __builtin_pulp_max20(a, b)
 #define max32(a,b)                                              __builtin_pulp_maxusi(a,b)
 #define maxs32(a,b)                                             __builtin_pulp_maxsi(a,b)
 #define min32(a,b)                                              __builtin_pulp_minusi(a,b)
@@ -117,6 +118,7 @@ typedef   signed char  v4s __attribute__((vector_size (4)));
 #define mins8(a, b)                                             __builtin_pulp_min8(a, b)
 #define min16(a, b)                                             __builtin_pulp_minu16(a, b)
 #define mins16(a, b)                                            __builtin_pulp_min16(a, b)
+#define mins20(a, b)                                            __builtin_pulp_min20(a, b)
 #define avg4(a,b)                                               __builtin_pulp_avgu4(a,b)
 #define avg8(a,b)                                               __builtin_pulp_avgu8(a,b)
 #define avg16(a,b)                                              __builtin_pulp_avgu16(a,b)
@@ -1711,6 +1713,29 @@ static void __attribute__((noinline)) xpulp_nn_zero_mem_u2(uint8_t * pBuffer, un
 }
 
 
+static void __attribute__((noinline)) xpulp_tnn_zero_mem_ternary(uint8_t * pBuffer, unsigned int size, unsigned int uns)
+{
+  uint8_t pad_val = 0xd9;
+  uint32_t pad_vec = 0xd9d9d9d9;
+  if (uns) {
+    // if we are using an unsigned kernel, we need to pad with -1 because the hardware will add a +1 to ALL values!
+    pad_val = 0xff;
+    pad_vec = 0xffffffff;
+  }
+  int lfover = size &0xf;
+  for (int i=0; i<(size>>4); i++)
+    {
+      *((v4u *)pBuffer) = (v4u)pad_vec;
+      MemoryFence();
+      pBuffer+=4;
+    }
+  while(lfover)
+    {
+      *pBuffer++=pad_val;
+      lfover-=4;
+    }
+}
+
 static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_u4(uint8_t * base,
                                                 uint8_t * target,
                                                 uint16_t length)
@@ -1945,6 +1970,54 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_i2(
     pIn++;
     pCom++;
     left--;
+  }
+}
+
+static void __attribute__((noinline)) xpulp_tnn_compare_and_replace_if_larger_ternary(int8_t * base,
+                                                int8_t * target,
+                                                uint16_t length)
+{
+  uint8_t mask2 = 0x0c;
+  uint8_t n_mask2 = ~ mask2;
+  uint8_t mask4 = 0x30;
+  uint8_t n_mask4 = ~ mask4;
+  uint8_t mask6 = 0xc0;
+  uint8_t n_mask6 = ~ mask6;
+  uint8_t off2 = 2;
+  uint8_t off4 = 4;
+  uint8_t off6 = 6;
+
+  uint8_t *pIn = (uint8_t *) base;
+  uint8_t *pCom = (uint8_t *) target;
+  uint8_t *out;
+
+  int cnt = length >> 2;
+  uint32_t result;
+
+  while(cnt > 0u)
+  {
+    uint32_t in1 = *((uint32_t *)pIn);
+    uint32_t in2 = *((int32_t *)pCom);
+    result = maxs20(in1, in2);
+    *((uint32_t *)pIn) = result;
+
+    pIn+=4;
+    pCom+=4;
+    cnt--;
+  }
+
+  int left = length & 0x3;
+  if (left>0u)
+  {
+    // do the vector max on the whole word - we won't use the leftover bytes
+    uint32_t in1 = *((uint32_t *)pIn);
+    uint32_t in2 = *((int32_t *)pCom);
+    result = maxs20(in1, in2);
+
+    // ...and copy back the relevant bytes of the result to pIn
+    for (int i=0; i<left; i++)
+      *((uint8_t*)(pIn + i)) = (uint8_t) (result >> (8*i));
+
   }
 }
 
