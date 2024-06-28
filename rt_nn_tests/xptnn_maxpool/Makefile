@@ -1,7 +1,6 @@
 APP = test
 PULP_APP = test
 PULP_APP_SRCS = test.c
-PULP_APP_SRCS += dory_dma.c
 PULP_APP_SRCS += xpulp_tnn_maxpool_ternary.c
 
 CORE=8

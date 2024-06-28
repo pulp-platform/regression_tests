@@ -1,7 +1,6 @@
 APP = test
 PULP_APP = test
 PULP_APP_SRCS = test.c
-PULP_APP_SRCS += dory_dma.c
 PULP_APP_SRCS += xpulp_nn_mix_conv_u4_u8_i2.c
 PULP_APP_SRCS += xpulp_nn_mix_matmul_u4_u8_i2.c
 

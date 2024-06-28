@@ -1,7 +1,6 @@
 APP = test
 PULP_APP = test
 PULP_APP_SRCS = test.c
-PULP_APP_SRCS += dory_dma.c
 PULP_APP_SRCS += xpulp_nn_maxpool_i2.c
 
 CORE=8
