@@ -1,10 +1,7 @@
-// massive hack to enable rt compatibility
-#define pi_core_id get_core_id
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "dory_dma.h"
 
 #include "xpulp_tnn_matmul_ternary.h"
 #include "xpulp_tnn_matmul_ternary_4x1.h"
@@ -190,37 +187,30 @@ void call_krnl_0(void) {
 }
 
 void test_0(void) {
-  uint32_t dma_channel = dory_dma_allocate();
-  DMA_copy dma_tx = {0};
   // DMA transfer inputs from L2 to L1
-  dma_tx.ext = pIn_0;
-  dma_tx.loc = inp_l1;
-  dma_tx.number_of_1d_copies = 1;
-  dma_tx.number_of_2d_copies = 1;
-  dma_tx.length_1d_copy = 64;
-  dma_tx.stride_1d = 1;
-  dma_tx.stride_2d = 1;
-  dma_tx.dir = 1;
-  dma_tx.tid = dma_channel;
-  dory_dma_memcpy_async(&dma_tx);
+  if (pi_core_id() == 0) {
+     plp_dma_memcpy(pIn_0, inp_l1, 64, 1);
+     plp_dma_barrier();
+  }
+  pi_cl_team_barrier(0);
   // transfer thresholds
-  dma_tx.ext = pThr_0;
-  dma_tx.loc = threshs_l1;
-  dma_tx.length_1d_copy = 40 * 4; // 4 bytes per set of 2 thresholds
-  dory_dma_memcpy_async(&dma_tx);
+  if (pi_core_id() == 0) {
+     plp_dma_memcpy(pThr_0, threshs_l1, 40 * 4, 1); // 4 bytes per set of 2 thresholds
+     plp_dma_barrier();
+  }
+  pi_cl_team_barrier(0);
   // transfer weights
-  dma_tx.ext = pWeight_0;
-  dma_tx.loc = wt_l1;
-  dma_tx.length_1d_copy = 1440;
-  dory_dma_memcpy_async(&dma_tx);
+  if (pi_core_id() == 0) {
+     plp_dma_memcpy(pWeight_0, wt_l1, 1440, 1);
+     plp_dma_barrier();
+  }
+  pi_cl_team_barrier(0);
   call_krnl_0();
   // get outputs back with DMA
-  dma_tx.dir = 0;
-  dma_tx.ext = outputs;
-  dma_tx.loc = outp_l1;
-  dma_tx.length_1d_copy = 128;
-  dory_dma_memcpy_async(&dma_tx);
-  dory_dma_free(&dma_tx);
+  if (pi_core_id() == 0) {
+     plp_dma_memcpy(outputs, outp_l1, 128, 0);
+     plp_dma_barrier();
+  }
 }
 
 
