@@ -5,3 +5,7 @@
 /**/*~
 !boot_code/crt0.S
 /simplified-runtime.xml
+**.log
+**.ini
+**.wlf
+**transcript
