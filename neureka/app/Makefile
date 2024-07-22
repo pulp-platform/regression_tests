@@ -24,7 +24,12 @@ ACCELERATOR := neureka
 STIM_DIR := ./
 
 INC_DIRS += $(LIBDIR)/inc
-APP_SRCS += $(wildcard $(LIBDIR)/src/*.c) $(wildcard $(LIBDIR)/*.c)
+
+ifndef OVERRIDE_MAIN  
+APP_SRCS += $(wildcard $(LIBDIR)/src/*.c)
+endif
+
+APP_SRCS += $(wildcard $(LIBDIR)/*.c)
 
 ## Library
 INC_DIRS += $(LIBDIR) $(LIBDIR)/util
