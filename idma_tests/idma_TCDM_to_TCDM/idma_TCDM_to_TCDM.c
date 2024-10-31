@@ -47,10 +47,10 @@ int test_idma_l1_to_l1(unsigned int len) {
     memset(dst_buffer, 0, len);
 
     // Perform DMA transfer from src_buffer to dst_buffer within L1 memory
-    id = pulp_idma_L1ToL1((unsigned int)src_buffer, (unsigned int)dst_buffer, len);
+    id = pulp_cl_idma_L1ToL1((unsigned int)src_buffer, (unsigned int)dst_buffer, len);
 
     // Wait for DMA transfer to complete
-    plp_dma_barrier();
+    plp_cl_dma_barrier();
 
     // Verify data in destination buffer
     for (unsigned int i = 0; i < len / 4; i++) {
