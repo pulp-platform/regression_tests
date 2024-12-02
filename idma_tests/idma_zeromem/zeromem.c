@@ -2,7 +2,7 @@
 #include "pulp.h"
 //#include "mchan_tests.h"
 
-#define VERBOSE
+// #define VERBOSE
 
 #define MAX_BUFFER_SIZE 0x2000
 
@@ -38,18 +38,23 @@ int main()
     for ( int i = 5; i < 8045; i=4*i) {
       error_count_l1 += zeromem_test(i, L1_TEST, loc);
     }
-
+#ifdef VERBOSE
     if (error_count_l1)
       printf("OOPS -- got %d errors in L1 zeromem tests!\n", error_count_l1);
     else
       printf("L1 zeromem tests passed!\n");
+#endif
+
     for ( int i = 5; i < 8045; i=4*i ) {
       error_count_l2 += zeromem_test(i, L2_TEST, ext);
     }
+
+#ifdef VERBOSE
     if (error_count_l2)
       printf("OOPS -- got %d errors in L2 zeromem tests!\n", error_count_l2);
     else
       printf("L2 zeromem tests passed!\n");
+#endif
 
   }
 
@@ -58,7 +63,7 @@ int main()
 
 
 int zeromem_test(unsigned int len, test_type_t type, unsigned int buf) {
-  unsigned int tx_id;
+  struct dma_id id;
   int error_cnt = 0;
   uint8_t * buf_ptr = (uint8_t *) buf;
   // fill the buffer with data to make sure it gets erased
@@ -66,15 +71,19 @@ int zeromem_test(unsigned int len, test_type_t type, unsigned int buf) {
     buf_ptr[i] = i & 0xFF;
 
   if (type == L1_TEST) {
-    tx_id = pulp_idma_zeromem(buf, len, IDMA_PROT_OBI);
+    id = pulp_idma_zeromem(buf, len, IDMA_PROT_OBI);
   } else {
-    tx_id = pulp_idma_zeromem(buf, len, IDMA_PROT_AXI);
+    id = pulp_idma_zeromem(buf, len, IDMA_PROT_AXI);
   }
-  plp_dma_barrier();
+  // plp_dma_barrier(id);
+  plp_dma_wait(id);
+
   for (int i=0; i<len; i++) {
     if (buf_ptr[i] != 0) {
       error_cnt++;
+#ifdef VERBOSE
       printf("Error in %s test at element %d: expected 0, got 0x%x\n", type==L1_TEST ? "L1" : "L2", i, buf_ptr[i]);
+#endif
     }
   }
   return error_cnt;

@@ -1,10 +1,9 @@
 #include <math.h>
 #include <stdint.h>
-#include <inttypes.h>
 #include <stdio.h>
 #include "pulp.h"
 
-#define VERBOSE
+// #define VERBOSE
 
 #define MAX_BUFFER_SIZE 0x2000 
 
@@ -25,15 +24,14 @@ int main(void) {
 
     if (get_core_id() == 0) {
 
-        uint32_t size = 5;
+        unsigned int size = 10;
         // Test for L2_TO_L1 operation
-        for (int i = 0; i < size; i++) {
-            error_count += test_idma(size, L2_TO_L1, (uint32_t)ext, (uint32_t)loc);
+        for (int i = 1; i < size; i++) {
+            error_count += test_idma(i, L2_TO_L1, (uint32_t)ext, (uint32_t)loc);
         }
-
         // Test for L1_TO_L2 operation
-        for (int i = 0; i < size; i++) {
-            error_count += test_idma(size, L1_TO_L2, (uint32_t)ext, (uint32_t)loc);
+        for (int i = 1; i < size; i++) {
+            error_count += test_idma(i, L1_TO_L2, (uint32_t)ext, (uint32_t)loc);
         }
     }
 
@@ -42,12 +40,13 @@ int main(void) {
 
 int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_addr) {
     volatile uint8_t expected, actual;
-    volatile int error = 0;
-    volatile unsigned int id;
+    volatile unsigned int error = 0;
+    volatile unsigned int i;
+    struct dma_id id;
 
     if (type == L2_TO_L1) {
 
-        for (uint32_t i = 0; i < size; i++) {
+        for (i = 0; i < size; i++) {
             *(uint8_t *)(ext_addr + i) = (uint8_t)(i & 0xFF);
         }
 
@@ -63,10 +62,14 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
         |                |                        |                |
         +----------------+                        +----------------+
         */
+
+#ifdef VERBOSE
+    printf("Starting test for L2_TO_L1 of length %u.\n", size);
+#endif
     
     } else if (type == L1_TO_L2) {
         // Fill L1 buffer with a pattern
-        for (uint32_t i = 0; i < size; i++) {
+        for (i = 0; i < size; i++) {
             *(uint8_t *)(tcdm_addr + i) = (uint8_t)(i & 0xFF);
         }
 
@@ -84,15 +87,18 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
         |                |                        |                |
         +----------------+                        +----------------+
         */
-    } else {
-        printf("Invalid test type. It must be either L2_TO_L1 or L1_TO_L2.\n");
-        return 1;
+
+#ifdef VERBOSE
+    printf("Starting test for L1_TO_L2 of length %u.\n", size);
+#endif
+
     }
 
-    plp_dma_barrier();
+    // plp_dma_barrier(id);
+    plp_dma_wait(id);
 
     // Verify data
-    for (uint32_t i = 0; i < size; i++) {
+    for (i = 0; i < size; i++) {
         expected = (uint8_t)(i & 0xFF); // Same pattern as L2_TO_L1
         if (type == L2_TO_L1) {
             // Reading from the local memory buffer "loc" allocated in L1 memory
@@ -103,16 +109,20 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
         } 
 
         if (expected != actual) {
+#ifdef VERBOSE
             printf("Error at index %u: Expected 0x%02X, Got 0x%02X\n", i, expected, actual);
+#endif
             error++;
         }
     }
 
+#ifdef VERBOSE
     if (error == 0) {
         printf("Test passed for %s of length %u.\n", type == L2_TO_L1 ? "L2_TO_L1" : "L1_TO_L2", size);
     } else {
         printf("Test failed for %s of length %u with %u errors.\n", type == L2_TO_L1 ? "L2_TO_L1" : "L1_TO_L2", size, error);
     }
-    
+#endif
+
     return error;
 }

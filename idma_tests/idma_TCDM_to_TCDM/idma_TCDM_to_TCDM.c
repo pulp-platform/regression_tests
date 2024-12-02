@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "pulp.h"
 
-#define VERBOSE
+// #define VERBOSE
 
 #define MAX_BUFFER_SIZE 0x2000
 #define BUFFER_SIZE     0x0200
@@ -32,11 +32,13 @@ int main(void) {
 }
 
 int test_idma_l1_to_l1(unsigned int len) {
-    volatile unsigned int id;
+    struct dma_id id;
     volatile int error = 0;
     volatile uint32_t test, read;
 
+#ifdef VERBOSE
     printf("STARTING L1 TO L1 DMA TEST FOR LENGTH: %d\n", len);
+#endif
 
     // Fill source buffer with known data pattern
     for (unsigned int i = 0; i < len / 4; i++) {
@@ -50,7 +52,8 @@ int test_idma_l1_to_l1(unsigned int len) {
     id = pulp_cl_idma_L1ToL1((unsigned int)src_buffer, (unsigned int)dst_buffer, len);
 
     // Wait for DMA transfer to complete
-    plp_cl_dma_barrier();
+    // plp_cl_dma_barrier(id);
+    plp_cl_dma_wait(id);
 
     // Verify data in destination buffer
     for (unsigned int i = 0; i < len / 4; i++) {
@@ -58,16 +61,20 @@ int test_idma_l1_to_l1(unsigned int len) {
         read = ((uint32_t *)dst_buffer)[i];
 
         if (test != read) {
+#ifdef VERBOSE
             printf("Error!!! Read: %x, Expected: %x, Index: %d\n", read, test, i);
+#endif
             error++;
         }
     }
 
+#ifdef VERBOSE
     if (error == 0) {
         printf("L1 to L1 DMA transfer test passed for length %d.\n", len);
     } else {
         printf("L1 to L1 DMA transfer test failed for length %d with %d errors.\n", len, error);
     }
+#endif
 
     return error;
 }

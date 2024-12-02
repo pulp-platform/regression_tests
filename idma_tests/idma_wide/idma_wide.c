@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "pulp.h"
 
-#define VERBOSE
+// #define VERBOSE
 
 #define MAX_BUFFER_SIZE 0x2000 
 
@@ -45,7 +45,7 @@ int main(void) {
 int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_addr) {
     volatile uint8_t expected, actual;
     volatile int error = 0;
-    volatile unsigned int id;
+    struct dma_id id;
 
     if (type == L2_TO_L1) {
 
@@ -91,7 +91,8 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
         return 1;
     }
 
-    plp_dma_barrier();
+    // plp_dma_barrier(id);
+    plp_dma_wait(id);
 
     // Verify data
     for (uint32_t i = 0; i < size; i++) {
@@ -105,16 +106,20 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
         } 
 
         if (expected != actual) {
+#ifdef VERBOSE
             printf("Error at index %u: Expected 0x%02X, Got 0x%02X\n", i, expected, actual);
+#endif
             error++;
         }
     }
 
+#ifdef VERBOSE
     if (error == 0) {
         printf("Test passed for %s of length %u.\n", type == L2_TO_L1 ? "L2_TO_L1" : "L1_TO_L2", size);
     } else {
         printf("Test failed for %s of length %u with %u errors.\n", type == L2_TO_L1 ? "L2_TO_L1" : "L1_TO_L2", size, error);
     }
-    
+#endif
+
     return error;
 }

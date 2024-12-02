@@ -1,8 +1,9 @@
 #include <math.h>
+#include <stdio.h>
 #include "pulp.h"
 //#include "mchan_tests.h"
 
-#define VERBOSE
+// #define VERBOSE
 
 #define MAX_BUFFER_SIZE 0x2000
 
@@ -54,8 +55,9 @@ int main()
 
 int testMCHAN(unsigned int len, test_type_t type, unsigned int ext_addr, unsigned int tcdm_addr){
 
-  volatile unsigned int i,j,id;
+  volatile unsigned int i,j;
   volatile unsigned int test,read,error=0;
+  struct dma_id id;
 
   if (type == RX){
 
@@ -71,7 +73,7 @@ int testMCHAN(unsigned int len, test_type_t type, unsigned int ext_addr, unsigne
       *(unsigned char*)(tcdm_addr + i) = 0;
     }
     id = pulp_idma_memcpy(ext_addr, tcdm_addr, len, IDMA_PROT_AXI, IDMA_PROT_OBI);
-  } else {
+  } else if (type == TX){
 
 #ifdef VERBOSE
     printf ("STARTING TEST FOR TX %d OPERATION: \n", len);
@@ -87,7 +89,8 @@ int testMCHAN(unsigned int len, test_type_t type, unsigned int ext_addr, unsigne
     id = pulp_idma_memcpy(tcdm_addr, ext_addr, len, IDMA_PROT_OBI, IDMA_PROT_AXI);
   }
 
-  plp_dma_barrier();
+  //plp_dma_barrier(id);
+  plp_dma_wait(id);
 
 
   if (type == RX){
@@ -98,7 +101,9 @@ int testMCHAN(unsigned int len, test_type_t type, unsigned int ext_addr, unsigne
       read = *(unsigned char*)(tcdm_addr + i);
 
       if ( test != read ){
+#ifdef VERBOSE
   printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+#endif
   error++;
       }
 
@@ -115,7 +120,9 @@ int testMCHAN(unsigned int len, test_type_t type, unsigned int ext_addr, unsigne
       read = *(unsigned char*)(ext_addr + i);
 
       if ( test != read ){
+#ifdef VERBOSE
   printf("Error!!! Read: %x, Test:%x, Index: %d \n ",read,test,i);
+#endif
   error++;
       }
 
@@ -123,10 +130,12 @@ int testMCHAN(unsigned int len, test_type_t type, unsigned int ext_addr, unsigne
 
   }
 
+#ifdef VERBOSE
   if (error == 0)
     printf("OOOOOOK!!!!!!\n");
   else
     printf("NOT OK!!!!!\n");
+#endif
 
   return error;
 

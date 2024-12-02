@@ -1,8 +1,9 @@
 #include <math.h>
+#include <stdio.h>
 #include "pulp.h"
 //#include "mchan_tests.h"
 
-#define VERBOSE
+// #define VERBOSE
 
 #define MAX_BUFFER_SIZE 0x2200
 
@@ -49,8 +50,9 @@ int main()
 
 int test_idma_1d(unsigned int len, test_type_t type, unsigned int src, unsigned int dst){
 
-  volatile unsigned int i,j,id;
+  volatile unsigned int i,j;
   volatile unsigned int test,read,error=0;
+  struct dma_id id;
 
   for (i=0; i<len; i++){
     *(unsigned char*)(src + i) = i & 0xFF;
@@ -79,7 +81,8 @@ int test_idma_1d(unsigned int len, test_type_t type, unsigned int src, unsigned 
     id = pulp_cl_idma_memcpy(src, dst, len, IDMA_PROT_OBI, IDMA_PROT_OBI);
   }
 
-  plp_dma_barrier();
+  // plp_dma_barrier(id);
+  plp_dma_wait(id);
 
     for (i=0; i<len; i++){
 
