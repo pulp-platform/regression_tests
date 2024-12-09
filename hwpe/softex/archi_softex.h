@@ -24,10 +24,10 @@
 #define DATA_WIDTH      256
 
 /* PULP Cluster Archi defines */
-#define ARCHI_CLUST_CTRL_BASE 0x50200000
-#define ARCHI_CLUST_HWPE_BASE 0x50201000
-#define DMA_COMMAND_QUEUE     0x50204400
-#define DMA_STATUS_REGISTER   0x50204404
+#define ARCHI_CLUST_CTRL_BASE ARCHI_CLUSTER_CTRL_ADDR
+#define ARCHI_CLUST_HWPE_BASE ARCHI_HWCE_ADDR
+#define DMA_COMMAND_QUEUE     ARCHI_MCHAN_DEMUX_ADDR
+#define DMA_STATUS_REGISTER   (ARCHI_MCHAN_DEMUX_ADDR + 4)
 #define ARCHI_CL_HWPE_EVT0 12
 #define ARCHI_CL_HWPE_EVT1 13
 #define FC_DMA_EVENT 8
@@ -37,7 +37,7 @@
 #define __builtin_bitinsert(a,b,c,d) (a | (((b << (32-c)) >> (32-c)) << d))
 
 #define SOFTEX_BASE_ADD    ARCHI_CLUST_HWPE_BASE
-#define SOFTEX_CG_EN_MSK      0x4000
+#define SOFTEX_CG_EN_MSK   0x4000
 // Commands
 #define SOFTEX_TRIGGER     0x00
 #define SOFTEX_ACQUIRE     0x04
