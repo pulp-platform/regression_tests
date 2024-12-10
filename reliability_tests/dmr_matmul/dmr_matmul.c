@@ -60,7 +60,7 @@ int main() {
 
 void matrix_multiplication(testresult_t *result, void (*start)(), void (*stop)()) {
   int coreid = rt_core_id();
-  int numcores = 6;
+  int numcores = 4;
   int *CHKSUM_RESULT;
   short int i, iter, j, k;
   int lb, ub, chunk;
