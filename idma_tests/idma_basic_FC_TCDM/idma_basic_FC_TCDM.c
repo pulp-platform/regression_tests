@@ -50,7 +50,11 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
             *(uint8_t *)(ext_addr + i) = (uint8_t)(i & 0xFF);
         }
 
-        memset((void *)tcdm_addr, 0, size + 16);
+        for (i = 0; i < size; i++) {
+            *(uint8_t *)(tcdm_addr + i) = 0;
+        }
+
+        // memset((void *)tcdm_addr, 0, size + 16);
 
         id = pulp_idma_memcpy(ext_addr, tcdm_addr, size, IDMA_PROT_AXI, IDMA_PROT_OBI);
     
