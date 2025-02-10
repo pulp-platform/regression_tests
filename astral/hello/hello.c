@@ -15,10 +15,12 @@
  */
 
 #include <stdio.h>
+#include "pulp.h"
 
 int main()
 {
-  printf("Hello !\n");
-  
+  if(get_core_id() == 0)
+    printf("Hello !\n");
+
   return 0;
 }
