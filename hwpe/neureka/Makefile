@@ -31,6 +31,10 @@ PULP_CFLAGS += $(INC_FLAGS) -O3
 
 PULP_APP = test
 
+ifeq ($(no_ecc),1)
+ PULP_CFLAGS += -DNO_ECC
+endif
+
 ifeq ($(fault_inject),1)
   export FAULT_INJECTION=1
   export FAULT_INJECTION_SCRIPT=$(CURDIR)/pulp_inject_fault.tcl

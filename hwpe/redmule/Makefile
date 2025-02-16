@@ -5,6 +5,9 @@ PULP_CFLAGS = -O3
 ifeq ($(use_dma),1)
  PULP_CFLAGS += -DUSE_DMA
 endif
+ifeq ($(no_ecc),1)
+ PULP_CFLAGS += -DNO_ECC
+endif
 
 ifeq ($(fault_inject),1)
   export FAULT_INJECTION=1

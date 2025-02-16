@@ -29,13 +29,17 @@
 
 #include "layer_util.h"
 #include "nnx_layer.h"
+#ifndef NO_ECC
 #include "ecc_check.h"
+#endif
 
 #define OUTPUT_SIZE 512
 
 extern uint8_t output[];
 
+#ifndef NO_ECC
 uint32_t ecc_errs[ECC_REGS];
+#endif
 
 static int check_output() {
     uint32_t checksum = 0;
@@ -46,10 +50,12 @@ static int check_output() {
 }
 
 int errors = 0;
+#ifndef NO_ECC
 unsigned int intc_data_correctable_cnt = 0;
 unsigned int intc_meta_correctable_cnt = 0;
 unsigned int intc_data_uncorrectable_cnt = 0;
 unsigned int intc_meta_uncorrectable_cnt = 0;
+#endif
 
 int main() {
 
@@ -69,25 +75,31 @@ int main() {
     else
       printf ("[OK] Terminated test with no errors!!!\n");
 
-    // Check number of detected errors by ECC modules inside interconnect
-    intc_data_correctable_cnt = hwpe_hci_ecc_get_data_correctable_count(cluster_id);
-    intc_meta_correctable_cnt = hwpe_hci_ecc_get_meta_correctable_count(cluster_id);
-    intc_data_uncorrectable_cnt = hwpe_hci_ecc_get_data_uncorrectable_count(cluster_id);
-    intc_meta_uncorrectable_cnt = hwpe_hci_ecc_get_meta_uncorrectable_count(cluster_id);
-    for (int i = 0; i < 16; i++) {
-      intc_meta_correctable_cnt += tcdm_scrubber_get_mismatch_count(cluster_id, i);
-    }
+    #ifndef NO_ECC
+      // Check number of detected errors by ECC modules inside interconnect
+      intc_data_correctable_cnt = hwpe_hci_ecc_get_data_correctable_count(cluster_id);
+      intc_meta_correctable_cnt = hwpe_hci_ecc_get_meta_correctable_count(cluster_id);
+      intc_data_uncorrectable_cnt = hwpe_hci_ecc_get_data_uncorrectable_count(cluster_id);
+      intc_meta_uncorrectable_cnt = hwpe_hci_ecc_get_meta_uncorrectable_count(cluster_id);
+      for (int i = 0; i < 16; i++) {
+        intc_meta_correctable_cnt += tcdm_scrubber_get_mismatch_count(cluster_id, i);
+      }
 
-    printf("Data errors corrected inside Neureka: %d. Data errors uncorrectable inside Neureka: %d\n",
-      ecc_errs[0], ecc_errs[1]);
-    printf("Meta errors corrected inside Neureka: %d. Meta errors uncorrectable inside Neureka: %d\n",
-      ecc_errs[2], ecc_errs[3]);
+      printf("Data errors corrected inside Neureka: %d. Data errors uncorrectable inside Neureka: %d\n",
+        ecc_errs[0], ecc_errs[1]);
+      printf("Meta errors corrected inside Neureka: %d. Meta errors uncorrectable inside Neureka: %d\n",
+        ecc_errs[2], ecc_errs[3]);
 
-    printf("Data errors corrected inside intc: %d. Data errors uncorrectable inside intc: %d\n",
-      intc_data_correctable_cnt, intc_data_uncorrectable_cnt);
-    printf("Meta errors corrected inside intc: %d. Meta errors uncorrectable inside intc: %d\n",
-      intc_meta_correctable_cnt, intc_meta_uncorrectable_cnt);
+      printf("Data errors corrected inside intc: %d. Data errors uncorrectable inside intc: %d\n",
+        intc_data_correctable_cnt, intc_data_uncorrectable_cnt);
+      printf("Meta errors corrected inside intc: %d. Meta errors uncorrectable inside intc: %d\n",
+        intc_meta_correctable_cnt, intc_meta_uncorrectable_cnt);
+      #endif
   }
   synch_barrier();
-  return (errors != 0) && (intc_data_uncorrectable_cnt == 0 && intc_meta_uncorrectable_cnt == 0 && (ecc_errs[1]==0 && ecc_errs[3]==0));
+  #ifndef NO_ECC
+    return (errors != 0) && (intc_data_uncorrectable_cnt == 0 && intc_meta_uncorrectable_cnt == 0 && (ecc_errs[1]==0 && ecc_errs[3]==0));
+  #else
+    return errors;
+  #endif
 }
