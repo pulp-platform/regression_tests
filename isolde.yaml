@@ -1,0 +1,16 @@
+isolde:
+  parMatrixMul8:
+    path: ./isolde/parMatrixMul8
+    command: make clean all run
+  parMatrixMul16:
+    path: ./isolde/parMatrixMul16
+    command: make clean all run
+  parMatrixMul32:
+    path: ./isolde/parMatrixMul32
+    command: make clean all run
+  redmule:
+    path: ./isolde/redmule
+    command: make clean all run
+  softex:
+    path: ./isolde/softex
+    command: make clean all run
