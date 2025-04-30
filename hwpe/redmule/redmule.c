@@ -84,17 +84,7 @@ int main() {
 
     hwpe_soft_clear();
 
-    // redmule_cfg ((unsigned int) x,
-    //              (unsigned int) w,
-    //              (unsigned int) y,
-    //              m_size, n_size, k_size,
-    //              (uint8_t) GEMM,
-    //              (uint8_t) Float16);
-    redmule_x_add_set ((unsigned int) x);
-    redmule_w_add_set ((unsigned int) w);
-    redmule_y_add_set ((unsigned int) y);
-    redmule_z_add_set ((unsigned int) y);
-    redmule_cfg (m_size, n_size, k_size, gemm_ops);
+    redmule_cfg((unsigned int)x, (unsigned int)w, (unsigned int)y, m_size, n_size, k_size, (uint8_t)gemm_ops, (uint8_t)Float16);
 
     // Start RedMulE operation
     hwpe_trigger_job();
