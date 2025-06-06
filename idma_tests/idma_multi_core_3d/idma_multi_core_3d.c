@@ -1,7 +1,7 @@
 #include "idma_multi_core_3d.h"
 
-#define MAX_BUFFER_SIZE 0x1000
 #define CORE_SPACE 0x1000
+#define MAX_BUFFER_SIZE CORE_SPACE
 
 L2_DATA static uint8_t ext[MAX_BUFFER_SIZE];
 L1_DATA static uint8_t loc[MAX_BUFFER_SIZE];
@@ -151,7 +151,12 @@ int main () {
                 PRINTF ("Size: %d | Length: %d | Src_stride_2d: %d | Dst_stride_2d: %d | Num_reps_2d: %d \n", size, length, src_stride_2d, dst_stride_2d, (size/length));
                 PRINTF ("Src_stride_3d: %d | Dst_stride_3d: %d | Num_reps_3d: %d \n", src_stride_3d, dst_stride_3d, num_reps_3d);
             }
-            errors[core_id] += test_idma_3D(core_id, size, (core_id%2), 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+            // L1 -> L2
+            errors[core_id] += test_idma_3D(core_id, size, 0, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+            // L2 -> L1
+            errors[core_id] += test_idma_3D(core_id, size, 1, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+            // L1 -> L1 transfer
+            errors[core_id] += test_idma_3D(core_id, size, 0, 1, loc_dst_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
             synch_barrier();
         }
     #elif MULTI_CORE_S
@@ -174,7 +179,12 @@ int main () {
                         PRINTF ("Size: %d | Length: %d | Src_stride_2d: %d | Dst_stride_2d: %d | Num_reps_2d: %d \n", size, length, src_stride_2d, dst_stride_2d, (size/length));
                         PRINTF ("Src_stride_3d: %d | Dst_stride_3d: %d | Num_reps_3d: %d \n", src_stride_3d, dst_stride_3d, num_reps_3d);
                     }
-                    errors[core_id] += test_idma_3D(core_id, size, (core_id%2), 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+                    // L1 -> L2
+                    errors[core_id] += test_idma_3D(core_id, size, 0, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+                    // L2 -> L1
+                    errors[core_id] += test_idma_3D(core_id, size, 1, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+                    // L1 -> L1 transfer
+                    errors[core_id] += test_idma_3D(core_id, size, 0, 1, loc_dst_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
                 }
             }
         }

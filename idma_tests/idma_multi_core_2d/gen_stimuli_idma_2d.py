@@ -23,8 +23,8 @@ def write_transfer_parameters_struct(f, name):
 def write_transfer_parameters_array(f, name, arr):
     f.write ('TransferParameters %s[] = {\n' % name)
     for v in arr:
-        size        = random.randint(1, MAX_SIZE)
         length      = random.randint(1, MAX_LENGTH)
+        size        = random.randint(1, MAX_SIZE) + length
         src_stride  = random.randint(1, MAX_STRIDE)
         # Computing dst_stride as random + length so that we do not overwrite data
         # when iDMA is executing
@@ -45,9 +45,9 @@ NB_TRANSFERS = random.randint(1, 10)
 
 # Randomize between 1 and 500 the size of each transfer
 
-MAX_SIZE     = 100
-MAX_STRIDE   = 24
-MAX_LENGTH   = 16
+MAX_SIZE     = 50
+MAX_STRIDE   = 10
+MAX_LENGTH   = 10
 
 transfer_params = [None] * NB_TRANSFERS
 

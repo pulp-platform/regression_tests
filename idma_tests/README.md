@@ -16,3 +16,5 @@ To launch each test:
         - **Parallel Multi-Core Mode**: specify **MULTI_CORE_P=1** in the command line when compiling the code. In this mode, all cores will execute the transfers specified in the stimulin in a parallel manner.
     3. `make run` : this will launch the simulation in bash mode (use gui=1 for Modelsim gui).
 4. All transfers will be executed in the three different directions that are currently supported: **L1->L2, L2->L1, L1->L1**.
+
+Updated drivers for the iDMA can be found at **pulp_cluster/pulp-runtime/include/hal/dma/idma_v2.h** and **pulp_cluster/pulp-runtime/include/archi/dma/idma_v2.h**. 

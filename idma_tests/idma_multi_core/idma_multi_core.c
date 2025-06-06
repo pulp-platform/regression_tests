@@ -95,8 +95,11 @@ int main () {
             if (core_id == 0) {
                 PRINTF ("Transfer: %d | Size: %8x \n", k, size);
             }
-            // Each core tests in a direction + L1 <-> L1
-            errors[core_id] += test_idma_1D(core_id, size, (core_id % 2), 0, ext_addr, loc_addr);
+            // L1 -> L2
+            errors[core_id] += test_idma_1D(core_id, size, 0, 0, ext_addr, loc_addr);
+            // L2 -> L1
+            errors[core_id] += test_idma_1D(core_id, size, 1, 0, ext_addr, loc_addr);
+            // L1 -> L1
             errors[core_id] += test_idma_1D(core_id, size, 0, 1, loc_dst_addr, loc_addr);
             synch_barrier();
         }
@@ -112,8 +115,11 @@ int main () {
                     if (core_id == 0) {
                         PRINTF ("Transfer: %d | Size: %8x \n", k, size);
                     }
-                    // Each core tests in a direction + L1 <-> L1
-                    errors[core_id] += test_idma_1D(core_id, size, (core_id% 2), 0, ext_addr, loc_addr);
+                    // L1 -> L2
+                    errors[core_id] += test_idma_1D(core_id, size, 0, 0, ext_addr, loc_addr);
+                    // L2 -> L1
+                    errors[core_id] += test_idma_1D(core_id, size, 1, 0, ext_addr, loc_addr);
+                    // L1 -> L1
                     errors[core_id] += test_idma_1D(core_id, size, 0, 1, loc_dst_addr, loc_addr);
                 }
             }
