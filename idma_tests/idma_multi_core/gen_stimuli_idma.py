@@ -14,7 +14,7 @@ args = parser.parse_args()
 def write_transfer_sizes_array(f, name, arr):
     f.write ('unsigned int %s[] = {\n' % name)
     for v in arr:
-        random_int = random.randint(1, MAX_SIZE)
+        random_int = random.randint(1, TRANSFER_SIZE)
         f.write('%d, \n' % random_int)
     f.write('};\n\n')
     return
@@ -29,9 +29,11 @@ def write_define(f, name,val):
 
 NB_TRANSFERS = random.randint(1, 10)
 
-# Randomize between 1 and 500 the size of each transfer
+# Randomize between 1 and 4096 the size of each transfer
 
-MAX_SIZE     = 1024
+CORE_SPACE     = 1024
+TRANSFER_SIZE = 512
+
 sizes = [None] * NB_TRANSFERS
 
 f_sizes = open('transfer_sizes.h', 'w')
@@ -39,3 +41,4 @@ f_defines = open ('idma_defines.h', 'w')
 
 write_transfer_sizes_array(f_sizes, 'sizes', sizes)
 write_define(f_defines, 'NB_TRANSFERS', NB_TRANSFERS)
+write_define(f_defines, 'CORE_SPACE', CORE_SPACE)

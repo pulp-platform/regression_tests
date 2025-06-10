@@ -1,86 +1,66 @@
 #include "idma_multi_core_3d.h"
 
-#define CORE_SPACE 0x1000
-#define MAX_BUFFER_SIZE CORE_SPACE
-
-L2_DATA static uint8_t ext[MAX_BUFFER_SIZE];
-L1_DATA static uint8_t loc[MAX_BUFFER_SIZE];
-L1_DATA static uint8_t loc_dst[MAX_BUFFER_SIZE];
+#define TOT_SIZE 8 * CORE_SPACE
 
 int errors[8] = {0};
 int test_status = 0;
 
-int test_idma_3D (int core_id, uint32_t size, int ext2loc, int loc2loc, uint32_t ext_addr, uint32_t tcdm_addr, unsigned int length, unsigned int src_stride_2d, unsigned int dst_stride_2d, unsigned int num_reps, unsigned int src_stride_3d, unsigned int dst_stride_3d, unsigned int num_reps_3d) {
+uint32_t l1_addr[8] = {0};
+uint32_t l1_dst_addr[8] = {0};
+uint32_t l2_addr[8] = {0};
+
+int test_idma_3D (int core_id, TransferParameters transfer, int ext2loc, int loc2loc) {
     volatile uint8_t *src_ptr, *dst_ptr;
-    unsigned int offset_3d, offset_2d;
+    unsigned int offset_3d = 0;
+    unsigned int offset_2d = 0;
 
     int error = 0;
 
+    uint32_t src_stride_2d = transfer.src_stride_2d;
+    uint32_t dst_stride_2d = transfer.dst_stride_2d;
+    uint32_t src_stride_3d = transfer.src_stride_3d;
+    uint32_t dst_stride_3d = transfer.dst_stride_3d;
+    uint32_t size = transfer.size;
+    uint32_t length = transfer.length;
+    uint32_t num_reps = size/length;
+    uint32_t num_reps_3d = transfer.num_reps_3d;
+
     if (loc2loc == 1) {
         // L1 to L1 transfer
-        src_ptr = (uint8_t*) tcdm_addr;
-        dst_ptr = (uint8_t*) ext_addr;
-
-        // Fill source region with test data
-        offset_2d = 0;
-        offset_3d = 0;
-        for (int j = 0; j < num_reps_3d; j++) {
-            for (int q = 0; q < num_reps; q++) {
-                for (int i = 0; i < length; i++) {
-                    src_ptr[i+offset_2d+offset_3d] = (uint8_t)(i & 0xFF);
-                }
-                offset_2d += src_stride_2d;
-            }
-            offset_2d = 0;
-            offset_3d += (num_reps-1) * src_stride_2d + src_stride_3d;
-        }
-
-        plp_cl_dma_wait_toL1(pulp_cl_idma_L1ToL1_3d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride_2d, dst_stride_2d, num_reps, src_stride_3d, dst_stride_3d, num_reps_3d));
-
+        src_ptr = (uint8_t*) l1_addr[core_id];
+        dst_ptr = (uint8_t*) l1_dst_addr[core_id];
+    } else if (ext2loc == 1) {
+        // L2 to L1 transfer
+        src_ptr = (uint8_t*) l2_addr[core_id];
+        dst_ptr = (uint8_t*) l1_addr[core_id];
     } else {
-        if (ext2loc == 1) {
+        // L1 to L2 transfer
+        src_ptr = (uint8_t*) l1_addr[core_id];
+        dst_ptr = (uint8_t*) l2_addr[core_id];
+    }
 
-            // L2 to L1 transfer
-            src_ptr = (uint8_t*) ext_addr;
-            dst_ptr = (uint8_t*) tcdm_addr;
-
-            // Fill source region with test data
-            offset_2d = 0;
-            offset_3d = 0;
-            for (int j = 0; j < num_reps_3d; j++) {
-                for (int q = 0; q < num_reps; q++) {
-                    for (int i = 0; i < length; i++) {
-                        src_ptr[i+offset_2d+offset_3d] = (uint8_t)(i & 0xFF);
-                    }
-                    offset_2d += src_stride_2d;
-                }
-                offset_2d = 0;
-                offset_3d += (num_reps-1) * src_stride_2d + src_stride_3d;
+    // Fill source region with test data
+    for (int j = 0; j < num_reps_3d; j++) {
+        for (int q = 0; q < num_reps; q++) {
+            for (int i = 0; i < length; i++) {
+                src_ptr[i+offset_2d+offset_3d] = (uint8_t)(i & 0xFF);
             }
-
-            plp_cl_dma_wait_toL1(pulp_cl_idma_L2ToL1_3d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride_2d, dst_stride_2d, num_reps, src_stride_3d, dst_stride_3d, num_reps_3d));
-        } else {
-
-            // L1 to L2 transfer
-            src_ptr = (uint8_t*) tcdm_addr;
-            dst_ptr = (uint8_t*) ext_addr;
-
-            // Fill source region with test data
-            offset_2d = 0;
-            offset_3d = 0;
-            for (int j = 0; j < num_reps_3d; j++) {
-                for (int q = 0; q < num_reps; q++) {
-                    for (int i = 0; i < length; i++) {
-                        src_ptr[i+offset_2d+offset_3d] = (uint8_t)(i & 0xFF);
-                    }
-                    offset_2d += src_stride_2d;
-                }
-                offset_2d = 0;
-                offset_3d += (num_reps-1) * src_stride_2d + src_stride_3d;
-            }
-
-            plp_cl_dma_wait_toL2(pulp_cl_idma_L1ToL2_3d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride_2d, dst_stride_2d, num_reps, src_stride_3d, dst_stride_3d, num_reps_3d));
+            offset_2d += src_stride_2d;
         }
+        offset_2d = 0;
+        offset_3d += (num_reps-1) * src_stride_2d + src_stride_3d;
+    }
+
+
+    if (loc2loc == 1) {
+        plp_cl_dma_wait_toL1(pulp_cl_idma_L1ToL1_3d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride_2d, dst_stride_2d, num_reps, 
+        src_stride_3d, dst_stride_3d, num_reps_3d));
+    } else if (ext2loc == 1) {
+        plp_cl_dma_wait_toL1(pulp_cl_idma_L2ToL1_3d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride_2d, dst_stride_2d, num_reps, 
+        src_stride_3d, dst_stride_3d, num_reps_3d));
+    } else {
+        plp_cl_dma_wait_toL2(pulp_cl_idma_L1ToL2_3d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride_2d, dst_stride_2d, num_reps, 
+        src_stride_3d, dst_stride_3d, num_reps_3d));
     }
 
     // Check the results
@@ -97,7 +77,8 @@ int test_idma_3D (int core_id, uint32_t size, int ext2loc, int loc2loc, uint32_t
 
                 if (expected != actual) {
                     if (core_id == 0) {
-                        PRINTF ("ERROR: expected @%8x[%d] = %8x vs actual @%8x[%d] = %8x \n", &src_ptr[src_offset_2d + src_offset_3d + i], src_offset_2d + src_offset_3d + i, expected, &dst_ptr[dst_offset_2d + dst_offset_3d + i], dst_offset_2d + dst_offset_3d + i, actual);
+                        PRINTF ("ERROR: expected @%8x[%d] = %8x vs actual @%8x[%d] = %8x \n", &src_ptr[src_offset_2d + src_offset_3d + i], src_offset_2d + src_offset_3d + i, 
+                                expected, &dst_ptr[dst_offset_2d + dst_offset_3d + i], dst_offset_2d + dst_offset_3d + i, actual);
                     }
                     error++;
                 }
@@ -114,22 +95,57 @@ int test_idma_3D (int core_id, uint32_t size, int ext2loc, int loc2loc, uint32_t
     return error;
 }
 
+void allocate_mem_to_cores () {
+    int core_id = rt_core_id();
+
+    // Pre-allocate TOT_SIZE = 8 * CORE_SPACE: then we split this window to assign
+    // each core its available space for iDMA transfers
+    // pi_l1_malloc starts allocating from 0x10004008 in L1
+    // pi_l2_malloc starts allocating from 0x1c000a60 in L2
+
+    if (core_id == 0) {
+        l1_addr[0]     = (uint32_t) pi_l1_malloc(0, TOT_SIZE);
+        l1_dst_addr[0] = (uint32_t) pi_l1_malloc(0, TOT_SIZE);
+        l2_addr[0]     = (uint32_t) pi_l2_malloc(TOT_SIZE);
+    }
+
+    // The following synch_barrier is needed so that
+    // no core can assign its address range until the mallocs are executed
+    synch_barrier();
+
+    l1_addr[core_id]     = l1_addr[0] + core_id * CORE_SPACE;
+    l1_dst_addr[core_id] = l1_dst_addr[0] + core_id * CORE_SPACE;
+    l2_addr[core_id]     = l2_addr[0] + core_id * CORE_SPACE;
+
+    // The following synch_barrier is needed so that
+    // no core can start executing until all address ranges have been assigned
+    synch_barrier();
+
+}
+
+void free_allocated_memory () {
+
+    synch_barrier();
+    // Only Core 0 takes care of freeing the allocated memory, since it's the one
+    // allocated it at the beginning of the test
+    if (core_id == 0) {
+        pi_l1_free(0, l1_addr, TOT_SIZE);
+        pi_l1_free(0, l1_dst_addr, TOT_SIZE);
+        pi_l2_free(l2_addr, TOT_SIZE);
+    }
+}
+
 int main () {
 
     int core_id = rt_core_id();
 
-    unsigned int size, length, src_stride_2d, dst_stride_2d;
-    unsigned int num_reps_3d, src_stride_3d, dst_stride_3d;
-    uint32_t ext_addr;
-    uint32_t loc_addr;
-    uint32_t loc_dst_addr;
-
-    ext_addr = (uint32_t)ext + core_id * CORE_SPACE;
-    loc_addr = (uint32_t)loc + core_id * CORE_SPACE;
-    loc_dst_addr = (uint32_t)loc_dst + core_id * CORE_SPACE;
+    allocate_mem_to_cores();
 
     if (core_id == 0){
-        PRINTF ("loc_addr: %8x | loc_dst_addr: %8x \n", loc_addr, loc_dst_addr);
+        for (int i = 0; i < 8; i++){
+            PRINTF ("CORE: %d \n", i);
+            PRINTF ("loc_addr: %8x | loc_dst_addr: %8x | ext_addr: %8x \n", l1_addr[i], l1_dst_addr[i], l2_addr[i]);
+        }
     }
 
     #ifdef MULTI_CORE_P
@@ -138,25 +154,12 @@ int main () {
             PRINTF ("MULTI CORE PARALLEL MODE \n");
         }
         for (int k = 0; k < NB_TRANSFERS; k++) {
-            size = transfer_params[k].size;
-            length = transfer_params[k].length;
-            src_stride_2d = transfer_params[k].src_stride_2d;
-            dst_stride_2d = transfer_params[k].dst_stride_2d;
-            src_stride_3d = transfer_params[k].src_stride_3d;
-            dst_stride_3d = transfer_params[k].dst_stride_3d;
-            num_reps_3d   = transfer_params[k].num_reps_3d;
-
-            if (core_id == 0) {
-                PRINTF ("Transfer: %d \n", k);
-                PRINTF ("Size: %d | Length: %d | Src_stride_2d: %d | Dst_stride_2d: %d | Num_reps_2d: %d \n", size, length, src_stride_2d, dst_stride_2d, (size/length));
-                PRINTF ("Src_stride_3d: %d | Dst_stride_3d: %d | Num_reps_3d: %d \n", src_stride_3d, dst_stride_3d, num_reps_3d);
-            }
             // L1 -> L2
-            errors[core_id] += test_idma_3D(core_id, size, 0, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+            errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 0);
             // L2 -> L1
-            errors[core_id] += test_idma_3D(core_id, size, 1, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+            errors[core_id] += test_idma_3D(core_id, transfer_params[k], 1, 0);
             // L1 -> L1 transfer
-            errors[core_id] += test_idma_3D(core_id, size, 0, 1, loc_dst_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+            errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 1);
             synch_barrier();
         }
     #elif MULTI_CORE_S
@@ -167,46 +170,24 @@ int main () {
         for (int i = 0; i < 8; i++) {
             if (core_id == i) {
                 for (int k = 0; k < NB_TRANSFERS; k++) {
-                    size = transfer_params[k].size;
-                    length = transfer_params[k].length;
-                    src_stride_2d = transfer_params[k].src_stride_2d;
-                    dst_stride_2d = transfer_params[k].dst_stride_2d;
-                    src_stride_3d = transfer_params[k].src_stride_3d;
-                    dst_stride_3d = transfer_params[k].dst_stride_3d;
-                    num_reps_3d   = transfer_params[k].num_reps_3d;
-                    if (core_id == 0) {
-                        PRINTF ("Transfer: %d \n", k);
-                        PRINTF ("Size: %d | Length: %d | Src_stride_2d: %d | Dst_stride_2d: %d | Num_reps_2d: %d \n", size, length, src_stride_2d, dst_stride_2d, (size/length));
-                        PRINTF ("Src_stride_3d: %d | Dst_stride_3d: %d | Num_reps_3d: %d \n", src_stride_3d, dst_stride_3d, num_reps_3d);
-                    }
-                    // L1 -> L2
-                    errors[core_id] += test_idma_3D(core_id, size, 0, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+                     // L1 -> L2
+                    errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 0);
                     // L2 -> L1
-                    errors[core_id] += test_idma_3D(core_id, size, 1, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+                    errors[core_id] += test_idma_3D(core_id, transfer_params[k], 1, 0);
                     // L1 -> L1 transfer
-                    errors[core_id] += test_idma_3D(core_id, size, 0, 1, loc_dst_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+                    errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 1);
                 }
             }
         }
     #else
         if (core_id == 0) {
             for (int k = 0; k < NB_TRANSFERS; k++) {
-                size = transfer_params[k].size;
-                length = transfer_params[k].length;
-                src_stride_2d = transfer_params[k].src_stride_2d;
-                dst_stride_2d = transfer_params[k].dst_stride_2d;
-                src_stride_3d = transfer_params[k].src_stride_3d;
-                dst_stride_3d = transfer_params[k].dst_stride_3d;
-                num_reps_3d   = transfer_params[k].num_reps_3d;
-                PRINTF ("Transfer: %d \n", k);
-                PRINTF ("Size: %d | Length: %d | Src_stride_2d: %d | Dst_stride_2d: %d | Num_reps_2d: %d \n", size, length, src_stride_2d, dst_stride_2d, (size/length));
-                PRINTF ("Src_stride_3d: %d | Dst_stride_3d: %d | Num_reps_3d: %d \n", src_stride_3d, dst_stride_3d, num_reps_3d);
-                PRINTF ("L1 to L2 transfer \n");
-                errors[core_id] += test_idma_3D(core_id, size, 0, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
-                PRINTF ("L2 to L1 transfer \n");
-                errors[core_id] += test_idma_3D(core_id, size, 1, 0, ext_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
-                PRINTF ("L1 to L1 transfer \n");
-                errors[core_id] += test_idma_3D(core_id, size, 0, 1, loc_dst_addr, loc_addr, length, src_stride_2d, dst_stride_2d, (size/length), src_stride_3d, dst_stride_3d, num_reps_3d);
+                PRINTF ("L1 to L2 \n");
+                errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 0);
+                PRINTF ("L2 to L1 \n");
+                errors[core_id] += test_idma_3D(core_id, transfer_params[k], 1, 0);
+                PRINTF ("L1 to L1 \n");
+                errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 1);
             }
         }
     #endif
@@ -219,6 +200,8 @@ int main () {
             }
         }
     }
+
+    free_allocated_memory();
 
     return test_status;
 }
