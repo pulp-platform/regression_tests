@@ -14,8 +14,6 @@ int test_idma_1D (int core_id, uint32_t size, int ext2loc, int loc2loc) {
 
     int error = 0;
 
-    PRINTF ("Size: %d \n", size);
-
     if (loc2loc == 1) {
         // L1 to L1 transfer
         src_ptr = (uint8_t*) l1_addr[core_id];
@@ -124,14 +122,17 @@ int main () {
             #else
             size = sizes[k];
             #endif
+            if (core_id == 0){
+                PRINTF ("Size: %d \n", size);
+            }
             // L1 -> L2
             errors[core_id] += test_idma_1D(core_id, size, 0, 0);
             // L2 -> L1
             errors[core_id] += test_idma_1D(core_id, size, 1, 0);
             // L1 -> L1
             errors[core_id] += test_idma_1D(core_id, size, 0, 1);
-            synch_barrier();
         }
+        synch_barrier();
     #elif MULTI_CORE_S
         // MULTI CORE SERIAL MODE: each core uses the iDMA in a serial manner
         if (core_id == 0) {
