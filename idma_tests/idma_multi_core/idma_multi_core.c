@@ -102,6 +102,7 @@ void free_allocated_memory () {
 
 int main () {
     int core_id = rt_core_id();
+    unsigned int size = 0;
 
     allocate_mem_to_cores();
 
@@ -117,8 +118,12 @@ int main () {
         if (core_id == 0) {
             PRINTF ("MULTI CORE PARALLEL MODE \n");
         }
-        for (int k = 0; k < NB_TRANSFERS; k++) {
-            unsigned int size = sizes[k];
+        for (int k = 0; k < TRANSFERS; k++) {
+            #ifdef QUICK_MODE
+            size = idma_presets[k];
+            #else
+            size = sizes[k];
+            #endif
             // L1 -> L2
             errors[core_id] += test_idma_1D(core_id, size, 0, 0);
             // L2 -> L1
@@ -134,8 +139,12 @@ int main () {
         }
         for (int i = 0; i < 8; i++) {
             if (core_id == i) {
-                for (int k = 0; k < NB_TRANSFERS; k++) {
-                    unsigned int size = sizes[k];
+                for (int k = 0; k < TRANSFERS; k++) {
+                    #ifdef QUICK_MODE
+                    size = idma_presets[k];
+                    #else
+                    size = sizes[k];
+                    #endif
                     // L1 -> L2
                     errors[core_id] += test_idma_1D(core_id, size, 0, 0);
                     // L2 -> L1
@@ -149,8 +158,12 @@ int main () {
         if (core_id == 0) {
             // SINGLE CORE MODE: just core 0 uses the iDMA
             PRINTF ("Just using Core 0 \n");
-            for (int k = 0; k < NB_TRANSFERS; k++) {
-                unsigned int size = sizes[k];
+            for (int k = 0; k < TRANSFERS; k++) {
+                #ifdef QUICK_MODE
+                size = idma_presets[k];
+                #else
+                size = sizes[k];
+                #endif
                 PRINTF ("L1 to L2 \n");
                 errors[core_id] += test_idma_1D(core_id, size, 0, 0);
                 PRINTF ("L2 to L1 \n");

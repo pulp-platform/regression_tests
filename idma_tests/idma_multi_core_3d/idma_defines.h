@@ -1,3 +1,4 @@
-#define NB_TRANSFERS 3
+#define NB_TRANSFERS 6
 
 #define CORE_SPACE 2048
+

@@ -14,6 +14,10 @@ ifdef MULTI_CORE_S
 PULP_CFLAGS += -DMULTI_CORE_S
 endif
 
+ifdef QUICK_MODE
+PULP_CFLAGS += -DQUICK_MODE
+endif
+
 PULP_CFLAGS += -O3
 stackSize = 4096
 

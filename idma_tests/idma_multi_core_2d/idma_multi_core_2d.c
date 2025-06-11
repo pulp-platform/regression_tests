@@ -9,6 +9,14 @@ uint32_t l1_addr[8] = {0};
 uint32_t l1_dst_addr[8] = {0};
 uint32_t l2_addr[8] = {0};
 
+void print_transfer (TransferParameters transfer) {
+    if (rt_core_id() == 0) {
+        PRINTF ("Transfer Parameters: \n");
+        PRINTF ("Size: %d | Length: %d \n", transfer.size, transfer.length);
+        PRINTF ("Src_stride_2d: %d | Dst_stride_2d: %d \n", transfer.src_stride, transfer.dst_stride);
+    }
+}
+
 int test_idma_2D (int core_id, TransferParameters transfer, int ext2loc, int loc2loc) {
     volatile uint8_t *src_ptr, *dst_ptr;
 
@@ -20,9 +28,6 @@ int test_idma_2D (int core_id, TransferParameters transfer, int ext2loc, int loc
     uint32_t size = transfer.size;
     uint32_t length = transfer.length;
     uint32_t num_reps = size/length;
-
-    PRINTF ("Size: %d | Length: %d | Src_stride: %d | Dst_stride: %d | Num_reps: %d \n",
-            size, length, src_stride, dst_stride, num_reps);
 
     if (loc2loc == 1) {
         // L1 to L1 transfer
@@ -130,20 +135,28 @@ int main () {
         }
     }
 
+    TransferParameters transfer;
+
     #ifdef MULTI_CORE_P
         // MULTI CORE PARALLEL MODE: each core uses the iDMA in a parallel manner
         if (core_id == 0) {
             PRINTF ("MULTI CORE PARALLEL MODE \n");
         }
-        for (int k = 0; k < NB_TRANSFERS; k++) {
+        for (int k = 0; k < TRANSFERS; k++) {
+            #ifdef QUICK_MODE
+            transfer = idma_presets[k];
+            #else
+            transfer = transfer_params[k];
+            #endif
+            print_transfer(transfer);
             // L1 -> L2
-            errors[core_id] += test_idma_2D(core_id, transfer_params[k], 0, 0);
+            errors[core_id] += test_idma_2D(core_id, transfer, 0, 0);
             // L2 -> L1
-            errors[core_id] += test_idma_2D(core_id, transfer_params[k], 1, 0);
+            errors[core_id] += test_idma_2D(core_id, transfer, 1, 0);
             // L1 -> L1
-            errors[core_id] += test_idma_2D(core_id, transfer_params[k], 0, 1);
-            synch_barrier();
+            errors[core_id] += test_idma_2D(core_id, transfer, 0, 1);
         }
+        synch_barrier();
     #elif MULTI_CORE_S
         // MULTI CORE SERIAL MODE: each core uses the iDMA in a serial manner
         if (core_id == 0) {
@@ -151,13 +164,19 @@ int main () {
         }
         for (int i = 0; i < 8; i++) {
             if (core_id == i) {
-                for (int k = 0; k < NB_TRANSFERS; k++) {
+                for (int k = 0; k < TRANSFERS; k++) {
+                    #ifdef QUICK_MODE
+                    transfer = idma_presets[k];
+                    #else
+                    transfer = transfer_params[k];
+                    #endif
+                    print_transfer(transfer);
                     // L1 -> L2
-                    errors[core_id] += test_idma_2D(core_id, transfer_params[k], 0, 0);
+                    errors[core_id] += test_idma_2D(core_id, transfer, 0, 0);
                     // L2 -> L1
-                    errors[core_id] += test_idma_2D(core_id, transfer_params[k], 1, 0);
+                    errors[core_id] += test_idma_2D(core_id, transfer, 1, 0);
                     // L1 -> L1
-                    errors[core_id] += test_idma_2D(core_id, transfer_params[k], 0, 1);
+                    errors[core_id] += test_idma_2D(core_id, transfer, 0, 1);
                 }
             }
         }
@@ -165,13 +184,19 @@ int main () {
         // SINGLE CORE MODE: just core 0 uses the iDMA
         if (core_id == 0) {
             PRINTF ("SINGLE CORE MODE \n");
-            for (int k = 0; k < NB_TRANSFERS; k++) {
+            for (int k = 0; k < TRANSFERS; k++) {
+                #ifdef QUICK_MODE
+                transfer = idma_presets[k];
+                #else
+                transfer = transfer_params[k];
+                #endif
+                print_transfer(transfer);
                 PRINTF ("L1 to L2 \n");
-                errors[core_id] += test_idma_2D(core_id, transfer_params[k], 0, 0);
+                errors[core_id] += test_idma_2D(core_id, transfer, 0, 0);
                 PRINTF ("L2 to L1 \n");
-                errors[core_id] += test_idma_2D(core_id, transfer_params[k], 1, 0);
+                errors[core_id] += test_idma_2D(core_id, transfer, 1, 0);
                 PRINTF ("L1 to L1 \n");
-                errors[core_id] += test_idma_2D(core_id, transfer_params[k], 0, 1);
+                errors[core_id] += test_idma_2D(core_id, transfer, 0, 1);
             }
         }
     #endif

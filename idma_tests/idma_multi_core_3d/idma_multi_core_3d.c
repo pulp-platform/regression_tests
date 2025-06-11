@@ -9,6 +9,16 @@ uint32_t l1_addr[8] = {0};
 uint32_t l1_dst_addr[8] = {0};
 uint32_t l2_addr[8] = {0};
 
+void print_transfer (TransferParameters transfer) {
+    if (rt_core_id() == 0) {
+        PRINTF ("Transfer Parameters: \n");
+        PRINTF ("Size: %d | Length: %d \n", transfer.size, transfer.length);
+        PRINTF ("Src_stride_2d: %d | Dst_stride_2d: %d \n", transfer.src_stride_2d, transfer.dst_stride_2d);
+        PRINTF ("Src_stride_3d: %d | Dst_stride_3d: %d \n", transfer.src_stride_3d, transfer.dst_stride_3d);
+        PRINTF ("Num_reps_3d: %d \n", transfer.num_reps_3d);
+    }
+}
+
 int test_idma_3D (int core_id, TransferParameters transfer, int ext2loc, int loc2loc) {
     volatile uint8_t *src_ptr, *dst_ptr;
     unsigned int offset_3d = 0;
@@ -141,6 +151,8 @@ int main () {
 
     allocate_mem_to_cores();
 
+    TransferParameters transfer;
+
     if (core_id == 0){
         for (int i = 0; i < 8; i++){
             PRINTF ("CORE: %d \n", i);
@@ -153,15 +165,21 @@ int main () {
         if (core_id == 0) {
             PRINTF ("MULTI CORE PARALLEL MODE \n");
         }
-        for (int k = 0; k < NB_TRANSFERS; k++) {
+        for (int k = 0; k < TRANSFERS; k++) {
+            #ifdef QUICK_MODE
+            transfer = idma_presets[k];
+            #else
+            transfer = transfer_params[k];
+            #endif
+            print_transfer(transfer);
             // L1 -> L2
-            errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 0);
+            errors[core_id] += test_idma_3D(core_id, transfer, 0, 0);
             // L2 -> L1
-            errors[core_id] += test_idma_3D(core_id, transfer_params[k], 1, 0);
+            errors[core_id] += test_idma_3D(core_id, transfer, 1, 0);
             // L1 -> L1 transfer
-            errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 1);
-            synch_barrier();
+            errors[core_id] += test_idma_3D(core_id, transfer, 0, 1);
         }
+        synch_barrier();
     #elif MULTI_CORE_S
         // MULTI CORE SERIAL MODE: each core uses the iDMA in a serial manner
         if (core_id == 0) {
@@ -169,25 +187,37 @@ int main () {
         }
         for (int i = 0; i < 8; i++) {
             if (core_id == i) {
-                for (int k = 0; k < NB_TRANSFERS; k++) {
-                     // L1 -> L2
-                    errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 0);
+                for (int k = 0; k < TRANSFERS; k++) {
+                    #ifdef QUICK_MODE
+                    transfer = idma_presets[k];
+                    #else
+                    transfer = transfer_params[k];
+                    #endif
+                    print_transfer(transfer);
+                    // L1 -> L2
+                    errors[core_id] += test_idma_3D(core_id, transfer, 0, 0);
                     // L2 -> L1
-                    errors[core_id] += test_idma_3D(core_id, transfer_params[k], 1, 0);
+                    errors[core_id] += test_idma_3D(core_id, transfer, 1, 0);
                     // L1 -> L1 transfer
-                    errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 1);
+                    errors[core_id] += test_idma_3D(core_id, transfer, 0, 1);
                 }
             }
         }
     #else
         if (core_id == 0) {
-            for (int k = 0; k < NB_TRANSFERS; k++) {
+            for (int k = 0; k < TRANSFERS; k++) {
+                #ifdef QUICK_MODE
+                transfer = idma_presets[k];
+                #else
+                transfer = transfer_params[k];
+                #endif
+                print_transfer(transfer);
                 PRINTF ("L1 to L2 \n");
-                errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 0);
+                errors[core_id] += test_idma_3D(core_id, transfer, 0, 0);
                 PRINTF ("L2 to L1 \n");
-                errors[core_id] += test_idma_3D(core_id, transfer_params[k], 1, 0);
+                errors[core_id] += test_idma_3D(core_id, transfer, 1, 0);
                 PRINTF ("L1 to L1 \n");
-                errors[core_id] += test_idma_3D(core_id, transfer_params[k], 0, 1);
+                errors[core_id] += test_idma_3D(core_id, transfer, 0, 1);
             }
         }
     #endif

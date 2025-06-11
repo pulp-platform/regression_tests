@@ -29,10 +29,10 @@ def write_define(f, name,val):
 
 NB_TRANSFERS = random.randint(1, 10)
 
-# Randomize between 1 and 4096 the size of each transfer
+# Randomize between 1 and 1024 the size of each transfer
 
 CORE_SPACE     = 1024
-TRANSFER_SIZE = 512
+TRANSFER_SIZE = 1024
 
 sizes = [None] * NB_TRANSFERS
 

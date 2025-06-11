@@ -43,7 +43,7 @@ NB_TRANSFERS = random.randint(1, 10)
 # Randomize between 1 and 512 the size of each transfer
 
 CORE_SPACE    = 1024
-TRANSFER_SIZE = 512
+TRANSFER_SIZE = 90
 MAX_STRIDE    = 10
 MAX_LENGTH    = 10
 

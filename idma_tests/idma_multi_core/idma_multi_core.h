@@ -15,6 +15,7 @@
 
 #include "idma_defines.h"
 #include "transfer_sizes.h"
+#include "idma_presets.h"
 
 #ifndef _DMA_FRONTEND_REG_DEFS_
 #define _DMA_FRONTEND_REG_DEFS_
@@ -31,6 +32,12 @@ extern "C" {
     #define PRINTF(...) printf(__VA_ARGS__)
 #else
     #define PRINTF(...)
+#endif
+
+#ifdef QUICK_MODE
+    #define TRANSFERS 12
+#else
+    #define TRANSFERS NB_TRANSFERS
 #endif
 
 #ifdef __cplusplus
