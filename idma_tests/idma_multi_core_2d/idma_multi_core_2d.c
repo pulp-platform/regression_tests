@@ -3,7 +3,7 @@
 #define TOT_SIZE 8 * CORE_SPACE
 
 int errors[8] = {0};
-int test_status = 0;
+int test_status = 8;
 
 uint32_t l1_addr[8] = {0};
 uint32_t l1_dst_addr[8] = {0};
@@ -203,9 +203,9 @@ int main () {
 
     if (core_id == 0) {
         for (int i = 0; i<8; i++) {
-            if (errors[i] !=0) {
+            if (errors[i] == 0) {
                 PRINTF ("Core %d returned %d errors \n", i, errors[i]);
-                test_status = 1;
+                test_status --;
             }
         }
     }
