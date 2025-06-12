@@ -104,13 +104,6 @@ int main () {
 
     allocate_mem_to_cores();
 
-    if (core_id == 0){
-        for (int i = 0; i < 8; i++){
-            PRINTF ("CORE: %d \n", i);
-            PRINTF ("loc_addr: %8x | loc_dst_addr: %8x | ext_addr: %8x \n", l1_addr[i], l1_dst_addr[i], l2_addr[i]);
-        }
-    }
-
     #ifdef MULTI_CORE_P
         // MULTI CORE PARALLEL MODE: each core uses the iDMA in a parallel manner
         if (core_id == 0) {
@@ -146,6 +139,9 @@ int main () {
                     #else
                     size = sizes[k];
                     #endif
+                    if (core_id == 0){
+                        PRINTF ("Size: %d \n", size);
+                    }
                     // L1 -> L2
                     errors[core_id] += test_idma_1D(core_id, size, 0, 0);
                     // L2 -> L1
@@ -158,18 +154,19 @@ int main () {
     #else
         if (core_id == 0) {
             // SINGLE CORE MODE: just core 0 uses the iDMA
-            PRINTF ("Just using Core 0 \n");
+            PRINTF ("SINGLE CORE MODE: CORE 0 \n");
             for (int k = 0; k < TRANSFERS; k++) {
                 #ifdef QUICK_MODE
                 size = idma_presets[k];
                 #else
                 size = sizes[k];
                 #endif
-                PRINTF ("L1 to L2 \n");
+                PRINTF ("Size: %d \n", size);
+                // L1 -> L2
                 errors[core_id] += test_idma_1D(core_id, size, 0, 0);
-                PRINTF ("L2 to L1 \n");
+                // L2 -> L1
                 errors[core_id] += test_idma_1D(core_id, size, 1, 0);
-                PRINTF ("L1 to L1 \n");
+                // L1 -> L1
                 errors[core_id] += test_idma_1D(core_id, size, 0, 1);
             }
         }

@@ -47,11 +47,9 @@ def write_define(f, name,val):
 
 NB_TRANSFERS = random.randint(1, 10)
 
-# Randomize between 1 and 512 the size of each transfer
-
-CORE_SPACE    = 2048
+# Randomize between 1 and 128 the size of each transfer
 TRANSFER_SIZE = 128
-MAX_STRIDE   = 5
+MAX_STRIDE   = 10
 MAX_LENGTH   = 10
 MAX_REPS     = 5
 
@@ -61,7 +59,6 @@ f_params    = open('idma_parameters.h', 'w')
 f_defines   = open('idma_defines.h', 'w')
 
 write_define(f_defines, 'NB_TRANSFERS', NB_TRANSFERS)
-write_define(f_defines, 'CORE_SPACE', CORE_SPACE)
 write_transfer_parameters_struct(f_params, 'TransferParameters')
 write_transfer_parameters_array(f_params, 'transfer_params', transfer_params)
 

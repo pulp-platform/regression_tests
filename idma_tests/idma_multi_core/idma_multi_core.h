@@ -14,7 +14,7 @@
 #include <assert.h>
 
 #include "idma_defines.h"
-#include "transfer_sizes.h"
+#include "idma_parameters.h"
 #include "idma_presets.h"
 
 #ifndef _DMA_FRONTEND_REG_DEFS_
@@ -27,6 +27,8 @@ extern "C" {
 #define DMA_CONF_DECOUPLE 0
 #define DMA_CONF_DEBURST 0
 #define DMA_CONF_SERIALIZE 0
+
+#define CORE_SPACE 2048
 
 #if VERBOSE
     #define PRINTF(...) printf(__VA_ARGS__)

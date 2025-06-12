@@ -28,6 +28,8 @@ extern "C" {
 #define DMA_CONF_DEBURST 0
 #define DMA_CONF_SERIALIZE 0
 
+#define CORE_SPACE 2048
+
 #ifdef QUICK_MODE
 #define TRANSFERS 7
 #else

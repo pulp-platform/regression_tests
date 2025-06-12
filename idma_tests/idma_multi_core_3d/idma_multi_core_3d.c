@@ -153,13 +153,6 @@ int main () {
 
     TransferParameters transfer;
 
-    if (core_id == 0){
-        for (int i = 0; i < 8; i++){
-            PRINTF ("CORE: %d \n", i);
-            PRINTF ("loc_addr: %8x | loc_dst_addr: %8x | ext_addr: %8x \n", l1_addr[i], l1_dst_addr[i], l2_addr[i]);
-        }
-    }
-
     #ifdef MULTI_CORE_P
         // MULTI CORE PARALLEL MODE: each core uses the iDMA in a parallel manner
         if (core_id == 0) {

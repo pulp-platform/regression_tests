@@ -128,13 +128,6 @@ int main () {
 
     allocate_mem_to_cores();
 
-    if (core_id == 0){
-        for (int i = 0; i < 8; i++){
-            PRINTF ("CORE: %d \n", i);
-            PRINTF ("loc_addr: %8x | loc_dst_addr: %8x | ext_addr: %8x \n", l1_addr[i], l1_dst_addr[i], l2_addr[i]);
-        }
-    }
-
     TransferParameters transfer;
 
     #ifdef MULTI_CORE_P
@@ -191,11 +184,11 @@ int main () {
                 transfer = transfer_params[k];
                 #endif
                 print_transfer(transfer);
-                PRINTF ("L1 to L2 \n");
+                // L1 -> L2
                 errors[core_id] += test_idma_2D(core_id, transfer, 0, 0);
-                PRINTF ("L2 to L1 \n");
+                // L2 -> L1
                 errors[core_id] += test_idma_2D(core_id, transfer, 1, 0);
-                PRINTF ("L1 to L1 \n");
+                // L1 -> L1
                 errors[core_id] += test_idma_2D(core_id, transfer, 0, 1);
             }
         }

@@ -1,4 +1,2 @@
 #define NB_TRANSFERS 7
 
-#define CORE_SPACE 1024
-
