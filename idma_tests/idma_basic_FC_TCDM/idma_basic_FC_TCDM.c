@@ -51,7 +51,7 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
             *(uint8_t *)(ext_addr + i) = (uint8_t)(i & 0xFF);
         }
 
-        for (i = 0; i < size; i++) {
+        for (uint32_t i = 0; i < size; i++) {
             *(uint8_t *)(tcdm_addr + i) = 0;
         }
 
@@ -67,7 +67,7 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
         |                |                        |                |
         +----------------+                        +----------------+
         */
-    
+       plp_cl_dma_wait_toL1(id);
     } else if (type == L1_TO_L2) {
         // Fill L1 buffer with a pattern
         for (uint32_t i = 0; i < size; i++) {
@@ -88,12 +88,14 @@ int test_idma(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tcdm_
         |                |                        |                |
         +----------------+                        +----------------+
         */
+        plp_cl_dma_wait_toL2(id);
     } else {
         printf("Invalid test type. It must be either L2_TO_L1 or L1_TO_L2.\n");
         return 1;
     }
 
-    plp_dma_barrier();
+    // plp_cl_dma_wait();
+    // plp_dma_barrier();
 
     // Verify data
     for (uint32_t i = 0; i < size; i++) {

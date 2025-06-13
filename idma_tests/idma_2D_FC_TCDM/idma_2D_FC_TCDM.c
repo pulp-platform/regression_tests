@@ -68,14 +68,16 @@ int test_idma_2D(uint32_t size, test_type_t type, uint32_t ext_addr, uint32_t tc
         dst_ptr = (uint8_t *)tcdm_addr;
         for (uint32_t i = 0; i < size; i++) src_ptr[i] = (uint8_t)(i & 0xFF);
         id = pulp_cl_idma_L2ToL1_2d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride, dst_stride, num_reps);
+        plp_cl_dma_wait_toL1(id);
     } else {
         src_ptr = (uint8_t *)tcdm_addr;
         dst_ptr = (uint8_t *)ext_addr;
         for (uint32_t i = 0; i < size; i++) src_ptr[i] = (uint8_t)(i & 0xFF);
         id = pulp_cl_idma_L1ToL2_2d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride, dst_stride, num_reps);
+        plp_cl_dma_wait_toL2(id);
     }
 
-    plp_dma_barrier();
+    // plp_dma_barrier();
 
     for (unsigned int rep = 0; rep < num_reps; rep++) {
         unsigned int src_offset = rep * src_stride;
