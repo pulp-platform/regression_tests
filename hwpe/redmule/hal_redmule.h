@@ -203,15 +203,7 @@ int redmule_compare16 (int z_start_addr, int m_size, int k_size) {
     int z = z_addr - z_start_addr;
     z_computed = *(uint32_t *)(z_addr);
 
-    if ( z_computed != z_oup[z/2] ) {
-      diff_1 = z_computed - z_oup[z/2];
-      if (diff_1 > 3) {
-        diff_2 = z_oup[z/2] - z_computed;
-        if (diff_2 > 3) {
-          err++;
-        }
-      }
-    }
+    if ( z_computed != z_oup[z/2] ) err++;
   }
 
   return err;
@@ -219,7 +211,7 @@ int redmule_compare16 (int z_start_addr, int m_size, int k_size) {
 }
 
 int redmule16_compare_int(uint32_t *actual_z, uint32_t *golden_z, int len) {
-  #define ERR 0x0011
+  #define ERR 0x0000
   uint32_t actual_word = 0;
   uint16_t actual_MSHWord, actual_LSHWord;
   uint32_t golden_word = 0;
