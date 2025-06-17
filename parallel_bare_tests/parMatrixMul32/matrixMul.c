@@ -22,6 +22,8 @@
 
 #include "parMatrixMul32_stimuli.h"
 
+#define IC_WU_ITERS 2
+
 void check_matrix_mul(testresult_t *result, void (*start)(), void (*stop)());
 void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*stop)());
 
@@ -73,22 +75,25 @@ void check_matrix_mul(testresult_t *result, void (*start)(), void (*stop)()) {
 
   if(num_cores != 1) synch_barrier();
 
-  // start benchmark
-  start();
+  for (int qq = 0; qq < IC_WU_ITERS; qq++){ // I$ warm-up
 
-  for(i = lb; i < ub; i++) {
-    for(j = 0; j < SIZE; j++) {
-      g_mC[i][j] = 0;
-  
-      for(k = 0; k < SIZE; k++) {
-        g_mC[i][j] += g_mA[i][k] * g_mB[k][j];
+    // start benchmark
+    if(qq == IC_WU_ITERS-1) start();
+
+    for(i = lb; i < ub; i++) {
+      for(j = 0; j < SIZE; j++) {
+        g_mC[i][j] = 0;
+
+        for(k = 0; k < SIZE; k++) {
+          g_mC[i][j] += g_mA[i][k] * g_mB[k][j];
+        }
       }
     }
+
+    if(num_cores != 1) synch_barrier();
+
+    if(qq == IC_WU_ITERS-1) stop();
   }
-
-  if(num_cores != 1) synch_barrier();
-
-  stop();
 
   if(core_id == 0) {
     result->errors = matrix_check();
@@ -116,9 +121,6 @@ void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*st
 
   if(num_cores != 1) synch_barrier();
 
-  // start benchmark
-  start();
-
   // transpose array before using it
   for(i = lb; i < ub; i++) {
     for(j = 0; j < SIZE; j++) {
@@ -128,19 +130,25 @@ void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*st
 
   if(num_cores != 1) synch_barrier();
 
-  for(i = lb; i < ub; i++) {
-    for(j = 0; j < SIZE; j++) {
-      g_mC[i][j] = 0;
+  for (int qq = 0; qq < IC_WU_ITERS; qq++){ // I$ warm-up
 
-      for(k = 0; k < SIZE; k++) {
-        g_mC[i][j] += g_mA[i][k] * g_mB_tmp[j][k];
+    // start benchmark
+    if(qq == IC_WU_ITERS-1) start();
+
+    for(i = lb; i < ub; i++) {
+      for(j = 0; j < SIZE; j++) {
+        g_mC[i][j] = 0;
+
+        for(k = 0; k < SIZE; k++) {
+          g_mC[i][j] += g_mA[i][k] * g_mB_tmp[j][k];
+        }
       }
     }
+
+    if(num_cores != 1) synch_barrier();
+
+    if(qq == IC_WU_ITERS-1) stop();
   }
-
-  if(num_cores != 1) synch_barrier();
-
-  stop();
 
   if(core_id == 0) {
     result->errors = matrix_check();

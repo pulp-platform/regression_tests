@@ -22,12 +22,16 @@
 
 #include "parMatrixMul8_stimuli.h"
 
+#define IC_WU_ITERS 2
+
 void check_matrix_mul(testresult_t *result, void (*start)(), void (*stop)());
 void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*stop)());
+void check_matrix_mul_transpose_vectorized(testresult_t *result, void (*start)(), void (*stop)());
 
 testcase_t testcases[] = {
-  { .name = "matrixMul",          .test = check_matrix_mul           },
-  { .name = "matrixMulTranspose", .test = check_matrix_mul_transpose },
+  { .name = "matrixMul",          .test = check_matrix_mul                                },
+  { .name = "matrixMulTranspose", .test = check_matrix_mul_transpose                      },
+  { .name = "matrixMulTransposeVectorized", .test = check_matrix_mul_transpose_vectorized },
   {0, 0}
 };
 
@@ -73,22 +77,25 @@ void check_matrix_mul(testresult_t *result, void (*start)(), void (*stop)()) {
 
   if(num_cores != 1) synch_barrier();
 
-  // start benchmark
-  start();
+  for (int qq = 0; qq < IC_WU_ITERS; qq++){ // I$ warm-up
+
+    // start benchmark
+    if(qq == IC_WU_ITERS-1) start();
 
   for(i = lb; i < ub; i++) {
     for(j = 0; j < SIZE; j++) {
       g_mC[i][j] = 0;
-  
+
       for(k = 0; k < SIZE; k++) {
         g_mC[i][j] += g_mA[i][k] * g_mB[k][j];
       }
     }
   }
 
-  if(num_cores != 1) synch_barrier();
+    if(num_cores != 1) synch_barrier();
 
-  stop();
+    if(qq == IC_WU_ITERS-1) stop();
+  }
 
   if(core_id == 0) {
     result->errors = matrix_check();
@@ -116,8 +123,60 @@ void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*st
 
   if(num_cores != 1) synch_barrier();
 
-  // start benchmark
-  start();
+  // transpose array before using it
+  for(i = lb; i < ub; i++) {
+    for(j = 0; j < SIZE; j++) {
+      g_mB_tmp[i][j] = g_mB[j][i];
+    }
+  }
+
+  if(num_cores != 1) synch_barrier();
+
+  for (int qq = 0; qq < IC_WU_ITERS; qq++){ // I$ warm-up
+
+    // start benchmark
+    if(qq == IC_WU_ITERS-1) start();
+
+    for(i = lb; i < ub; i++) {
+      for(j = 0; j < SIZE; j++) {
+        g_mC[i][j] = 0;
+
+        for(k = 0; k < SIZE; k++) {
+          g_mC[i][j] += g_mA[i][k] * g_mB_tmp[j][k];
+        }
+      }
+    }
+
+    if(num_cores != 1) synch_barrier();
+
+    if(qq == IC_WU_ITERS-1) stop();
+  }
+
+  if(core_id == 0) {
+    result->errors = matrix_check();
+  }
+}
+
+void check_matrix_mul_transpose_vectorized(testresult_t *result, void (*start)(), void (*stop)()) {
+  int core_id;
+  unsigned int i, j, k;
+  unsigned int chunk;
+  unsigned int lb, ub;
+
+  core_id = get_core_id();
+
+  // number of rows each core has to multiply
+  chunk = SIZE / num_cores;
+  // lower bound
+  lb = core_id * chunk;
+  // upper bound
+  ub = lb + chunk;
+
+  if(core_id == 0) {
+    matrix_init();
+  }
+
+  if(num_cores != 1) synch_barrier();
 
   // transpose array before using it
   for(i = lb; i < ub; i++) {
@@ -128,19 +187,27 @@ void check_matrix_mul_transpose(testresult_t *result, void (*start)(), void (*st
 
   if(num_cores != 1) synch_barrier();
 
-  for(i = lb; i < ub; i++) {
-    for(j = 0; j < SIZE; j++) {
-      g_mC[i][j] = 0;
+  for (int qq = 0; qq < IC_WU_ITERS; qq++){ // I$ warm-up
 
-      for(k = 0; k < SIZE; k++) {
-        g_mC[i][j] += g_mA[i][k] * g_mB_tmp[j][k];
+    // start benchmark
+    if(qq == IC_WU_ITERS-1) start();
+
+    for(i = lb; i < ub; i++) {
+      for(j = 0; j < SIZE; j++) {
+        g_mC[i][j] = 0;
+        v4s * g_mA_8 = (v4s *) g_mA[i];
+        v4s * g_mB_tmp_8 = (v4s *) g_mB_tmp[j];
+
+        for(k = 0; k < (SIZE>>2); k++) {
+          g_mC[i][j] = __builtin_pulp_sdotsp4(g_mA_8[k], g_mB_tmp_8[k], g_mC[i][j]);
+        }
       }
     }
+
+    if(num_cores != 1) synch_barrier();
+
+    if(qq == IC_WU_ITERS-1) stop();
   }
-
-  if(num_cores != 1) synch_barrier();
-
-  stop();
 
   if(core_id == 0) {
     result->errors = matrix_check();
