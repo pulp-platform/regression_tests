@@ -18,6 +18,7 @@
  * Mantainer: Luca Valente, luca.valente2@unibo.it
  */
 
+#include <stdio.h>
 #include "pulp.h"
 
 #include "parMatrixMul16_stimuli.h"
@@ -199,7 +200,11 @@ void check_matrix_mul_transpose_vectorized(testresult_t *result, void (*start)()
         v2s * g_mB_tmp_16 = (v2s *) g_mB_tmp[j];
 
         for(k = 0; k < (SIZE>>1); k++) {
+          #if defined(__cv32e40p__)
+          g_mC[i][j] = __builtin_riscv_cv_simd_sdotsp_h((uint32_t)g_mA_16[k], (uint32_t)g_mB_tmp_16[k], (int32_t)g_mC[i][j]);
+          #else
           g_mC[i][j] = __builtin_pulp_sdotsp2(g_mA_16[k], g_mB_tmp_16[k], g_mC[i][j]);
+          #endif
         }
       }
     }

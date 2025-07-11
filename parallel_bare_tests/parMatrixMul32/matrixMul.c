@@ -18,6 +18,7 @@
  * Mantainer: Luca Valente, luca.valente2@unibo.it
  */
 
+#include <stdio.h>
 #include "pulp.h"
 
 #include "parMatrixMul32_stimuli.h"
