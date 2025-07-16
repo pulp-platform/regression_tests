@@ -59,9 +59,9 @@ int main() {
 
     hwpe_soft_clear();
 
-    HWPE_WRITE(scores, SOFTEX_IN_ADDR);
+    HWPE_WRITE((unsigned int)scores, SOFTEX_IN_ADDR);
     HWPE_WRITE(LENGTH * FMT_WIDTH, SOFTEX_TOT_LEN);
-    HWPE_WRITE(scores, SOFTEX_OUT_ADDR);
+    HWPE_WRITE((unsigned int)scores, SOFTEX_OUT_ADDR);
 
     hwpe_trigger_job();
 

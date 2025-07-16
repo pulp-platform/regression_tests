@@ -425,8 +425,8 @@ int redmule16_compare_int(uint32_t *actual_z, uint32_t *golden_z, int len) {
     if (diff > ERR) {
       error = 1;
       #ifdef VERBOSE
-        tfp_printf ("diff: 0x%08x\n", diff);
-        tfp_printf ("LSW: Error!\n");
+        printf ("diff: 0x%08x\n", diff);
+        printf ("LSW: Error!\n");
       #endif
     }
 
@@ -440,21 +440,21 @@ int redmule16_compare_int(uint32_t *actual_z, uint32_t *golden_z, int len) {
     if (diff > ERR) {
       error = 1;
       #ifdef VERBOSE
-        tfp_printf ("diff: 0x%08x\n", diff);
-        tfp_printf ("MSW: Error!\n");
+        printf ("diff: 0x%08x\n", diff);
+        printf ("MSW: Error!\n");
       #endif
     }
-    
+
     errors += error;
 
     #ifdef DEBUG
-      tfp_printf("  Golden: 0x%08x; Actual: 0x%08x,\n", golden_word, actual_word);
+      printf("  Golden: 0x%08x; Actual: 0x%08x,\n", golden_word, actual_word);
     #endif
 
     #ifdef VERBOSE
     if(error) {
-        if(errors==1) tfp_printf("  golden     <- actual     @ address    @ index\n");
-        tfp_printf("  0x%08x <- 0x%08x @ 0x%08x @ 0x%08x\n", golden_word, actual_word, (actual_z+i), i*4);
+        if(errors==1) printf("  golden     <- actual     @ address    @ index\n");
+        printf("  0x%08x <- 0x%08x @ 0x%08x @ 0x%08x\n", golden_word, actual_word, (actual_z+i), i*4);
     }
     #endif
   }
@@ -495,8 +495,8 @@ int redmule8_compare_int(uint32_t *actual_z, uint32_t *golden_z, int len) {
 
     if (diff > ERR) {
       error = 1;
-      tfp_printf ("diff: 0x%08x\n", diff);
-      tfp_printf ("Byte0: Error!\n");
+      printf ("diff: 0x%08x\n", diff);
+      printf ("Byte0: Error!\n");
     }
 
     // Cheching Byte1
@@ -508,8 +508,8 @@ int redmule8_compare_int(uint32_t *actual_z, uint32_t *golden_z, int len) {
 
     if (diff > ERR) {
       error = 1;
-      tfp_printf ("diff: 0x%08x\n", diff);
-      tfp_printf ("Byte1: Error!\n");
+      printf ("diff: 0x%08x\n", diff);
+      printf ("Byte1: Error!\n");
     }
 
     // Cheching Byte2
@@ -521,8 +521,8 @@ int redmule8_compare_int(uint32_t *actual_z, uint32_t *golden_z, int len) {
 
     if (diff > ERR) {
       error = 1;
-      tfp_printf ("diff: 0x%08x\n", diff);
-      tfp_printf ("Byte2: Error!\n");
+      printf ("diff: 0x%08x\n", diff);
+      printf ("Byte2: Error!\n");
     }
 
     // Cheching Byte3
@@ -534,20 +534,20 @@ int redmule8_compare_int(uint32_t *actual_z, uint32_t *golden_z, int len) {
 
     if (diff > ERR) {
       error = 1;
-      tfp_printf ("diff: 0x%08x\n", diff);
-      tfp_printf ("Byte3: Error!\n");
+      printf ("diff: 0x%08x\n", diff);
+      printf ("Byte3: Error!\n");
     }
-    
+
     errors += error;
 
     #ifdef DEBUG
-      tfp_printf("  Golden: 0x%08x; Actual: 0x%08x,\n", golden_word, actual_word);
+      printf("  Golden: 0x%08x; Actual: 0x%08x,\n", golden_word, actual_word);
     #endif
 
     #ifdef VERBOSE
       if(error) {
-        if(errors==1) tfp_printf("  golden     <- actual     @ address    @ index\n");
-        tfp_printf("  0x%08x <- 0x%08x @ 0x%08x @ 0x%08x\n", golden_word, actual_word, (actual_z+i), i*4);
+        if(errors==1) printf("  golden     <- actual     @ address    @ index\n");
+        printf("  0x%08x <- 0x%08x @ 0x%08x @ 0x%08x\n", golden_word, actual_word, (actual_z+i), i*4);
       }
     #endif
   }

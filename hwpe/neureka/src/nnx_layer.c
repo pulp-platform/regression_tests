@@ -162,7 +162,7 @@ static void task_execute(nnx_task_t *task) {
 
   nnx_resolve_wait(dev, task);
 #ifndef NO_ECC
-  nnx_read_ecc_regs(dev, (uint32_t)ecc_errs);
+  nnx_read_ecc_regs(dev, (uint32_t *)ecc_errs);
 #endif
 
   nnx_term(dev);
