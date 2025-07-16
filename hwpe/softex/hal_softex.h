@@ -41,6 +41,7 @@ static inline unsigned int hwpe_get_status() {
 
 static inline void hwpe_soft_clear() {
   HWPE_WRITE(0, SOFTEX_SOFT_CLEAR);
+  for (int i = 0; i < 5; i++) asm volatile("nop;");
 }
 
 static inline void hwpe_cg_enable() {

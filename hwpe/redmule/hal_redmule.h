@@ -41,8 +41,8 @@
 // instead of classic load/store because otherwise the compiler is not able to correctly factorize
 // the HWPE base in case several accesses are done, ending up with twice more code
 
-#define HWPE_WRITE(value, offset) *(int *)(ARCHI_CLUST_HWPE_BASE + offset) = value
-#define HWPE_READ(offset) *(int *)(ARCHI_CLUST_HWPE_BASE + offset)
+#define HWPE_WRITE(value, offset) *(volatile int *)(ARCHI_CLUST_HWPE_BASE + offset) = value
+#define HWPE_READ(offset) *(volatile int *)(ARCHI_CLUST_HWPE_BASE + offset)
 
 static inline void redmule_x_add_set (unsigned int value) {
   HWPE_WRITE(value, REDMULE_REG_OFFS + REDMULE_REG_X_PTR);
@@ -87,6 +87,7 @@ static inline unsigned int hwpe_get_running_job() {
 
 static inline void hwpe_soft_clear() {
   HWPE_WRITE(0, REDMULE_SOFT_CLEAR);
+  for (int i = 0; i < 5; i++) asm volatile("nop;");
 }
 
 static inline void hwpe_cg_enable() {
