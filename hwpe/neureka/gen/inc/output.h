@@ -3,7 +3,7 @@
 
 #include <pmsis.h>
 
-#define OUTPUT_SIZE (512)
+#define OUTPUT_SIZE (4096)
 PI_L1 uint8_t output[OUTPUT_SIZE];
 
 

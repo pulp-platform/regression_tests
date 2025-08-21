@@ -31,18 +31,18 @@
 #include "nnx_layer.h"
 #include "ecc_check.h"
 
-#define OUTPUT_SIZE 512
+#define OUTPUT_SIZE 4096
 
-extern int8_t output[];
+extern uint8_t output[];
 
 uint32_t ecc_errs[ECC_REGS];
 
 static int check_output() {
-    int checksum = 0;
+    uint32_t checksum = 0;
     for (int i = 0; i < OUTPUT_SIZE; i++) {
         checksum += output[i];
     }
-    return (checksum == 0x00007330);
+    return (checksum != 0x3f3d7);
 }
 
 int errors = 0;
