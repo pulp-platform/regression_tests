@@ -1,0 +1,8 @@
+idma_tests:
+  idma_simple:
+    path: ./idma_tests/idma_simple
+    command: make clean all run
+  idma_zeromem:
+    path: ./idma_tests/idma_zeromem
+    command: make clean all run
+
