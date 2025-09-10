@@ -1,3 +1,6 @@
 [submodule "hwpe/neureka/pulp-nnx"]
 	path = hwpe/neureka/pulp-nnx
 	url = https://github.com/pulp-platform/pulp-nnx
+[submodule "hwpe/redmule/redmule-golden-model"]
+	path = hwpe/redmule/redmule-golden-model
+	url = https://github.com/yvantor/redmule-golden-model.git

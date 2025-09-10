@@ -21,3 +21,15 @@ else
 endif
 
 include $(PULP_SDK_HOME)/install/rules/pulp_rt.mk
+
+Golden := redmule-golden-model
+
+OP     ?= gemm
+M      ?= 32
+N      ?= 32
+K      ?= 32
+fp_fmt ?= FP16
+SW     ?= $(shell pwd)
+
+golden:
+	$(MAKE) -C $(Golden) $(OP) SW=$(SW)/inc M=$(M) N=$(N) K=$(K) fp_fmt=$(fp_fmt)
