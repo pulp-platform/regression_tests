@@ -31,19 +31,11 @@
 #include "nnx_layer.h"
 #include "ecc_check.h"
 
-#define OUTPUT_SIZE 4096
+#include "output.h"
 
 extern uint8_t output[];
 
 uint32_t ecc_errs[ECC_REGS];
-
-static int check_output() {
-    uint32_t checksum = 0;
-    for (int i = 0; i < OUTPUT_SIZE; i++) {
-        checksum += output[i];
-    }
-    return (checksum != 0x3f3d7);
-}
 
 int errors = 0;
 unsigned int intc_data_correctable_cnt = 0;
@@ -57,6 +49,8 @@ int main() {
   unsigned int cluster_id = rt_cluster_id();
 
   if (core_id == 0) {
+
+    layer_info();
 
     // execute NNX layer
     execute_nnx_layer(NULL);
