@@ -63,15 +63,11 @@ typedef neureka_task_flag_e nnx_task_flag_e;
 #define nnx_term neureka_nnx_term
 
 // Generated headers
-#include "layer_conf.h"
-#if HAS_BIAS != 0
-  #include "bias.h"
-#endif
+#include "bias.h"
 #include "input.h"
+#include "layer_conf.h"
 #include "output.h"
-#if HAS_NORM_QUANT != 0
-  #include "scale.h"
-#endif
+#include "scale.h"
 #include "weight.h"
 
 static void task_prepare(nnx_task_t *task) {
@@ -82,8 +78,15 @@ static void task_prepare(nnx_task_t *task) {
   nnx_task_set_weight_offset(task, weightOffsetModeLayerWise, WEIGHT_OFFSET);
 
 #ifdef NEUREKA_WEIGHT_SOURCE_WMEM
-  nnx_task_set_weight_source(task, neurekaWeightSourceWmem);
-  nnx_task_set_activation_prefetch(task, activationPrefetchOn);
+  // activate prefetching via Wmem source only for 1x1 layers
+  if(WEIGHT_HEIGHT == 1) {
+    nnx_task_set_weight_source(task, neurekaWeightSourceWmem);
+    nnx_task_set_activation_prefetch(task, activationPrefetchOn);
+  }
+  else {
+    neureka_task_set_weight_source(task, neurekaWeightSourceTcdm);
+    nnx_task_set_activation_prefetch(task, activationPrefetchOff);
+  }
 #else
   neureka_task_set_weight_source(task, neurekaWeightSourceTcdm);
   nnx_task_set_activation_prefetch(task, activationPrefetchOff);
