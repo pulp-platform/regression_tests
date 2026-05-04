@@ -52,7 +52,7 @@ int test_idma_2D (int core_id, transfer_2d transfer, int ext2loc, int loc2loc) {
         start_cycle_count();
         plp_cl_dma_wait_toL1(pulp_cl_idma_L1ToL1_2d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride, dst_stride, num_reps));
         stop_cycle_count();
-    } if (ext2loc == 1) {
+    } else if (ext2loc == 1) {
         reset_cycle_count();
         start_cycle_count();
         plp_cl_dma_wait_toL1(pulp_cl_idma_L2ToL1_2d((unsigned int)src_ptr, (unsigned int)dst_ptr, length, src_stride, dst_stride, num_reps));
