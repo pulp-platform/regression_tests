@@ -10,6 +10,8 @@ endif
 
 ifeq ($(multi_bit_upset),1)
 	export MULTI_BIT_UPSET=1
+else
+	export MULTI_BIT_UPSET=0
 endif
 
 include $(PULP_SDK_HOME)/install/rules/pulp.mk
