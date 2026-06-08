@@ -17,8 +17,8 @@ set log_injections       1
 set seed                 12345
 set print_statistics     1
 
-set inject_start_time  80000000000ps
-set inject_stop_time  150000000000ps
+set inject_start_time  20000000ps
+set inject_stop_time  37500000ps
 set injection_clock "pulp_cluster_tb/cluster_i/clk_i"
 set injection_clock_trigger 0
 set fault_period 100

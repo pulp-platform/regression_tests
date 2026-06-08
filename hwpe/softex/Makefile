@@ -2,6 +2,8 @@ PULP_APP = test
 PULP_APP_SRCS = softex.c
 PULP_CFLAGS = -O3
 
+export LEGACY_DMA=1
+
 ifeq ($(use_dma),1)
  PULP_CFLAGS += -DUSE_DMA
 endif
