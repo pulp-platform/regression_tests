@@ -30,34 +30,41 @@
  * |========================================================================|
  * || # reg |  offset  |  bits   |   bitmask    ||  content                ||
  * ||-------+----------+---------+--------------++-------------------------||
- * ||    0  |  0x0000  |  31: 0  |  0xFFFFFFFF  ||  TRIGGER                ||
+ * ||    0  |  0x0000  |   1: 0  |  0x00000003  ||  COMMIT_TRIGGER         ||
  * ||    1  |  0x0004  |  31: 0  |  0xFFFFFFFF  ||  ACQUIRE                ||
- * ||    2  |  0x0008  |  31: 0  |  0xFFFFFFFF  ||  EVT_ENABLE             ||
+ * ||    2  |  0x0008  |  31: 0  |  0xFFFFFFFF  ||  (reserved)             ||
  * ||    3  |  0x000c  |  31: 0  |  0xFFFFFFFF  ||  STATUS                 ||
- * ||    4  |  0x0010  |  31: 0  |  0xFFFFFFFF  ||  RUNNING_JOB            ||
- * ||    5  |  0x0014  |  31: 0  |  0xFFFFFFFF  ||  SOFT_CLEAR             ||
+ * ||    4  |  0x0010  |   7: 0  |  0x000000FF  ||  RUNNING_JOB            ||
+ * ||    5  |  0x0014  |   1: 0  |  0x00000003  ||  SOFT_CLEAR             ||
  * |========================================================================|
  * ||                                                                      ||
  * ||Job-dependent registers layout                                        ||
  * |========================================================================|
  * || # reg |  offset  |  bits   |   bitmask    ||  content                ||
  * ||-------+----------+---------+--------------++-------------------------||
- * ||    0  |  0x0040  |  31: 0  |  0xFFFFFFFF  ||  X_ADDR                 ||
- * ||-------+----------+---------+--------------++-------------------------||
- * ||    1  |  0x0044  |  31: 0  |  0xFFFFFFFF  ||  W_ADDR                 ||
- * ||-------+----------+---------+--------------++-------------------------||
- * ||    2  |  0x0048  |  31: 0  |  0xFFFFFFFF  ||  Z_ADDR                 ||
- * ||-------+----------+---------+--------------++-------------------------||
- * ||    3  |  0x004C  |         |              ||  Matrix Config 0 Reg    ||
+ * ||    0  |  0x0020  |         |              ||  MCNFIG0                ||
  * ||       |          |  31:16  |  0xFFFF0000  ||  K Size (W Columns)     ||
  * ||       |          |  15: 0  |  0x0000FFFF  ||  M Size (X Rows)        ||
  * ||-------+----------+---------+--------------++-------------------------||
- * ||    4  |  0x0050  |         |              ||  Matrix Config 1 Reg    ||
- * ||       |          |  31:16  |  0xFFFFFFFF  ||  N Size (X Cols/W Rows) ||
+ * ||    1  |  0x0024  |         |              ||  MCNFIG1                ||
+ * ||       |          |  26:25  |  0x06000000  ||  Output format          ||
+ * ||       |          |  24:23  |  0x01800000  ||  Input format           ||
+ * ||       |          |  22:20  |  0x00700000  ||  Operation selection    ||
+ * ||       |          |     19  |  0x00080000  ||  send_w                 ||
+ * ||       |          |     18  |  0x00040000  ||  receive_w              ||
+ * ||       |          |     17  |  0x00020000  ||  send_x                 ||
+ * ||       |          |     16  |  0x00010000  ||  receive_x              ||
+ * ||       |          |  15: 0  |  0x0000FFFF  ||  N Size (X Cols/W Rows) ||
  * ||-------+----------+---------+--------------++-------------------------||
- * ||    5  |  0x0054  |         |              ||  Matrix Arithmetic Reg  ||
- * ||       |          |  12:10  |  0x00001C00  ||  Operation selection    ||
- * ||       |          |   9: 7  |  0x00000380  ||  Input/Output format    ||
+ * ||    2  |  0x0028  |  31: 0  |  0xFFFFFFFF  ||  MCNFIG2 (Y offset)    ||
+ * ||-------+----------+---------+--------------++-------------------------||
+ * ||    3  |  0x002c  |  31: 0  |  0xFFFFFFFF  ||  MARITH0 (X base addr) ||
+ * ||-------+----------+---------+--------------++-------------------------||
+ * ||    4  |  0x0030  |  31: 0  |  0xFFFFFFFF  ||  MARITH1 (W base addr) ||
+ * ||-------+----------+---------+--------------++-------------------------||
+ * ||    5  |  0x0034  |  31: 0  |  0xFFFFFFFF  ||  MARITH2 (Z base addr) ||
+ * ||-------+----------+---------+--------------++-------------------------||
+ * ||    6  |  0x0038  |  31: 0  |  0xFFFFFFFF  ||  MOPCNT (ops complete) ||
  * |========================================================================|
  *
  */
@@ -91,39 +98,26 @@
 #define REDMULE_RUNNING_JOB 0x10
 #define REDMULE_SOFT_CLEAR  0x14
 
-// Registers
-#define REDMULE_REG_OFFS  0x40
-// #define REDMULE_REG_X_PTR 0x00
-// #define REDMULE_REG_W_PTR 0x04
-// #define REDMULE_REG_Z_PTR 0x08
-// #define REDMULE_MCFG0_PTR 0x0C
-// #define REDMULE_MCFG1_PTR 0x10
-// #define REDMULE_ARITH_PTR 0x14
-#define REDMULE_REG_X_PTR              0x00
-#define REDMULE_REG_W_PTR              0x04
-#define REDMULE_REG_Y_PTR              0x08
-#define REDMULE_REG_Z_PTR              0x0C
-#define REDMULE_REG_X_ITER_PTR         0x10
-#define REDMULE_REG_W_ITER_PTR         0x14
-#define REDMULE_REG_LEFTOVERS_PTR      0x18
-#define REDMULE_REG_LEFT_PARAMS_PTR    0x1C
-#define REDMULE_REG_X_D1_STRIDE_PTR    0x20
-#define REDMULE_REG_W_TOT_LEN_PTR      0x24
-#define REDMULE_REG_TOT_X_READ_PTR     0x28
-#define REDMULE_REG_W_D0_STRIDE_PTR    0x2C
-#define REDMULE_REG_YZ_TOT_LEN_PTR     0x30
-#define REDMULE_REG_YZ_D0_STRIDE_PTR   0x34
-#define REDMULE_REG_YZ_D2_STRIDE_PTR   0x38
-#define REDMULE_REG_X_ROWS_OFFS_PTR    0x3C
-#define REDMULE_REG_X_BUFFER_SLOTS_PTR 0x40
-#define REDMULE_REG_X_TOT_LEN_PTR      0x44
-#define REDMULE_REG_OP_SELECTION       0x48
+// Job-dependent registers (base offset)
+#define REDMULE_REG_OFFS 0x20
 
-#define REDMULE_ECC_REG_OFFS           0x90
-#define DATA_CORR_ERR                  0x00
-#define DATA_UNCORR_ERR                0x04
-#define METADATA_CORR_ERR              0x08
-#define METADATA_UNCORR_ERR            0x0c
+// Register offsets relative to REDMULE_REG_OFFS
+#define REDMULE_MCNFIG0  0x00
+#define REDMULE_MCNFIG1  0x04
+#define REDMULE_MCNFIG2  0x08
+#define REDMULE_MARITH0  0x0c
+#define REDMULE_MARITH1  0x10
+#define REDMULE_MARITH2  0x14
+#define REDMULE_MOPCNT   0x18
+
+// MCNFIG1 bit-field shifts
+#define REDMULE_MCNFIG1_OUTPUT_FMT_SHIFT  25
+#define REDMULE_MCNFIG1_INPUT_FMT_SHIFT   23
+#define REDMULE_MCNFIG1_GEMM_OPS_SHIFT    20
+#define REDMULE_MCNFIG1_SEND_W_SHIFT      19
+#define REDMULE_MCNFIG1_RECEIVE_W_SHIFT   18
+#define REDMULE_MCNFIG1_SEND_X_SHIFT      17
+#define REDMULE_MCNFIG1_RECEIVE_X_SHIFT   16
 
 // OPs definition
 #define MATMUL 0x0

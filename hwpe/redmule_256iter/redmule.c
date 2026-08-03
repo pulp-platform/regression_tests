@@ -94,11 +94,7 @@ int main() {
     // job 0
     job_id = hwpe_wait_acquire();
     asm volatile("": : :"memory");
-    redmule_x_add_set ((unsigned int) x);
-    redmule_w_add_set ((unsigned int) w);
-    redmule_y_add_set ((unsigned int) y);
-    redmule_z_add_set ((unsigned int) z);
-    redmule_cfg (m_size, n_size, k_size, gemm_ops);
+    redmule_cfg((unsigned int)x, (unsigned int)w, (unsigned int)y, m_size, n_size, k_size, (uint8_t)gemm_ops, (uint8_t)Float16);
     asm volatile("": : :"memory");
     hwpe_trigger_job();
     asm volatile("": : :"memory");
@@ -106,11 +102,7 @@ int main() {
     // job 1
     job_id = hwpe_wait_acquire();
     asm volatile("": : :"memory");
-    redmule_x_add_set ((unsigned int) x);
-    redmule_w_add_set ((unsigned int) w);
-    redmule_y_add_set ((unsigned int) y);
-    redmule_z_add_set ((unsigned int) z);
-    redmule_cfg (m_size, n_size, k_size, gemm_ops);
+    redmule_cfg((unsigned int)x, (unsigned int)w, (unsigned int)y, m_size, n_size, k_size, (uint8_t)gemm_ops, (uint8_t)Float16);
     asm volatile("": : :"memory");
     hwpe_trigger_job();
     asm volatile("": : :"memory");

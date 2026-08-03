@@ -24,6 +24,9 @@
 #include "archi_redmule.h"
 #include "hal_redmule.h"
 #include "pulp.h"
+#ifndef NO_ECC
+#define NO_ECC
+#endif
 
 int main() {
 
@@ -104,6 +107,7 @@ int main() {
 
     // Disable RedMulE
     hwpe_cg_disable();
+    
 
     errors = redmule_compare16((int) y, (int) m_size, (int) k_size);
 

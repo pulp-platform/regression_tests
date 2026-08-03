@@ -45,24 +45,25 @@
 #define HWPE_READ(offset) *(volatile int *)(ARCHI_CLUST_HWPE_BASE + offset)
 
 static inline void redmule_x_add_set (unsigned int value) {
-  HWPE_WRITE(value, REDMULE_REG_OFFS + REDMULE_REG_X_PTR);
+  HWPE_WRITE(value, REDMULE_REG_OFFS + REDMULE_MARITH0);
 }
 
 static inline void redmule_w_add_set (unsigned int value) {
-  HWPE_WRITE(value, REDMULE_REG_OFFS + REDMULE_REG_W_PTR);
+  HWPE_WRITE(value, REDMULE_REG_OFFS + REDMULE_MARITH1);
 }
 
 static inline void redmule_z_add_set (unsigned int value) {
-  HWPE_WRITE(value, REDMULE_REG_OFFS + REDMULE_REG_Z_PTR);
+  HWPE_WRITE(value, REDMULE_REG_OFFS + REDMULE_MARITH2);
 }
 
-static inline void redmule_mcfg_set (uint32_t mcfg0, uint32_t mcfg1) {
-  HWPE_WRITE(mcfg0, REDMULE_REG_OFFS + REDMULE_MCFG0_PTR);
-  HWPE_WRITE(mcfg1, REDMULE_REG_OFFS + REDMULE_MCFG1_PTR);
+static inline void redmule_mcnfig_set (uint32_t mcnfig0, uint32_t mcnfig1, uint32_t mcnfig2) {
+  HWPE_WRITE(mcnfig0, REDMULE_REG_OFFS + REDMULE_MCNFIG0);
+  HWPE_WRITE(mcnfig1, REDMULE_REG_OFFS + REDMULE_MCNFIG1);
+  HWPE_WRITE(mcnfig2, REDMULE_REG_OFFS + REDMULE_MCNFIG2);
 }
 
-static inline void redmule_arith_set(uint32_t arith) {
-  HWPE_WRITE(arith, REDMULE_REG_OFFS + REDMULE_ARITH_PTR);
+static inline unsigned int redmule_mopcnt_get(void) {
+  return HWPE_READ(REDMULE_REG_OFFS + REDMULE_MOPCNT);
 }
 
 static inline void hwpe_trigger_job() {
@@ -108,22 +109,6 @@ static inline int hwpe_wait_acquire() {
   return job_id;
 }
 
-static inline unsigned int redmule_get_data_correctable_count () {
-  return HWPE_READ(REDMULE_ECC_REG_OFFS + DATA_CORR_ERR);
-}
-
-static inline unsigned int redmule_get_data_uncorrectable_count () {
-  return HWPE_READ(REDMULE_ECC_REG_OFFS + DATA_UNCORR_ERR);
-}
-
-static inline unsigned int redmule_get_meta_correctable_count () {
-  return HWPE_READ(REDMULE_ECC_REG_OFFS + METADATA_CORR_ERR);
-}
-
-static inline unsigned int redmule_get_meta_uncorrectable_count () {
-  return HWPE_READ(REDMULE_ECC_REG_OFFS + METADATA_UNCORR_ERR);
-}
-
 /* DMA APIs */
 static inline int mchan_alloc(){
   return *(volatile int*) DMA_COMMAND_QUEUE;
@@ -158,20 +143,16 @@ static inline void mchan_free(int id) {
 void redmule_cfg(unsigned int x, unsigned int w, unsigned int z, uint16_t m_size, uint16_t n_size,
   uint16_t k_size, uint8_t gemm_op, uint8_t gemm_fmt) {
 
-  uint32_t mcfg_reg0 = 0;
-  uint32_t mcfg_reg1 = 0;
-  uint32_t arith_reg = 0;
-
-  mcfg_reg0 = (k_size << 16) | (m_size << 0);
-  mcfg_reg1 = n_size << 0;
-
-  arith_reg = (gemm_op << 10) | (gemm_fmt << 7);
+  uint32_t mcnfig0 = ((uint32_t)k_size << 16) | (uint32_t)m_size;
+  uint32_t mcnfig1 = ((uint32_t)(gemm_fmt & 0x3) << REDMULE_MCNFIG1_OUTPUT_FMT_SHIFT)
+                   | ((uint32_t)(gemm_fmt & 0x3) << REDMULE_MCNFIG1_INPUT_FMT_SHIFT)
+                   | ((uint32_t)(gemm_op  & 0x7) << REDMULE_MCNFIG1_GEMM_OPS_SHIFT)
+                   | (uint32_t)(n_size & 0xFFFF);
 
   redmule_x_add_set((unsigned int)x);
   redmule_w_add_set((unsigned int)w);
   redmule_z_add_set((unsigned int)z);
-  redmule_mcfg_set((unsigned int)mcfg_reg0, (unsigned int)mcfg_reg1);
-  redmule_arith_set((unsigned int)arith_reg);
+  redmule_mcnfig_set(mcnfig0, mcnfig1, 0);
 }
 
 void generate_test_data16(int x_start_addr,

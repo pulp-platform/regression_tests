@@ -24,6 +24,9 @@
 #include "archi_redmule.h"
 #include "hal_redmule.h"
 #include "pulp.h"
+#ifndef NO_ECC
+#define NO_ECC
+#endif
 
 static inline void wait_cycles(const unsigned cycles)
 {
@@ -60,10 +63,12 @@ int main() {
 
   volatile int errors = 0;
   unsigned int cluster_id = rt_cluster_id();
-  unsigned int intc_data_correctable_cnt, redmule_data_correctable_cnt = 0;
-  unsigned int intc_meta_correctable_cnt = 0;
-  unsigned int intc_data_uncorrectable_cnt, redmule_data_uncorrectable_cnt = 0;
-  unsigned int intc_meta_uncorrectable_cnt = 0;
+  #ifndef NO_ECC
+    unsigned int intc_data_correctable_cnt, redmule_data_correctable_cnt = 0;
+    unsigned int intc_meta_correctable_cnt = 0;
+    unsigned int intc_data_uncorrectable_cnt, redmule_data_uncorrectable_cnt = 0;
+    unsigned int intc_meta_uncorrectable_cnt = 0;
+  #endif
 
   if(get_core_id() == 0){
 
@@ -79,7 +84,6 @@ int main() {
     uint8_t volatile *x = (uint8_t volatile *) pi_l1_malloc(0, (2*m_size*n_size));
     uint8_t volatile *w = (uint8_t volatile *) pi_l1_malloc(0, (2*n_size*k_size));
     uint8_t volatile *y = (uint8_t volatile *) pi_l1_malloc(0, (2*m_size*k_size));
-    uint8_t volatile *z = (uint8_t volatile *) pi_l1_malloc(0, (2*m_size*k_size));
 
     #ifdef USE_DMA
       volatile unsigned int dma_id = 0;
@@ -118,45 +122,19 @@ int main() {
     hwpe_soft_clear();
     asm volatile("": : :"memory");
 
-    volatile int job_id = -1;
-
-    // job 0
-    job_id = hwpe_wait_acquire();
-    asm volatile("": : :"memory");
-    redmule_x_add_set ((unsigned int) x);
-    redmule_w_add_set ((unsigned int) w);
-    redmule_y_add_set ((unsigned int) y);
-    redmule_z_add_set ((unsigned int) z);
-    redmule_cfg (m_size, n_size, k_size, gemm_ops);
+    // Program and trigger redmule twice
+    redmule_cfg((unsigned int)x, (unsigned int)w, (unsigned int)y, m_size, n_size, k_size, (uint8_t)gemm_ops, (uint8_t)Float16);
     asm volatile("": : :"memory");
     hwpe_trigger_job();
     asm volatile("": : :"memory");
-
-    // job 1
-    job_id = hwpe_wait_acquire();
-    asm volatile("": : :"memory");
-    redmule_x_add_set ((unsigned int) x);
-    redmule_w_add_set ((unsigned int) w);
-    redmule_y_add_set ((unsigned int) y);
-    redmule_z_add_set ((unsigned int) z);
-    redmule_cfg (m_size, n_size, k_size, gemm_ops);
-    asm volatile("": : :"memory");
     hwpe_trigger_job();
     asm volatile("": : :"memory");
-
-    // soft-clear execution
-    wait_cycles(20);
+    wait_cycles(10);
     hwpe_soft_clear();
     wait_cycles(100);
-
-    // job 0
-    job_id = hwpe_wait_acquire();
-    asm volatile("": : :"memory");
-    redmule_x_add_set ((unsigned int) x);
-    redmule_w_add_set ((unsigned int) w);
-    redmule_y_add_set ((unsigned int) y);
-    redmule_z_add_set ((unsigned int) z);
-    redmule_cfg (m_size, n_size, k_size, gemm_ops);
+  
+    // Program and wait for "real" execution
+    redmule_cfg((unsigned int)x, (unsigned int)w, (unsigned int)y, m_size, n_size, k_size, (uint8_t)gemm_ops, (uint8_t)Float16);
     asm volatile("": : :"memory");
     hwpe_trigger_job();
     asm volatile("": : :"memory");
@@ -164,22 +142,45 @@ int main() {
     // Wait for end of computation
     redmule_evt_wait();
 
+    #ifndef NO_ECC
+      // Check number of detected errors by ECC modules inside RedMulE
+      redmule_data_correctable_cnt = redmule_get_data_correctable_count();
+      redmule_data_uncorrectable_cnt = redmule_get_data_uncorrectable_count();
+    #endif
+
     // Disable RedMulE
     hwpe_cg_disable();
+    
 
-    errors = redmule_compare16((int) z, (int) m_size, (int) k_size);
+    errors = redmule_compare16((int) y, (int) m_size, (int) k_size);
 
     *(int *) 0x1A1040A0 = errors;
 
-    if(job_id != 0) {
-      printf ("Terminated test with wrong job id!!! and %d errors. See you!\n", errors);
-      errors++;
-    }
-    else {
-      printf ("Terminated test with OK job id and %d errors. See you!\n", errors);
-    }
+    printf ("Terminated test with %d errors. See you!\n", errors);
+
+    #ifndef NO_ECC
+      // Check number of detected errors by ECC modules inside interconnect
+      intc_data_correctable_cnt = hwpe_hci_ecc_get_data_correctable_count(cluster_id);
+      intc_meta_correctable_cnt = hwpe_hci_ecc_get_meta_correctable_count(cluster_id);
+      intc_data_uncorrectable_cnt = hwpe_hci_ecc_get_data_uncorrectable_count(cluster_id);
+      intc_meta_uncorrectable_cnt = hwpe_hci_ecc_get_meta_uncorrectable_count(cluster_id);
+      for (int i = 0; i < 16; i++) {
+        intc_meta_correctable_cnt += tcdm_scrubber_get_mismatch_count(cluster_id, i);
+      }
+
+      printf ("Data errors corrected inside RedMulE: %d. Data errors uncorrectable inside RedMulE: %d \n",
+        redmule_data_correctable_cnt, redmule_data_uncorrectable_cnt);
+      printf("Data errors corrected inside intc: %d. Data errors uncorrectable inside intc: %d\n",
+        intc_data_correctable_cnt, intc_data_uncorrectable_cnt);
+      printf("Meta errors corrected inside intc: %d. Meta errors uncorrectable inside intc: %d\n",
+        intc_meta_correctable_cnt, intc_meta_uncorrectable_cnt);
+    #endif
 
   }
   synch_barrier();
-  return (errors != 0);
+  #ifndef NO_ECC
+    return (errors != 0) && (redmule_data_uncorrectable_cnt==0 && intc_data_uncorrectable_cnt == 0 && intc_meta_uncorrectable_cnt == 0);
+  #else
+    return errors;
+  #endif
 }
