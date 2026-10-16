@@ -57,9 +57,6 @@ testcase_t testcases[] = {
 
 int main() {
 
-  if (rt_cluster_id() != 0)
-    return bench_cluster_forward(0);
-
   int nbErrors = run_suite(testcases);
 
   synch_barrier();
@@ -85,9 +82,9 @@ void matrix_multiplication(testresult_t *result, void (*start)(), void (*stop)()
   lb = coreid * chunk;
   //upper bound
   ub = lb + chunk;  
-  
+
   synch_barrier();
-  
+
   /********************* Benchmark Execution *********************/
   if (coreid<numcores) {
     start();

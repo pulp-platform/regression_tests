@@ -99,6 +99,10 @@ int main() {
     
   printf("number of errors: %d/%d \n", cnt, cnt2 );
   synch_barrier();
+  if (cnt != 0)
+    printf ("Test fail \n");
+  else
+    printf ("Test success \n");
   return cnt;
 
 }
