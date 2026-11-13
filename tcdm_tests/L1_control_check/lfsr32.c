@@ -25,8 +25,8 @@
 //#define UART
 //#define INFINITE_LOOP
 
-#define ADDR_FIRST 0x10000000
-#define ADDR_LAST  0x1000FFFF //68kB of L1
+#define ADDR_FIRST 0x10008000 // avoiding to overwrite the stack
+#define ADDR_LAST  0x10010000
 #define STRIDE 8
 
 #ifdef USE_BYTE_FEEDBACK
@@ -63,7 +63,7 @@ uint32_t lfsr_iter_word(uint32_t lfsr, uint32_t *lfsr_byte_feedback) {
 
 int main() {
   uint32_t cnt = 0;
-  uint32_t cnt2= 8192; // (ADDR_LAST-ADDR_FIRST)/STRIDE
+  uint32_t cnt2= (ADDR_LAST-ADDR_FIRST)/STRIDE;
 
   //WRITE all the memory with stride=128B
     uint32_t lfsr = DEFAULT_SEED;

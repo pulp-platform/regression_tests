@@ -66,7 +66,7 @@ uint32_t lfsr_iter_word(uint32_t lfsr, uint32_t *lfsr_byte_feedback) {
 int main() {
   
   uint32_t cnt = 0;
-  uint32_t cnt2= 1024; // (ADDR_LAST-ADDR_FIRST)/STRIDE
+  uint32_t cnt2= (ADDR_LAST-ADDR_FIRST)/STRIDE;
 
   if (rt_cluster_id() != 0)
     return bench_cluster_forward(0);
