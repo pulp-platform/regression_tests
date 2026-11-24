@@ -1,0 +1,35 @@
+PULP_APP = test
+PULP_APP_SRCS = redmule.c
+PULP_CFLAGS = -O3
+
+ifeq ($(use_dma),1)
+ PULP_CFLAGS += -DUSE_DMA
+endif
+ifeq ($(no_ecc),1)
+ PULP_CFLAGS += -DNO_ECC
+endif
+
+ifeq ($(fault_inject),1)
+  export FAULT_INJECTION=1
+  export FAULT_INJECTION_SCRIPT=$(CURDIR)/pulp_inject_fault.tcl
+endif
+
+ifeq ($(multi_bit_upset),1)
+  export MULTI_BIT_UPSET=1
+else
+  export MULTI_BIT_UPSET=0
+endif
+
+include $(PULP_SDK_HOME)/install/rules/pulp_rt.mk
+
+Golden := redmule-golden-model
+
+OP     ?= gemm
+M      ?= 32
+N      ?= 32
+K      ?= 32
+fp_fmt ?= FP16
+SW     ?= $(shell pwd)
+
+golden:
+	$(MAKE) -C $(Golden) $(OP) SW=$(SW)/inc M=$(M) N=$(N) K=$(K) fp_fmt=$(fp_fmt)

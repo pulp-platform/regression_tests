@@ -174,8 +174,8 @@ int main(int argc, char **argv)
   for(hc = 0; hc < 3; ++hc) {
 
     if ( hc == 2 && id == 0 ) {
-      reset_timer();
-      start_timer();
+      reset_timer(rt_cluster_id());
+      start_timer(rt_cluster_id());
     }
     perf_reset();
     perf_start();
@@ -185,8 +185,8 @@ int main(int argc, char **argv)
     factor(G, N, N, pivots);
 
     if ( hc == 2 && id == 0 ) {
-      stop_timer();
-      time = get_time();
+      stop_timer(rt_cluster_id());
+      time = get_time(rt_cluster_id());
     }
     perf_stop();
 

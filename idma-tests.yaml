@@ -1,0 +1,28 @@
+idma_tests:
+  1d_transfer_single_core:
+    path: ./idma_tests/idma_multi_core
+    command: make clean all run platform=${platform}
+  1d_transfer_multi_core_serial:
+    path: ./idma_tests/idma_multi_core
+    command: make clean all run MULTI_CORE_S=1 platform=${platform}
+  1d_transfer_multi_core_parallel:
+    path: ./idma_tests/idma_multi_core
+    command: make clean all run MULTI_CORE_P=1 platform=${platform}
+  2d_transfer_single_core:
+    path: ./idma_tests/idma_multi_core_2d
+    command: make clean all run platform=${platform}
+  2d_transfer_multi_core_serial:
+    path: ./idma_tests/idma_multi_core_2d
+    command: make clean all run MULTI_CORE_S=1 platform=${platform}
+  2d_transfer_multi_core_parallel:
+    path: ./idma_tests/idma_multi_core_2d
+    command: make clean all run MULTI_CORE_P=1 platform=${platform}
+  3d_transfer_single_core:
+    path: ./idma_tests/idma_multi_core_3d
+    command: make clean all run platform=${platform}
+  3d_transfer_multi_core_serial:
+    path: ./idma_tests/idma_multi_core_3d
+    command: make clean all run MULTI_CORE_S=1 platform=${platform}
+  3d_transfer_multi_core_parallel:
+    path: ./idma_tests/idma_multi_core_3d
+    command: make clean all run MULTI_CORE_P=1 platform=${platform}

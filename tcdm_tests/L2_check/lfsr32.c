@@ -7,13 +7,17 @@
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
+ *
+ * L2 check: writes an LFSR sequence into the free parts of L2 with a fixed
+ * stride, reads it back and counts mismatches. Test ranges are computed at
+ * runtime from the linker symbols (see pos/implem/link.h), so the test never
+ * overwrites its own code, data or stack.
  */
 
 #include "pulp.h"
 #include <stdint.h>
 #include <stdio.h>
 #include "gpio.h"
-
 
 #define UART_SYMBOL_CYCLES 4096
 #include "uart.h"
@@ -25,8 +29,6 @@
 //#define UART
 //#define INFINITE_LOOP
 
-#define ADDR_FIRST 0x1c010000
-#define ADDR_LAST  0x1c082000
 #define STRIDE 128
 
 #ifdef USE_BYTE_FEEDBACK
@@ -54,6 +56,7 @@ uint32_t lfsr_iter_byte(uint32_t lfsr, uint32_t *lfsr_byte_feedback) {
   return l;
 #endif
 }
+
 uint32_t lfsr_iter_word(uint32_t lfsr, uint32_t *lfsr_byte_feedback) {
   uint32_t l = lfsr_iter_byte(lfsr, lfsr_byte_feedback);
   l = lfsr_iter_byte(l, lfsr_byte_feedback);
@@ -61,27 +64,68 @@ uint32_t lfsr_iter_word(uint32_t lfsr, uint32_t *lfsr_byte_feedback) {
   return lfsr_iter_byte(l, lfsr_byte_feedback);
 }
 
-int main() {
-  uint32_t cnt = 0;
-  uint32_t cnt2=3648; // (ADDR_LAST-ADDR_FIRST)/STRIDE
+static uint32_t align_up(uint32_t a) {
+  return (a + STRIDE - 1) & ~(STRIDE - 1);
+}
 
-  //WRITE all the memory with stride=128B
-    uint32_t lfsr = DEFAULT_SEED;
-    for(uint32_t addr=ADDR_FIRST; addr<ADDR_LAST; addr+=STRIDE) {
-      lfsr = lfsr_iter_word(lfsr, lfsr_byte_feedback);
-      *(uint32_t *)(addr) = lfsr;
-    }
+// Write then read back [first, last) with STRIDE. The LFSR sequence continues
+// across calls through *seed.
+static void test_range(uint32_t first, uint32_t last, uint32_t *seed,
+                       uint32_t *words, uint32_t *word_err, uint32_t *bit_err)
+{
+  first = align_up(first);
+  if (first >= last)
+    return;
+
+  printf("testing 0x%x - 0x%x\n", first, last);
+
+  //WRITE
+  uint32_t lfsr = *seed;
+  for (uint32_t addr = first; addr < last; addr += STRIDE) {
+    lfsr = lfsr_iter_word(lfsr, lfsr_byte_feedback);
+    *(volatile uint32_t *)addr = lfsr;
+  }
 
   //READ
-    lfsr = DEFAULT_SEED;
-    for(uint32_t addr=ADDR_FIRST; addr<ADDR_LAST; addr+=128) {
-      lfsr = lfsr_iter_word(lfsr, lfsr_byte_feedback);
-      cnt += __builtin_pulp_cnt(lfsr ^ *(uint32_t *)(addr));
-      }
-    
-  printf("number of errors: %d/%d \n", cnt, cnt2 );
-  return cnt;
+  lfsr = *seed;
+  for (uint32_t addr = first; addr < last; addr += STRIDE) {
+    lfsr = lfsr_iter_word(lfsr, lfsr_byte_feedback);
+    uint32_t diff = lfsr ^ *(volatile uint32_t *)addr;
+    if (diff)
+      (*word_err)++;
+    *bit_err += __builtin_pulp_cnt(diff);
+    (*words)++;
+  }
 
+  *seed = lfsr;
+}
+
+int main() {
+  uint32_t seed     = DEFAULT_SEED;
+  uint32_t words    = 0;
+  uint32_t word_err = 0;
+  uint32_t bit_err  = 0;
+
+  // Free part of private bank 1 (after the code)
+  if (pos_l2_priv1_size() > 0)
+    test_range((uint32_t)pos_l2_priv1_base(),
+               (uint32_t)pos_l2_priv1_base() + pos_l2_priv1_size(),
+               &seed, &words, &word_err, &bit_err);
+
+  // Free part of shared L2 (after the data, including lfsr_byte_feedback)
+  test_range((uint32_t)pos_l2_shared_base(),
+             (uint32_t)pos_l2_shared_base() + pos_l2_shared_size(),
+             &seed, &words, &word_err, &bit_err);
+
+  // Private bank 0 is skipped: it holds data, bss and the stack.
+
+  printf("number of errors: %d/%d words, %d bits\n", word_err, words, bit_err);
+  if (word_err != 0)
+    printf("Test fail \n");
+  else
+    printf("Test success \n");
+
+  return word_err;
 }
 
 #ifdef USE_BYTE_FEEDBACK

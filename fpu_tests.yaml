@@ -1,0 +1,11 @@
+fpu_tests:
+  fp32:
+    path: ./fpu_tests/matmul/FP32
+    command: make clean all cores=8 platform=rtl fmt_A=FP32 fmt_B=FP32 fmt_OUT=FP32 thr=0.004f check=1 run
+  fp16:
+    path: ./fpu_tests/matmul/FP16
+    command: make clean all cores=8 platform=rtl fmt_A=FP16 fmt_B=FP16 fmt_OUT=FP16 thr=0.004f check=1 vect=1 run
+  fp16alt:
+    path: ./fpu_tests/matmul/FP16ALT
+    command: make clean all cores=8 platform=rtl fmt_A=FP16ALT fmt_B=FP16ALT fmt_OUT=FP16ALT thr=0.04f check=1 vect=1 run
+    

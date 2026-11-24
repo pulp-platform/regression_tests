@@ -1,0 +1,64 @@
+# Cluster subset: the pulp_cluster set + every idma and tcdm test, all at cores=8.
+# The idma entries live only in the idma_tests group so no directory is built twice
+# concurrently (each command starts with `make clean`).
+
+pulp_cluster:
+  parMatrixMul8:
+    path: ./parallel_bare_tests/parMatrixMul8
+    command: make clean all run cores=8 platform=${platform}
+  parMatrixMul16:
+    path: ./parallel_bare_tests/parMatrixMul16
+    command: make clean all run cores=8 platform=${platform}
+  parMatrixMul32:
+    path: ./parallel_bare_tests/parMatrixMul32
+    command: make clean all run cores=8 platform=${platform}
+  FP16:
+    path: ./fpu_tests/matmul/FP16
+    command: make clean all run cores=8 platform=${platform}
+  FP16ALT:
+    path: ./fpu_tests/matmul/FP16ALT
+    command: make clean all run cores=8 platform=${platform}
+  FP32:
+    path: ./fpu_tests/matmul/FP32
+    command: make clean all run cores=8 platform=${platform}
+  redmule:
+    path: ./hwpe/redmule
+    command: make clean all no_ecc=1 run cores=8 platform=${platform}
+    platforms: rtl
+  neureka:
+    path: ./hwpe/neureka
+    command: make clean all no_ecc=1 run cores=8 platform=${platform}
+    platforms: rtl
+  softex:
+    path: ./hwpe/softex
+    command: make clean all no_ecc=1 run cores=8 platform=${platform}
+    platforms: rtl
+
+idma_tests:
+  idma_multi_core:
+    path: ./idma_tests/idma_multi_core
+    command: make clean all run cores=8 MULTI_CORE_P=1 platform=${platform}
+  idma_multi_core_2d:
+    path: ./idma_tests/idma_multi_core_2d
+    command: make clean all run cores=8 MULTI_CORE_P=1 platform=${platform}
+  idma_multi_core_3d:
+    path: ./idma_tests/idma_multi_core_3d
+    command: make clean all run cores=8 MULTI_CORE_P=1 platform=${platform}
+  idma_max_size_transfer:
+    path: ./idma_tests/idma_max_size_transfer
+    command: make clean all run cores=8 platform=${platform}
+    platforms: gvsoc
+  idma_benchmark_tests:
+    path: ./idma_tests/idma_benchmark_tests
+    command: make clean all run cores=8 TX_RX=1 platform=${platform}
+
+tcdm_tests:
+  L1_check:
+    path: ./tcdm_tests/L1_check
+    command: make clean all run cores=8 platform=${platform}
+  L1_control_check:
+    path: ./tcdm_tests/L1_control_check
+    command: make clean all run cores=8 platform=${platform}
+  L2_check:
+    path: ./tcdm_tests/L2_check
+    command: make clean all run cores=8 platform=${platform}

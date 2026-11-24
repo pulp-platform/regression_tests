@@ -89,10 +89,10 @@ int test_singlethread(void (*test)(int16_t *, int16_t *, int16_t *, int, int, in
    if(rt_core_id() == 0) {
       load();
 
-      reset_timer();
-      start_timer();
+      reset_timer(rt_cluster_id());
+      start_timer(rt_cluster_id());
       test(g_W, g_x, g_y, IH, IW, FH, FW, OH, OW, 1, 0, 0);
-      stop_timer();
+      stop_timer(rt_cluster_id());
 
       #ifdef CHECK_CHECKSUM
       errors = 0;
@@ -110,7 +110,7 @@ int test_singlethread(void (*test)(int16_t *, int16_t *, int16_t *, int, int, in
       #endif
 
       #ifndef PULP_SPI
-      printf("%s, errors=%d, time=%d\n", str, errors, get_time());
+      printf("%s, errors=%d, time=%d\n", str, errors, get_time(rt_cluster_id()));
       #endif
       
    }
@@ -129,12 +129,12 @@ int test_multithread(void (*test)(int16_t *, int16_t *, int16_t *, int, int, int
    synch_barrier();
 
    if(rt_core_id() == 0) {
-      reset_timer();
-      start_timer();
+      reset_timer(rt_cluster_id());
+      start_timer(rt_cluster_id());
    }
    test(g_W, g_x, g_y, IH, IW, FH, FW, OH, OW, 1, 0, 0);
    if(rt_core_id() == 0) {
-      stop_timer();
+      stop_timer(rt_cluster_id());
 
       #ifdef CHECK_CHECKSUM
       errors = 0;
@@ -152,7 +152,7 @@ int test_multithread(void (*test)(int16_t *, int16_t *, int16_t *, int, int, int
       #endif
 
       #ifndef PULP_SPI
-      printf("%s, errors=%d, time=%d\n", str, errors, get_time());
+      printf("%s, errors=%d, time=%d\n", str, errors, get_time(rt_cluster_id()));
       #endif
       
    }
