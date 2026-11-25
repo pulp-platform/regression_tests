@@ -246,11 +246,11 @@ int cluster_task () {
                 errors[core_id] += test_idma_3D(core_id, transfer, 0, 0);
                 // L2 -> L1
                 PRINTF ("Core[%d]: L2 -> L1 Transfer Parameters: Size: %d | Length: %d | Src_stride_2d: %d | Dst_stride_2d: %d | Src_stride_3d: %d | Dst_stride_3d: %d | Num_reps_3d: %d\n",
-                rt_core_id(), transfer.size_3d, transfer.length, transfer.src_stride_2d, transfer.dst_stride_2d, transfer.src_stride_3d, transfer.dst_stride_3d,transfer.num_reps_3d)
+                rt_core_id(), transfer.size_3d, transfer.length, transfer.src_stride_2d, transfer.dst_stride_2d, transfer.src_stride_3d, transfer.dst_stride_3d,transfer.num_reps_3d);
                 errors[core_id] += test_idma_3D(core_id, transfer, 1, 0);
                 // L1 -> L1
                 PRINTF ("Core[%d]: L1 -> L1 Transfer Parameters: Size: %d | Length: %d | Src_stride_2d: %d | Dst_stride_2d: %d | Src_stride_3d: %d | Dst_stride_3d: %d | Num_reps_3d: %d\n",
-                rt_core_id(), transfer.size_3d, transfer.length, transfer.src_stride_2d, transfer.dst_stride_2d, transfer.src_stride_3d, transfer.dst_stride_3d,transfer.num_reps_3d)
+                rt_core_id(), transfer.size_3d, transfer.length, transfer.src_stride_2d, transfer.dst_stride_2d, transfer.src_stride_3d, transfer.dst_stride_3d,transfer.num_reps_3d);
                 errors[core_id] += test_idma_3D(core_id, transfer, 0, 1);
             }
         }
